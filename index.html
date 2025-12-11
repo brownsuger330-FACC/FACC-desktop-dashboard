@@ -9,31 +9,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap"
     rel="stylesheet"
   />
-
-  <!-- Chart.js للترند -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root {
       /* خلفية رئيسية داكنة قريبة من لون الشعار */
-      --bg-main: #02151b;
-      --bg-card: #022839;
-      --bg-card-soft: #04323b;
-      --turquoise: #00a7a5;
+      --bg-dark: #022838;
+      --bg-dark-soft: #04323b;
+      --turquoise-main: #00a7a5;
       --turquoise-soft: #34c7c5;
-      --gold: #c5a56c;
+      --gold-main: #c5a56c;
       --text-main: #f5f7f8;
-      --text-muted: #aab8bb;
-      --danger: #ff5b5b;
+      --text-muted: #aab8c5;
+      --danger: #ff5f5f;
       --warning: #ffc857;
-      --success: #4cd278;
+      --success: #24b37a;
+      --card-radius: 22px;
       --shadow-soft: 0 22px 40px rgba(0, 0, 0, 0.55);
-      --radius-lg: 26px;
-      --radius-md: 18px;
-      --radius-pill: 999px;
+      --gap-lg: 24px;
+      --gap-md: 18px;
+      --gap-sm: 12px;
       --transition-fast: 160ms ease-out;
     }
 
@@ -57,112 +54,114 @@
     .page {
       width: 100%;
       max-width: 1440px;
-      padding: 28px 32px 40px;
+      padding: 18px 24px 24px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
-    }
-
-    /* الشعار (الختم) في الزاوية */
-    .corner-logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(2, 21, 27, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
-    }
-
-    .corner-logo img {
-      width: 110%;
-      height: 110%;
-      object-fit: cover;
-      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.7));
+      gap: var(--gap-lg);
     }
 
     /* HEADER */
+
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: var(--gap-md);
     }
 
-    .brand-block {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 14px;
+    }
+
+    .brand-logo-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.45);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .brand-logo-circle img {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
     }
 
     .brand-text {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
 
     .brand-title {
-      font-size: 26px;
-      letter-spacing: 0.12em;
+      font-size: 20px;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: #e9f9ff;
     }
 
     .brand-subtitle {
-      font-family: "Cairo", system-ui, -apple-system;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    .tagline {
-      margin-top: 2px;
-      font-family: "Cairo", system-ui, -apple-system;
       font-size: 13px;
       color: var(--text-muted);
     }
 
     .header-meta {
-      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
       font-size: 12px;
       color: var(--text-muted);
     }
 
-    .live-badge {
+    .pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      border-radius: 999px;
       padding: 6px 12px;
-      border-radius: var(--radius-pill);
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      margin-bottom: 8px;
       font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #0b8a8d, #14b9b5);
+      color: #0a1721;
+      box-shadow: var(--shadow-soft);
     }
 
-    .live-dot {
+    .pill-dot {
       width: 8px;
       height: 8px;
       border-radius: 999px;
-      background: var(--success);
-      box-shadow: 0 0 0 6px rgba(76, 210, 120, 0.25);
+      background: #16ff9a;
+      box-shadow: 0 0 0 5px rgba(22, 255, 154, 0.18);
     }
 
-    /* GRID LAYOUT */
-    .grid {
+    /* MAIN GRID */
+
+    .main-grid {
       display: grid;
-      grid-template-columns: 2fr 1.6fr;
-      grid-template-rows: auto auto auto;
-      gap: 18px;
+      grid-template-columns: 2.1fr 1.6fr;
+      gap: var(--gap-lg);
+      align-items: stretch;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-lg);
     }
 
     .card {
-      background: linear-gradient(135deg, var(--bg-card), var(--bg-card-soft));
-      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, #043541, #021c28);
+      border-radius: var(--card-radius);
+      padding: 16px 18px 18px;
       box-shadow: var(--shadow-soft);
-      padding: 20px 22px;
+      border: 1px solid rgba(255, 255, 255, 0.02);
       position: relative;
       overflow: hidden;
     }
@@ -171,313 +170,279 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: var(--gap-sm);
     }
 
     .card-title {
       font-size: 15px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #eaf8ff;
     }
 
     .card-subtitle {
-      margin-top: 4px;
-      font-family: "Cairo", system-ui, -apple-system;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
     }
 
-    .chip {
-      padding: 6px 12px;
-      border-radius: var(--radius-pill);
+    .card-badge {
       font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 999px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.24);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
+      background: rgba(0, 0, 0, 0.25);
     }
 
-    .chip-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
+    .card-badge.success {
+      border-color: rgba(36, 179, 122, 0.9);
+      color: var(--success);
     }
 
-    .chip-success {
-      background-color: rgba(76, 210, 120, 0.16);
-      border-color: rgba(76, 210, 120, 0.6);
-      color: #c8ffde;
+    .card-badge.warning {
+      border-color: rgba(255, 200, 87, 0.9);
+      color: var(--warning);
     }
 
-    .chip-warning {
-      background-color: rgba(255, 200, 87, 0.16);
-      border-color: rgba(255, 200, 87, 0.7);
-      color: #ffe9bd;
+    .card-badge.danger {
+      border-color: rgba(255, 95, 95, 0.9);
+      color: var(--danger);
     }
 
-    .chip-danger {
-      background-color: rgba(255, 91, 91, 0.16);
-      border-color: rgba(255, 91, 91, 0.7);
-      color: #ffd2d2;
+    .card-row {
+      display: flex;
+      gap: var(--gap-md);
+      margin-top: 6px;
     }
 
-    .chip-neutral {
-      background-color: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.1);
-      color: var(--text-muted);
-    }
-
-    .chip-dot-success {
-      background: var(--success);
-    }
-
-    .chip-dot-warning {
-      background: var(--warning);
-    }
-
-    .chip-dot-danger {
-      background: var(--danger);
-    }
-
-    /* CASH CARD */
-    .cash-main-row {
+    .metric-block {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 6px;
     }
 
-    .cash-main-value {
-      font-size: 32px;
-      font-weight: 600;
-    }
-
-    .cash-main-label {
-      font-family: "Cairo", system-ui, -apple-system;
+    .metric-label {
       font-size: 12px;
       color: var(--text-muted);
     }
 
-    .cash-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .meta-pill {
-      padding: 6px 10px;
-      border-radius: var(--radius-pill);
-      background: rgba(0, 0, 0, 0.32);
-      font-size: 11px;
-      display: inline-flex;
-      gap: 6px;
-      align-items: baseline;
-    }
-
-    .meta-label {
-      color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
-      font-size: 11px;
-    }
-
-    .meta-value {
-      font-size: 11px;
-      font-weight: 500;
-    }
-
-    /* BUDGET CARD */
-    .budget-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .budget-item {
-      padding: 8px 10px;
-      border-radius: 14px;
-      background: rgba(0, 0, 0, 0.24);
-    }
-
-    .budget-label {
-      font-family: "Cairo", system-ui, -apple-system;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    .budget-value {
-      font-size: 15px;
-      font-weight: 500;
-      color: #ffffff;
-    }
-
-    .budget-helper {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      font-family: "Cairo", system-ui, -apple-system;
-    }
-
-    /* SPENDING CAP */
-    .cap-main-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 10px;
-    }
-
-    .cap-amount {
+    .metric-value {
       font-size: 24px;
       font-weight: 600;
     }
 
-    .cap-caption {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
+    .metric-unit {
+      font-size: 13px;
+      margin-left: 4px;
+      opacity: 0.85;
     }
 
-    .cap-rule {
+    .metric-caption {
       font-size: 11px;
       color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
-      margin-top: 6px;
     }
 
-    .progress-rail {
+    .metric-inline {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-top: 3px;
+      color: var(--text-muted);
+    }
+
+    .metric-inline span:nth-child(2) {
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    /* SPENDING CAP BAR */
+
+    .cap-bar {
       margin-top: 6px;
       width: 100%;
-      height: 8px;
-      border-radius: var(--radius-pill);
-      background: rgba(0, 0, 0, 0.4);
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.35);
       overflow: hidden;
       position: relative;
     }
 
-    .progress-fill {
-      height: 100%;
+    .cap-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
       border-radius: inherit;
-      background: linear-gradient(90deg, var(--turquoise-soft), var(--gold));
-      width: 0;
+      background: linear-gradient(90deg, #26e1c0, #ffd369);
+      width: 0%;
       transition: width var(--transition-fast);
     }
 
-    .progress-marker {
+    .cap-bar-limit {
       position: absolute;
-      top: -3px;
+      top: -4px;
       width: 2px;
-      height: 14px;
-      background: rgba(255, 255, 255, 0.5);
+      bottom: -4px;
+      background: rgba(255, 255, 255, 0.75);
     }
 
-    .label-row-between {
+    .cap-labels {
       display: flex;
       justify-content: space-between;
+      font-size: 11px;
       margin-top: 4px;
-      font-size: 10px;
       color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
     }
 
     /* CASH FLOW CHART */
+
     .chart-wrapper {
-      margin-top: 4px;
+      margin-top: 8px;
+      background: radial-gradient(circle at top left, #063848, #02151f);
+      border-radius: 20px;
+      padding: 10px 14px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
     }
 
-    #cashChart {
+    .chart-svg {
       width: 100%;
-      max-height: 230px;
+      height: 180px;
     }
 
-    .chart-footnote {
-      margin-top: 6px;
+    .chart-axis-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
       font-size: 11px;
       color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
     }
 
     /* PROJECTS */
-    .projects-list {
-      margin-top: 10px;
+
+    .projects-section {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      max-height: 280px;
-      overflow: hidden;
+      gap: var(--gap-md);
     }
 
-    .project-card {
-      background: rgba(0, 0, 0, 0.26);
-      border-radius: 18px;
-      padding: 10px 12px 12px;
-      display: grid;
-      grid-template-columns: 1.5fr 1.6fr 0.9fr;
-      gap: 12px;
+    .projects-header-line {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-    }
-
-    .project-title {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .project-stage {
-      margin-top: 2px;
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
-    }
-
-    .project-dates {
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
-    }
-
-    .project-progress-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
+      gap: var(--gap-md);
       margin-bottom: 4px;
     }
 
-    .project-progress-bar {
-      height: 7px;
-      border-radius: var(--radius-pill);
-      background: rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-      position: relative;
+    .projects-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .project-progress-fill {
-      height: 100%;
+    .projects-title {
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .projects-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .projects-filter {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .projects-filter select {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: var(--text-main);
+      padding: 5px 10px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .project-card {
+      background: radial-gradient(circle at top left, #033644, #021823);
+      border-radius: 18px;
+      padding: 10px 14px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      display: grid;
+      grid-template-columns: 2.2fr 1.6fr 1.4fr;
+      gap: var(--gap-md);
+      align-items: center;
+    }
+
+    .project-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .project-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .project-stage {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .project-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .project-progress {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-label-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar-actual {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
       border-radius: inherit;
-      background: linear-gradient(90deg, var(--turquoise-soft), #7cf5ff);
-      width: 0;
+      background: linear-gradient(90deg, #21d4a8, #34c7c5);
+      width: 0%;
       transition: width var(--transition-fast);
     }
 
-    .project-progress-marker {
+    .progress-bar-planned {
       position: absolute;
-      top: -3px;
-      width: 2px;
-      height: 13px;
-      background: rgba(255, 255, 255, 0.6);
-    }
-
-    .project-progress-text {
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: "Cairo", system-ui, -apple-system;
+      top: 2px;
+      bottom: 2px;
+      border-radius: inherit;
+      border: 2px dashed rgba(255, 255, 255, 0.4);
+      width: 0%;
     }
 
     .project-risks {
@@ -485,941 +450,819 @@
       flex-direction: column;
       gap: 6px;
       font-size: 11px;
-      font-family: "Cairo", system-ui, -apple-system;
     }
 
     .risk-pill {
-      padding: 5px 8px;
-      border-radius: 999px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(0, 0, 0, 0.32);
-    }
-
-    .risk-level-dot {
-      width: 7px;
-      height: 7px;
+      padding: 4px 8px;
       border-radius: 999px;
-    }
-
-    .risk-high {
-      color: #ffd2d2;
-      border-color: rgba(255, 91, 91, 0.6);
-      background: rgba(255, 91, 91, 0.14);
-    }
-
-    .risk-medium {
-      color: #ffe9bd;
-      border-color: rgba(255, 200, 87, 0.7);
-      background: rgba(255, 200, 87, 0.14);
-    }
-
-    .risk-low {
-      color: #d0ffe7;
-      border-color: rgba(76, 210, 120, 0.7);
-      background: rgba(76, 210, 120, 0.14);
-    }
-
-    .risk-label {
-      font-weight: 600;
       font-size: 11px;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .risk-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .risk-dot.high {
+      background: var(--danger);
+    }
+
+    .risk-dot.medium {
+      background: var(--warning);
+    }
+
+    .risk-dot.low {
+      background: var(--success);
     }
 
     .risk-note {
-      margin-top: 2px;
       color: var(--text-muted);
     }
 
-    /* CEO CONTROL */
-    .admin-layout {
+    /* CEO CONTROLS */
+
+    .admin-card {
+      background: linear-gradient(120deg, #022633, #011219);
+      border-radius: var(--card-radius);
+      padding: 14px 18px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 2fr);
-      gap: 14px;
-      margin-top: 10px;
-      font-family: "Cairo", system-ui, -apple-system;
+      grid-template-columns: 1.6fr 1.4fr;
+      gap: var(--gap-lg);
+      font-size: 12px;
     }
 
-    .admin-note {
+    .admin-title {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .admin-desc {
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .admin-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .admin-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .admin-row label {
+      min-width: 70px;
+    }
+
+    .admin-controls select {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: var(--text-main);
+      padding: 5px 8px;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .admin-hint {
       font-size: 11px;
       color: var(--text-muted);
-      line-height: 1.6;
+      margin-top: 4px;
     }
 
-    .admin-note-strong {
-      color: #ffe9bd;
-    }
-
-    .admin-badges {
-      margin-top: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 10px;
-    }
-
-    .admin-table {
-      max-height: 180px;
-      overflow-y: auto;
-      font-size: 11px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      padding: 4px 6px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      text-align: left;
-    }
-
-    th {
-      position: sticky;
-      top: 0;
-      background: rgba(2, 40, 57, 0.96);
-      font-weight: 500;
-    }
-
-    .admin-input {
-      width: 60px;
-      padding: 3px 4px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: rgba(0, 0, 0, 0.4);
-      color: var(--text-main);
-      font-size: 11px;
-      text-align: center;
-    }
-
-    .admin-btn {
-      margin-top: 8px;
-      padding: 6px 10px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(0, 0, 0, 0.4);
-      color: var(--text-main);
-      font-size: 11px;
-      cursor: pointer;
+    .admin-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
-    .admin-btn:hover {
-      border-color: rgba(255, 255, 255, 0.32);
-    }
-
-    .footer-version {
-      text-align: right;
+    .small-footer {
+      margin-top: 4px;
       font-size: 10px;
       color: var(--text-muted);
-      margin-top: -8px;
-      font-family: "Cairo", system-ui, -apple-system;
+      text-align: right;
     }
 
-    /* RESPONSIVE (عرض أصغر من 1100) */
+    /* RESPONSIVE */
+
     @media (max-width: 1100px) {
-      .grid {
+      .main-grid {
         grid-template-columns: 1fr;
       }
+      .admin-card {
+        grid-template-columns: 1fr;
+      }
+    }
 
+    @media (max-width: 768px) {
       .project-card {
-        grid-template-columns: 1.2fr 1.4fr;
-        grid-template-rows: auto auto;
-      }
-
-      .project-risks {
-        grid-column: 1 / -1;
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
-
-      .admin-layout {
         grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
+
 <body>
-  <main class="page">
+  <div class="page">
     <!-- HEADER -->
     <header class="header">
-      <div class="brand-block">
-        <div class="corner-logo">
-          <!-- تأكد أن اسم الملف مطابق في المستودع -->
+      <div class="brand">
+        <div class="brand-logo-circle">
           <img src="seal.png" alt="FACC Seal" />
         </div>
         <div class="brand-text">
           <div class="brand-title">FACC — COMMAND CENTER</div>
           <div class="brand-subtitle">
-            الجادة الأولى للاستثمار | First Avenue for Investment
-          </div>
-          <div class="tagline">
-            لوحة قيادة تنفيذية للسيولة، الميزانية، والمشاريع عالية الأولوية.
+            First Avenue for Investment | لوحة قيادة تنفيذية للسيولة والمشاريع والمخاطر
           </div>
         </div>
       </div>
-
       <div class="header-meta">
-        <div class="live-badge">
-          <span class="live-dot"></span>
+        <div class="pill">
+          <span class="pill-dot"></span>
           <span>LIVE SNAPSHOT</span>
-          <span style="opacity: 0.7">Data1 &amp; Projects (Google Sheets)</span>
         </div>
-        <div id="last-update-label">Last update: —</div>
+        <div id="last-update-text">Waiting for Google Sheets…</div>
       </div>
     </header>
 
-    <!-- GRID -->
-    <section class="grid">
-      <!-- CASH OVERVIEW -->
-      <section class="card" id="cash-card">
-        <div class="card-header">
+    <!-- MAIN GRID -->
+    <section class="main-grid">
+      <!-- LEFT COLUMN: CASH & BUDGET -->
+      <div class="col">
+        <!-- CASH OVERVIEW -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">CASH BALANCE</div>
+              <div class="card-subtitle">الرصيد بعد آخر مدفوعات – أعلى من الالتزامات قصيرة الأجل</div>
+            </div>
+            <span id="cash-status-chip" class="card-badge success">COMFORTABLE</span>
+          </div>
+
+          <div class="card-row">
+            <div class="metric-block">
+              <div class="metric-label">Bank balance</div>
+              <div class="metric-value">
+                <span id="cash-balance-value">—</span>
+                <span class="metric-unit">SAR</span>
+              </div>
+              <div class="metric-inline">
+                <span>Obligations (30D)</span>
+                <span id="obligation-30d-text">—</span>
+              </div>
+              <div class="metric-inline">
+                <span>Pending payments</span>
+                <span id="pending-payments-text">—</span>
+              </div>
+            </div>
+
+            <div class="metric-block">
+              <div class="metric-label">CONTROL STATUS</div>
+              <div class="metric-value" id="control-status-title">—</div>
+              <div class="metric-caption" id="control-status-caption">
+                Cash comfortably covers 30-day obligations &amp; pending payments.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- BUDGET CONTROL -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">BUDGET CONTROL 2026</div>
+              <div class="card-subtitle">Approved operating budget &amp; variance (FVI 2026)</div>
+            </div>
+            <span id="budget-status-chip" class="card-badge success">ON TRACK</span>
+          </div>
+
+          <div class="card-row">
+            <div class="metric-block">
+              <div class="metric-label">Approved budget</div>
+              <div class="metric-value">
+                <span id="approved-budget-value">—</span>
+                <span class="metric-unit">SAR</span>
+              </div>
+              <div class="metric-inline">
+                <span>Actual YTD</span>
+                <span id="actual-ytd-text">—</span>
+              </div>
+            </div>
+
+            <div class="metric-block">
+              <div class="metric-label">Budget remaining</div>
+              <div class="metric-value">
+                <span id="budget-remaining-value">—</span>
+                <span class="metric-unit">SAR</span>
+              </div>
+              <div class="metric-inline">
+                <span>Variance %</span>
+                <span id="variance-percent-text">—</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- MONTHLY SPENDING CAP -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">MONTHLY SPENDING CAP</div>
+              <div class="card-subtitle">
+                سقف الصرف الشهري المقترح (25٪ من الميزانية المتبقية، بحد أقصى 200,000 ريال)
+              </div>
+            </div>
+            <span class="card-badge">AUTO RULE</span>
+          </div>
+
+          <div class="card-row">
+            <div class="metric-block">
+              <div class="metric-label">Safe envelope</div>
+              <div class="metric-value">
+                <span id="cap-amount-text">—</span>
+                <span class="metric-unit">SAR · max monthly</span>
+              </div>
+
+              <div class="cap-bar">
+                <div id="cap-bar-fill" class="cap-bar-fill"></div>
+                <div id="cap-bar-limit" class="cap-bar-limit"></div>
+              </div>
+              <div class="cap-labels">
+                <span>Rule: 25% / remaining months</span>
+                <span>Cap limit: 200,000 SAR</span>
+              </div>
+            </div>
+
+            <div class="metric-block">
+              <div class="metric-label">Rule details</div>
+              <div class="metric-caption" id="cap-rule-caption">
+                Waiting for data…
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- CASH FLOW PROJECTION -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">CASH FLOW PROJECTION — NEXT 6 MONTHS</div>
+              <div class="card-subtitle">
+                Based on Income_Forecast &amp; Expense_Forecast من Google Sheets
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-wrapper">
+            <svg id="cashflow-chart" class="chart-svg"></svg>
+            <div id="cashflow-months" class="chart-axis-labels"></div>
+          </div>
+        </article>
+      </div>
+
+      <!-- RIGHT COLUMN: PROJECTS & CEO CONTROLS -->
+      <div class="col">
+        <!-- PROJECTS SNAPSHOT -->
+        <article class="card projects-section">
+          <div class="projects-header-line">
+            <div class="projects-title-block">
+              <div class="projects-title">PROJECTS SNAPSHOT</div>
+              <div class="projects-subtitle">
+                مشروعات الجادة الأولى للاستثمار – متابعة مرحلية للمخاطر والتقدم الفعلي
+              </div>
+            </div>
+            <div class="projects-filter">
+              <span>Project filter</span>
+              <select id="project-filter-select">
+                <option value="first-two">First 2 projects</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="projects-slot-a" class="project-card">
+            <!-- filled by JS -->
+          </div>
+
+          <div id="projects-slot-b" class="project-card">
+            <!-- filled by JS -->
+          </div>
+        </article>
+
+        <!-- CEO CONTROLS -->
+        <article class="admin-card">
           <div>
-            <div class="card-title">CASH BALANCE</div>
-            <div class="card-subtitle">
-              Bank balance after latest payments · السيولة النقدية المتاحة بعد
-              آخر المدفوعات
+            <div class="admin-title">CEO CONTROLS (ADMIN) — DESKTOP ONLY</div>
+            <div class="admin-desc">
+              من هذه المنطقة يختار الرئيس التنفيذي أي مشروعين يظهران في
+              <strong>Slot A</strong> و <strong>Slot B</strong> في لوحة القيادة.
+              تُقرأ بيانات المشاريع من تبويب
+              <strong>Projects</strong> في Google Sheets.
+              أي تعديل حقيقي على البيانات يتم في الشيت مباشرة، وهذه النسخة V1
+              للعرض فقط (Read-only).
+            </div>
+            <div class="admin-hint">
+              <span class="admin-badge">LOCAL ONLY</span>
+              &nbsp;اختياراتك هنا لا تعدّل الشيت، لكنها تُحدّث العرض الحالي
+              فوريًا. في النسخة القادمة يمكن إضافة تكامل API ليتم التحديث آليًا.
             </div>
           </div>
-          <div id="cash-status-chip" class="chip chip-neutral">
-            <span class="chip-dot chip-dot-success"></span>
-            <span>STATUS</span>
-          </div>
-        </div>
-
-        <div class="cash-main-row">
-          <div id="cash-balance" class="cash-main-value">— SAR</div>
-          <div class="cash-main-label">
-            Cash is higher than short-term obligations (30-day) and pending
-            payments.
-          </div>
-        </div>
-
-        <div class="cash-meta-row">
-          <div class="meta-pill">
-            <span class="meta-label">Obligations 30D:</span>
-            <span id="cash-obligations" class="meta-value">— SAR</span>
-          </div>
-          <div class="meta-pill">
-            <span class="meta-label">Pending payments:</span>
-            <span id="cash-pending" class="meta-value">— SAR</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- BUDGET CONTROL -->
-      <section class="card" id="budget-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">BUDGET CONTROL 2026</div>
-            <div class="card-subtitle">
-              Approved operating &amp; projects budget · ميزانية ٢٠٢٦ المعتمدة
+          <div class="admin-controls">
+            <div class="admin-row">
+              <label for="slot-a-select">Slot A</label>
+              <select id="slot-a-select"></select>
+            </div>
+            <div class="admin-row">
+              <label for="slot-b-select">Slot B</label>
+              <select id="slot-b-select"></select>
+            </div>
+            <div class="admin-hint">
+              Tip: اختر مشروعين مختلفين لزاويتي العرض؛ التغييرات تُحفظ في
+              المتصفح نفسه (Local view).
             </div>
           </div>
-          <div id="budget-status-chip" class="chip chip-neutral">
-            <span class="chip-dot chip-dot-success"></span>
-            <span>ON TRACK</span>
-          </div>
-        </div>
+        </article>
 
-        <div class="budget-grid">
-          <div class="budget-item">
-            <div class="budget-label">Approved budget</div>
-            <div id="budget-total" class="budget-value">— SAR</div>
-          </div>
-          <div class="budget-item">
-            <div class="budget-label">Actual spend (YTD)</div>
-            <div id="budget-actual" class="budget-value">— SAR</div>
-          </div>
-          <div class="budget-item">
-            <div class="budget-label">Budget remaining</div>
-            <div id="budget-remaining" class="budget-value">— SAR</div>
-          </div>
-          <div class="budget-item">
-            <div class="budget-label">Variance vs approved</div>
-            <div id="budget-variance" class="budget-value">—</div>
-          </div>
+        <div class="small-footer">
+          FACC – First Avenue Command Center · Internal CEO View · v1.0
         </div>
-
-        <div class="budget-helper" id="budget-helper-text">
-          Budget position will update automatically as Data1 sheet is updated.
-        </div>
-      </section>
-
-      <!-- MONTHLY CAP -->
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">MONTHLY SPENDING CAP</div>
-            <div class="card-subtitle">
-              Safe envelope rule based on remaining budget · سقف الصرف الشهري
-            </div>
-          </div>
-          <div class="chip chip-success">
-            <span class="chip-dot chip-dot-success"></span>
-            <span>AUTO RULE</span>
-          </div>
-        </div>
-
-        <div class="cap-main-row">
-          <div>
-            <div id="cap-amount" class="cap-amount">— SAR</div>
-            <div class="cap-caption">
-              Safe monthly envelope (max 200,000 SAR · ‎٢٥٪ من الميزانية
-              المتبقية بحد أعلى ٢٠٠ ألف)
-            </div>
-          </div>
-        </div>
-
-        <div class="progress-rail">
-          <div id="cap-fill" class="progress-fill"></div>
-          <div id="cap-marker" class="progress-marker"></div>
-        </div>
-        <div class="label-row-between">
-          <span>0</span>
-          <span>Rule target</span>
-          <span>200K</span>
-        </div>
-
-        <div id="cap-rule-text" class="cap-rule">
-          Rule: 25% of remaining budget / months left (capped at 200K).
-        </div>
-      </section>
-
-      <!-- CONTROL STATUS -->
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">CONTROL STATUS</div>
-            <div class="card-subtitle">
-              30-day liquidity view · تغطية الالتزامات خلال ٣٠ يوم
-            </div>
-          </div>
-          <div id="control-status-chip" class="chip chip-neutral">
-            <span class="chip-dot chip-dot-success"></span>
-            <span>STATUS</span>
-          </div>
-        </div>
-
-        <div class="cap-caption" id="control-status-text">
-          —
-        </div>
-      </section>
-
-      <!-- CASH FLOW CHART -->
-      <section class="card" style="grid-column: 1 / -1;">
-        <div class="card-header">
-          <div>
-            <div class="card-title">CASH FLOW PROJECTION — NEXT 6 MONTHS</div>
-            <div class="card-subtitle">
-              Based on Income_Forecast &amp; Expense_Forecast · توقع السيولة
-              للأشهر الستة القادمة
-            </div>
-          </div>
-        </div>
-
-        <div class="chart-wrapper">
-          <canvas id="cashChart"></canvas>
-        </div>
-        <div id="chart-footnote" class="chart-footnote">
-          Values above each point show projected closing cash for the month.
-        </div>
-      </section>
-
-      <!-- PROJECTS SNAPSHOT -->
-      <section class="card" style="grid-column: 1 / -1;">
-        <div class="card-header">
-          <div>
-            <div class="card-title">PROJECTS SNAPSHOT</div>
-            <div class="card-subtitle">
-              Top priority projects pulled from "Projects" sheet · ملخص مشاريع
-              الجادة الرئيسية
-            </div>
-          </div>
-          <div class="chip chip-neutral">
-            <span class="chip-dot chip-dot-success"></span>
-            <span>LIVE FROM SHEET</span>
-          </div>
-        </div>
-
-        <div id="projects-list" class="projects-list">
-          <!-- يتم ملؤه من الجافاسكربت -->
-        </div>
-      </section>
-
-      <!-- CEO CONTROL (ADMIN) -->
-      <section class="card" style="grid-column: 1 / -1;">
-        <div class="card-header">
-          <div>
-            <div class="card-title">CEO CONTROLS (ADMIN)</div>
-            <div class="card-subtitle">
-              Desktop only · إعدادات محلية للتحكم في عرض المشاريع
-            </div>
-          </div>
-          <div class="chip chip-warning">
-            <span class="chip-dot chip-dot-warning"></span>
-            <span>LOCAL ONLY</span>
-          </div>
-        </div>
-
-        <div class="admin-layout">
-          <div>
-            <div class="admin-note">
-              هذه المنطقة مخصصة للرئيس التنفيذي لتعديل **عرض** المشاريع بسرعة
-              (Stage, Progress, Risks) على هذا الجهاز فقط. التعديلات يتم حفظها
-              في <span class="admin-note-strong">localStorage</span> ولا يتم
-              إرسالها إلى Google Sheets تلقائياً.
-              <br /><br />
-              عندما ترغب في اعتماد الأرقام نهائياً، قم بفتح شيت
-              <span class="admin-note-strong">Projects</span> وتحديث القيم
-              يدوياً هناك ثم سيتم جلبها تلقائياً في كل من نسخة الديسكتوب ونسخة
-              الجوال.
-            </div>
-            <div class="admin-badges">
-              <span class="chip chip-neutral" style="font-size: 10px">
-                • مشروع بدون Override = الأرقام من الشيت مباشرة
-              </span>
-              <span class="chip chip-neutral" style="font-size: 10px">
-                • مشروع مع Override = الأرقام من Admin + محفوظة على هذا
-                اللابتوب فقط
-              </span>
-            </div>
-            <button
-              class="admin-btn"
-              type="button"
-              onclick="window.open('https://docs.google.com/spreadsheets/d/14Z3TPLYq5ufs2lTX_qkeDsV2inZeFwfMwwG9NMQQwHc/edit', '_blank')"
-            >
-              Open Google Sheet (Projects) · فتح شيت المشاريع
-            </button>
-          </div>
-
-          <div class="admin-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>Project</th>
-                  <th>Stage</th>
-                  <th>Actual %</th>
-                  <th>Planned %</th>
-                  <th>Risk1</th>
-                  <th>Risk2</th>
-                </tr>
-              </thead>
-              <tbody id="admin-project-rows">
-                <!-- يُملأ من الجافاسكربت -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="footer-version">
-          FACC — First Avenue Command Center · Desktop View · v1.0
-        </div>
-      </section>
+      </div>
     </section>
-  </main>
+  </div>
 
   <script>
-    // ----------- الإعدادات (روابط الـCSV من Google Sheets) -----------
-    const DATA1_URL =
+    // === CONFIG: Google Sheets CSV URLs (من الروابط التي أرسلتها) ===
+    const DATA1_CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=0&single=true&output=csv";
-
-    const PROJECTS_URL =
+    const PROJECTS_CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=146585938&single=true&output=csv";
 
-    const LOCAL_OVERRIDE_KEY = "FACC_PROJECT_OVERRIDES_V1";
+    // === HELPERS ===
+    function parseCsv(text) {
+      const lines = text.trim().split(/\r?\n/);
+      const headers = lines[0].split(",").map((h) => h.trim());
+      return lines.slice(1).map((line) => {
+        const cells = line.split(",").map((c) => c.trim());
+        const obj = {};
+        headers.forEach((h, i) => (obj[h] = cells[i] ?? ""));
+        return obj;
+      });
+    }
 
-    // ----------- أدوات مساعدة -----------
-    function parseNumber(value) {
-      if (!value) return 0;
-      const clean = String(value).replace(/,/g, "").trim();
-      const n = Number(clean);
+    function formatSar(num) {
+      if (isNaN(num)) return "—";
+      return Math.round(num)
+        .toLocaleString("en-US")
+        .replace(/,/g, ",");
+    }
+
+    function toNumber(v) {
+      if (v === undefined || v === null || v === "") return 0;
+      const n = parseFloat(String(v).replace(/,/g, ""));
       return isNaN(n) ? 0 : n;
     }
 
-    function formatSAR(num) {
-      return (
-        num.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }) + " SAR"
-      );
+    function percent(num) {
+      if (isNaN(num)) return "—";
+      return num.toFixed(1).replace(/\.0$/, "") + " %";
     }
 
-    function classifyStatus(value, thresholds) {
-      if (value >= thresholds.good) return "good";
-      if (value >= thresholds.warning) return "warning";
-      return "danger";
+    // === DOM REFS ===
+    const lastUpdateText = document.getElementById("last-update-text");
+
+    const cashBalanceEl = document.getElementById("cash-balance-value");
+    const obligationTextEl = document.getElementById("obligation-30d-text");
+    const pendingTextEl = document.getElementById("pending-payments-text");
+    const cashStatusChip = document.getElementById("cash-status-chip");
+    const controlStatusTitle = document.getElementById("control-status-title");
+    const controlStatusCaption = document.getElementById(
+      "control-status-caption"
+    );
+
+    const approvedBudgetEl = document.getElementById("approved-budget-value");
+    const actualYtdEl = document.getElementById("actual-ytd-text");
+    const budgetRemainingEl = document.getElementById(
+      "budget-remaining-value"
+    );
+    const variancePercentEl = document.getElementById("variance-percent-text");
+    const budgetStatusChip = document.getElementById("budget-status-chip");
+
+    const capAmountEl = document.getElementById("cap-amount-text");
+    const capRuleCaptionEl = document.getElementById("cap-rule-caption");
+    const capBarFill = document.getElementById("cap-bar-fill");
+    const capBarLimit = document.getElementById("cap-bar-limit");
+
+    const chartSvg = document.getElementById("cashflow-chart");
+    const chartMonthsEl = document.getElementById("cashflow-months");
+
+    const projectsSlotA = document.getElementById("projects-slot-a");
+    const projectsSlotB = document.getElementById("projects-slot-b");
+    const projectFilterSelect = document.getElementById("project-filter-select");
+    const slotASelect = document.getElementById("slot-a-select");
+    const slotBSelect = document.getElementById("slot-b-select");
+
+    let projectsData = [];
+
+    // === CASH & BUDGET ===
+    function updateCashAndBudget(latestRow, allRows) {
+      const cashBalance = toNumber(latestRow.Cash_Balance);
+      const pending = toNumber(latestRow.Pending_Payments);
+      const obligation30 = toNumber(latestRow.Obligation_30D);
+      const approvedBudget = toNumber(latestRow.Budget_Total);
+
+      // Actual YTD = sum Actual_Expense
+      const actualYtd = allRows.reduce(
+        (sum, r) => sum + toNumber(r.Actual_Expense),
+        0
+      );
+      const budgetRemaining = Math.max(approvedBudget - actualYtd, 0);
+      const variancePct =
+        approvedBudget > 0 ? (budgetRemaining / approvedBudget) * 100 : 0;
+
+      cashBalanceEl.textContent = formatSar(cashBalance);
+      obligationTextEl.textContent = `${formatSar(obligation30)} SAR`;
+      pendingTextEl.textContent = `${formatSar(pending)} SAR`;
+
+      approvedBudgetEl.textContent = formatSar(approvedBudget);
+      actualYtdEl.textContent = `${formatSar(actualYtd)} SAR`;
+      budgetRemainingEl.textContent = formatSar(budgetRemaining);
+      variancePercentEl.textContent = percent(variancePct);
+
+      // Cash status
+      const shortTermNeeds = obligation30 + pending;
+      if (cashBalance >= shortTermNeeds * 1.3) {
+        cashStatusChip.textContent = "COMFORTABLE";
+        cashStatusChip.classList.remove("warning", "danger");
+        cashStatusChip.classList.add("success");
+        controlStatusTitle.textContent = "Healthy";
+        controlStatusCaption.textContent =
+          "Cash is significantly above 30-day obligations and pending payments.";
+      } else if (cashBalance >= shortTermNeeds) {
+        cashStatusChip.textContent = "TIGHT";
+        cashStatusChip.classList.remove("success", "danger");
+        cashStatusChip.classList.add("warning");
+        controlStatusTitle.textContent = "Tight but OK";
+        controlStatusCaption.textContent =
+          "Cash roughly covers 30-day obligations and pending amounts.";
+      } else {
+        cashStatusChip.textContent = "CRITICAL";
+        cashStatusChip.classList.remove("success", "warning");
+        cashStatusChip.classList.add("danger");
+        controlStatusTitle.textContent = "Attention needed";
+        controlStatusCaption.textContent =
+          "Cash does not fully cover short-term obligations and pending payments.";
+      }
+
+      // Budget status
+      if (variancePct >= 40) {
+        budgetStatusChip.textContent = "UNDER CONTROL";
+        budgetStatusChip.classList.remove("warning", "danger");
+        budgetStatusChip.classList.add("success");
+      } else if (variancePct >= 15) {
+        budgetStatusChip.textContent = "WATCH";
+        budgetStatusChip.classList.remove("success", "danger");
+        budgetStatusChip.classList.add("warning");
+      } else {
+        budgetStatusChip.textContent = "AT RISK";
+        budgetStatusChip.classList.remove("success", "warning");
+        budgetStatusChip.classList.add("danger");
+      }
+
+      updateCap(budgetRemaining, actualYtd, approvedBudget, allRows);
     }
 
-    function applyChip(chipEl, label, status) {
-      chipEl.className = "chip";
-      chipEl.classList.add(
-        status === "good"
-          ? "chip-success"
-          : status === "warning"
-          ? "chip-warning"
-          : "chip-danger"
+    // === MONTHLY CAP ===
+    function updateCap(budgetRemaining, actualYtd, approvedBudget, rows) {
+      const monthsWithBudget = rows.filter(
+        (r) => toNumber(r.Income_Forcast) !== 0 || toNumber(r.Expense_Forcast) !== 0
+      ).length;
+      const remainingMonths = Math.max(monthsWithBudget, 1);
+
+      const rawCap = (budgetRemaining * 0.25) / remainingMonths;
+      const cap = Math.min(rawCap, 200000);
+      const capRatio =
+        approvedBudget > 0 ? (cap / (approvedBudget / remainingMonths)) : 0;
+
+      capAmountEl.textContent = formatSar(cap);
+      capRuleCaptionEl.textContent =
+        `Suggested cap = min(25% of remaining budget ÷ remaining months, 200,000 SAR). ` +
+        `Remaining budget: ${formatSar(budgetRemaining)} SAR over about ${remainingMonths} months.`;
+
+      const widthPercent = Math.max(Math.min(capRatio * 100, 100), 5);
+      capBarFill.style.width = widthPercent + "%";
+      capBarLimit.style.left = "80%";
+    }
+
+    // === CASH FLOW CHART ===
+    function updateCashFlowChart(rows) {
+      // Use first 6 rows with forecast
+      const data = rows.slice(0, 6).map((r) => {
+        const inc = toNumber(r.Income_Forcast);
+        const exp = toNumber(r.Expense_Forcast);
+        return {
+          month: r.Month || "",
+          inc,
+          exp,
+          net: inc - exp,
+        };
+      });
+
+      // Clear SVG
+      chartSvg.innerHTML = "";
+
+      if (!data.length) return;
+
+      const width = chartSvg.clientWidth || 600;
+      const height = chartSvg.clientHeight || 180;
+      const paddingX = 32;
+      const paddingTop = 20;
+      const paddingBottom = 30;
+
+      const maxNet = Math.max(...data.map((d) => d.net), 0);
+      const minNet = Math.min(...data.map((d) => d.net), 0);
+      const range = maxNet - minNet || 1;
+
+      const xStep =
+        data.length > 1
+          ? (width - paddingX * 2) / (data.length - 1)
+          : width / 2;
+
+      const points = data.map((d, i) => {
+        const x = paddingX + i * xStep;
+        const y =
+          height -
+          paddingBottom -
+          ((d.net - minNet) / range) * (height - paddingTop - paddingBottom);
+        return { ...d, x, y };
+      });
+
+      // Polyline path
+      const pathD = points
+        .map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`))
+        .join(" ");
+
+      const path = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path"
       );
-      const dotClass =
-        status === "good"
-          ? "chip-dot-success"
-          : status === "warning"
-          ? "chip-dot-warning"
-          : "chip-dot-danger";
-      chipEl.innerHTML = `
-        <span class="chip-dot ${dotClass}"></span>
-        <span>${label}</span>
+      path.setAttribute("d", pathD);
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "#3fe0c4");
+      path.setAttribute("stroke-width", "2.5");
+      path.setAttribute("stroke-linecap", "round");
+      chartSvg.appendChild(path);
+
+      // Dashed baseline (0)
+      if (minNet < 0 && maxNet > 0) {
+        const zeroY =
+          height -
+          paddingBottom -
+          ((0 - minNet) / range) * (height - paddingTop - paddingBottom);
+        const baseLine = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "line"
+        );
+        baseLine.setAttribute("x1", paddingX);
+        baseLine.setAttribute("x2", width - paddingX);
+        baseLine.setAttribute("y1", zeroY);
+        baseLine.setAttribute("y2", zeroY);
+        baseLine.setAttribute("stroke", "rgba(255,255,255,0.35)");
+        baseLine.setAttribute("stroke-width", "1");
+        baseLine.setAttribute("stroke-dasharray", "4 4");
+        chartSvg.appendChild(baseLine);
+      }
+
+      // Points + labels
+      points.forEach((p) => {
+        const circle = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle"
+        );
+        circle.setAttribute("cx", p.x);
+        circle.setAttribute("cy", p.y);
+        circle.setAttribute("r", "4");
+        circle.setAttribute("fill", "#3fe0c4");
+        chartSvg.appendChild(circle);
+
+        const label = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        label.setAttribute("x", p.x);
+        label.setAttribute("y", p.y - 8);
+        label.setAttribute("text-anchor", "middle");
+        label.setAttribute("fill", "#cdeff3");
+        label.setAttribute("font-size", "10");
+        label.textContent = formatSar(p.net);
+        chartSvg.appendChild(label);
+      });
+
+      // Months labels
+      chartMonthsEl.innerHTML = "";
+      data.forEach((d) => {
+        const span = document.createElement("span");
+        span.textContent = d.month || "";
+        chartMonthsEl.appendChild(span);
+      });
+    }
+
+    // === PROJECTS ===
+    function buildProjectOptions() {
+      projectFilterSelect.innerHTML =
+        '<option value="first-two">First 2 projects</option>';
+
+      slotASelect.innerHTML = "";
+      slotBSelect.innerHTML = "";
+
+      projectsData.forEach((p, idx) => {
+        const label = `${p.Project_ID || idx + 1} — ${p.Project_Name || "Project"}`;
+
+        const optFilter = document.createElement("option");
+        optFilter.value = String(idx);
+        optFilter.textContent = label;
+        projectFilterSelect.appendChild(optFilter);
+
+        const optA = document.createElement("option");
+        optA.value = String(idx);
+        optA.textContent = label;
+        slotASelect.appendChild(optA);
+
+        const optB = document.createElement("option");
+        optB.value = String(idx);
+        optB.textContent = label;
+        slotBSelect.appendChild(optB);
+      });
+
+      // Default slot mapping: first two projects
+      slotASelect.value = "0";
+      if (projectsData.length > 1) {
+        slotBSelect.value = "1";
+      } else {
+        slotBSelect.value = "0";
+      }
+
+      renderProjects();
+    }
+
+    function renderProjects() {
+      const idxA = parseInt(slotASelect.value || "0", 10);
+      const idxB = parseInt(slotBSelect.value || "1", 10);
+
+      renderProjectCard(projectsSlotA, projectsData[idxA], "Slot A");
+      renderProjectCard(projectsSlotB, projectsData[idxB], "Slot B");
+    }
+
+    function renderProjectCard(container, project, slotLabel) {
+      if (!project) {
+        container.innerHTML =
+          "<div style='font-size:12px;color:var(--text-muted);'>No project selected.</div>";
+        return;
+      }
+
+      const planned = toNumber(project.Planned_Progress || project.Planned_progress);
+      const actual = toNumber(project.Actual_Progress);
+      const risk1Level = (project.Risk1_level || "").toLowerCase();
+      const risk2Level = (project.Risk2_level || "").toLowerCase();
+
+      const riskDot1Class =
+        risk1Level === "high"
+          ? "high"
+          : risk1Level === "medium"
+          ? "medium"
+          : "low";
+      const riskDot2Class =
+        risk2Level === "high"
+          ? "high"
+          : risk2Level === "medium"
+          ? "medium"
+          : "low";
+
+      container.innerHTML = `
+        <div class="project-header">
+          <div class="project-name">${project.Project_Name || "—"}</div>
+          <div class="project-stage">${project.Stage_text || ""}</div>
+          <div class="project-meta">
+            <span>Start: ${project.Start_Date || "—"}</span>
+            <span>Duration: ${project.Planned_Duration || "—"} days</span>
+            <span>Slot: ${slotLabel}</span>
+          </div>
+        </div>
+
+        <div class="project-progress">
+          <div class="progress-label-line">
+            <span>Progress</span>
+            <span>${actual || 0}% / ${planned || 0}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-bar-actual" style="width:${Math.min(
+              actual,
+              100
+            )}%;"></div>
+            <div class="progress-bar-planned" style="width:${Math.min(
+              planned,
+              100
+            )}%;"></div>
+          </div>
+        </div>
+
+        <div class="project-risks">
+          <div class="risk-pill">
+            <span class="risk-dot ${riskDot1Class}"></span>
+            <span>Risk 1 – ${project.Risk1_level || "N/A"}</span>
+            <span class="risk-note">${
+              project.Risk1_Note || "No note"
+            }</span>
+          </div>
+          <div class="risk-pill">
+            <span class="risk-dot ${riskDot2Class}"></span>
+            <span>Risk 2 – ${project.Risk2_level || "N/A"}</span>
+            <span class="risk-note">${
+              project.Risk2_Note || "No note"
+            }</span>
+          </div>
+        </div>
       `;
     }
 
-    function loadOverrides() {
-      try {
-        const raw = localStorage.getItem(LOCAL_OVERRIDE_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch {
-        return {};
-      }
-    }
-
-    function saveOverrides(overrides) {
-      try {
-        localStorage.setItem(LOCAL_OVERRIDE_KEY, JSON.stringify(overrides));
-      } catch {
-        // ignore
-      }
-    }
-
-    // ----------- قراءة CSV بسيطة -----------
-    async function fetchCSV(url) {
-      const res = await fetch(url);
-      const text = await res.text();
-      const lines = text.trim().split(/\r?\n/);
-      const headers = lines[0].split(",").map((h) => h.trim());
-      const rows = lines.slice(1).map((line) => {
-        const cells = line.split(",").map((c) => c.trim());
-        const obj = {};
-        headers.forEach((h, idx) => {
-          obj[h] = cells[idx] ?? "";
-        });
-        return obj;
-      });
-      return { headers, rows };
-    }
-
-    // ----------- بناء الداشبورد -----------
-    let cashChart;
-
-    async function buildDashboard() {
-      const [data1, projectsData] = await Promise.all([
-        fetchCSV(DATA1_URL),
-        fetchCSV(PROJECTS_URL),
-      ]);
-
-      const now = new Date();
-      const lastUpdateLabel = document.getElementById("last-update-label");
-      lastUpdateLabel.textContent =
-        "Last update: " +
-        now.toLocaleString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-
-      // ---- DATA1: نفترض 12 شهر + صف snapshot الحالي في أول صف بعد الهيدر ----
-      const months = data1.rows.map((r) => r.Month || r.month || "");
-      const cashBalances = data1.rows.map((r) =>
-        parseNumber(r.Cash_Balance || r.cash_balance)
-      );
-      const pendingPayments = data1.rows.map((r) =>
-        parseNumber(r.Pending_Payments || r.pending_payments)
-      );
-      const obligations30D = data1.rows.map((r) =>
-        parseNumber(r.Obligation_30D || r.obligation_30d)
-      );
-      const budgetTotalRaw = parseNumber(
-        data1.rows[0].Budget_Total || data1.rows[0].budget_total
-      );
-      const incomeForecast = data1.rows.map((r) =>
-        parseNumber(r.Income_Forcast || r.Income_Forecast || r.income_forecast)
-      );
-      const expenseForecast = data1.rows.map((r) =>
-        parseNumber(
-          r.Expense_Forcast || r.Expense_Forecast || r.expense_forecast
-        )
-      );
-      const actualExpense = data1.rows.map((r) =>
-        parseNumber(r.Actual_Expense || r.actual_expense)
-      );
-
-      // snapshot نأخذ أول صف كالحالي (DEC-25) حسب الشيت الحالي
-      const snapshotIndex = 0;
-
-      const cashBalance = cashBalances[snapshotIndex] || 0;
-      const pending = pendingPayments[snapshotIndex] || 0;
-      const obligations = obligations30D[snapshotIndex] || 0;
-
-      // --- CASH CARD ---
-      document.getElementById("cash-balance").textContent =
-        formatSAR(cashBalance);
-      document.getElementById("cash-obligations").textContent =
-        formatSAR(obligations);
-      document.getElementById("cash-pending").textContent =
-        formatSAR(pending);
-
-      // --- BUDGET NUMBERS ---
-      const budgetTotal = budgetTotalRaw;
-      const actualYTD = actualExpense.reduce((sum, v) => sum + v, 0);
-      const remaining = Math.max(budgetTotal - actualYTD, 0);
-      const variance = remaining; // نفس المتبقي (موجب = أقل من الميزانية)
-
-      document.getElementById("budget-total").textContent =
-        formatSAR(budgetTotal);
-      document.getElementById("budget-actual").textContent =
-        formatSAR(actualYTD);
-      document.getElementById("budget-remaining").textContent =
-        formatSAR(remaining);
-      document.getElementById("budget-variance").textContent =
-        formatSAR(variance);
-
-      const budgetStatus =
-        actualYTD <= budgetTotal * 0.6
-          ? "good"
-          : actualYTD <= budgetTotal * 0.85
-          ? "warning"
-          : "danger";
-
-      const budgetChip = document.getElementById("budget-status-chip");
-      applyChip(
-        budgetChip,
-        budgetStatus === "good"
-          ? "UNDER CONTROL"
-          : budgetStatus === "warning"
-          ? "TIGHT RANGE"
-          : "OVER BUDGET",
-        budgetStatus
-      );
-
-      const budgetHelper = document.getElementById("budget-helper-text");
-      if (budgetStatus === "good") {
-        budgetHelper.textContent =
-          "Actual spend is comfortably within the approved budget range.";
-      } else if (budgetStatus === "warning") {
-        budgetHelper.textContent =
-          "Spending is approaching the upper comfort band. Monitor new commitments.";
-      } else {
-        budgetHelper.textContent =
-          "Spending is above the safe band vs approved budget. Review commitments.";
-      }
-
-      // --- MONTHLY CAP RULE ---
-      const totalMonths = months.length || 12;
-      const monthsWithActual = actualExpense.filter((v) => v > 0).length;
-      const monthsLeft = Math.max(totalMonths - monthsWithActual, 1);
-      const ruleCap = (remaining * 0.25) / monthsLeft;
-      const maxCap = 200000;
-      const capPerMonth = Math.min(ruleCap, maxCap);
-
-      document.getElementById("cap-amount").textContent =
-        formatSAR(capPerMonth);
-      document.getElementById(
-        "cap-rule-text"
-      ).textContent = `Rule: (25% of remaining budget ÷ months left = ${formatSAR(
-        ruleCap
-      )}) · Capped at 200,000 SAR.`;
-
-      const capFill = document.getElementById("cap-fill");
-      const capMarker = document.getElementById("cap-marker");
-      const capPercent = Math.min(capPerMonth / maxCap, 1);
-      capFill.style.width = `${capPercent * 100}%`;
-      capMarker.style.left = `${capPercent * 100}%`;
-
-      // --- CONTROL STATUS ---
-      const cashStatusScore = cashBalance - (obligations + pending + capPerMonth);
-      const controlStatus = classifyStatus(cashStatusScore, {
-        good: 0,
-        warning: -maxCap * 0.25,
-      });
-      const controlChip = document.getElementById("control-status-chip");
-      applyChip(
-        controlChip,
-        controlStatus === "good"
-          ? "UNDER CONTROL"
-          : controlStatus === "warning"
-          ? "TIGHT"
-          : "CRITICAL",
-        controlStatus
-      );
-
-      const controlText = document.getElementById("control-status-text");
-      if (controlStatus === "good") {
-        controlText.textContent =
-          "Cash comfortably covers 30-day obligations, pending payments, and the safe monthly envelope.";
-      } else if (controlStatus === "warning") {
-        controlText.textContent =
-          "Coverage of 30-day obligations and pending payments is tight once the monthly envelope is considered.";
-      } else {
-        controlText.textContent =
-          "Cash is below the comfortable zone vs obligations, pending payments, and monthly envelope. Consider deferring non-essential spending.";
-      }
-
-      // --- CASH STATUS CHIP (فقط إشارة مباشرة من نسبة الرصيد للالتزامات) ---
-      const coverageRatio =
-        obligations + pending > 0
-          ? cashBalance / (obligations + pending)
-          : 999;
-
-      const cashStatus = classifyStatus(coverageRatio, {
-        good: 2,
-        warning: 1.2,
-      });
-
-      const cashChip = document.getElementById("cash-status-chip");
-      applyChip(
-        cashChip,
-        cashStatus === "good"
-          ? "COMFORTABLE"
-          : cashStatus === "warning"
-          ? "TIGHT"
-          : "WEAK",
-        cashStatus
-      );
-
-      // --- CASH FLOW PROJECTION (6 أشهر) ---
-      const projectionCount = Math.min(6, months.length);
-      const projMonths = months.slice(0, projectionCount);
-      const projIncome = incomeForecast.slice(0, projectionCount);
-      const projExpense = expenseForecast.slice(0, projectionCount);
-
-      let runningCash = cashBalance;
-      const closingCash = projMonths.map((_, i) => {
-        runningCash += projIncome[i] - projExpense[i];
-        return runningCash;
-      });
-
-      const ctx = document.getElementById("cashChart").getContext("2d");
-      if (cashChart) cashChart.destroy();
-      cashChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: projMonths,
-          datasets: [
-            {
-              label: "Projected closing cash",
-              data: closingCash,
-              borderColor: "#34c7c5",
-              backgroundColor: "rgba(52,199,197,0.12)",
-              borderWidth: 2,
-              tension: 0.32,
-              pointRadius: 4,
-              pointHoverRadius: 5,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => formatSAR(ctx.parsed.y),
-              },
-            },
-            datalabels: false,
-          },
-          scales: {
-            x: {
-              ticks: {
-                color: "#9fbac0",
-                font: { size: 11 },
-              },
-              grid: { display: false },
-            },
-            y: {
-              ticks: {
-                color: "#4f676d",
-                font: { size: 10 },
-                callback: (value) =>
-                  value >= 1000000
-                    ? value / 1000000 + "M"
-                    : value / 1000 + "K",
-              },
-              grid: {
-                color: "rgba(255,255,255,0.05)",
-              },
-            },
-          },
-          elements: {
-            point: {
-              borderColor: "#02151b",
-            },
-          },
-        },
-      });
-
-      // إظهار المبالغ فوق كل نقطة (نستخدم DOM بسيطاً فوق الكانفس)
-      const chartFootnote = document.getElementById("chart-footnote");
-      chartFootnote.textContent =
-        "Projected closing cash per month (values shown in SAR above each point in tooltip).";
-
-      // --- PROJECTS SNAPSHOT + ADMIN ---
-      const overrides = loadOverrides();
-      const projects = projectsData.rows
-        .filter((r) => (r.Project_Name || r.Project_ID || "").trim() !== "")
-        .map((r, index) => {
-          const base = {
-            id: (r.Project_ID || String(index + 1)).trim(),
-            name: (r.Project_Name || "").trim(),
-            stage: (r.Stage_text || r.Stage_Text || "").trim(),
-            startDate: (r.Start_Date || "").trim(),
-            plannedDuration: parseNumber(r.Planned_Duration),
-            actualProgress: parseNumber(r.Actual_Progress),
-            plannedProgress: parseNumber(r.Planned_Progress),
-            risk1Level: (r.Risk1_level || r.Risk1_Level || "").trim(),
-            risk1Note: (r.Risk1_Note || "").trim(),
-            risk2Level: (r.Risk2_level || r.Risk2_Level || "").trim(),
-            risk2Note: (r.Risk2_Note || "").trim(),
-          };
-          const key = base.id;
-          if (overrides[key]) {
-            return { ...base, ...overrides[key] };
-          }
-          return base;
-        });
-
-      const projectsList = document.getElementById("projects-list");
-      projectsList.innerHTML = "";
-      projects.forEach((p) => {
-        const actualPct = p.actualProgress || 0;
-        const plannedPct = p.plannedProgress || 0;
-        const riskClass = (level) => {
-          const l = (level || "").toLowerCase();
-          if (l.startsWith("high")) return "risk-high";
-          if (l.startsWith("medium")) return "risk-medium";
-          if (l.startsWith("low")) return "risk-low";
-          return "risk-medium";
-        };
-
-        const projectEl = document.createElement("div");
-        projectEl.className = "project-card";
-        projectEl.innerHTML = `
-          <div>
-            <div class="project-title">${p.name || "Unnamed project"}</div>
-            <div class="project-stage">${p.stage || "— Stage not set"}</div>
-            <div class="project-dates">
-              Start: ${p.startDate || "—"} · Duration: ${
-          p.plannedDuration || 0
-        } days
-            </div>
-          </div>
-
-          <div>
-            <div class="project-progress-label">Progress · نسبة إنجاز المشروع</div>
-            <div class="project-progress-bar">
-              <div class="project-progress-fill" style="width: ${Math.min(
-                actualPct,
-                100
-              )}%"></div>
-              <div class="project-progress-marker" style="left: ${Math.min(
-                plannedPct,
-                100
-              )}%"></div>
-            </div>
-            <div class="project-progress-text">
-              Actual: ${actualPct}% · Planned: ${plannedPct}%
-            </div>
-          </div>
-
-          <div class="project-risks">
-            <div class="risk-pill ${riskClass(p.risk1Level)}">
-              <span class="risk-level-dot"></span>
-              <span class="risk-label">Risk 1: ${p.risk1Level || "N/A"}</span>
-            </div>
-            ${
-              p.risk1Note
-                ? `<div class="risk-note">${p.risk1Note}</div>`
-                : ""
-            }
-            <div class="risk-pill ${riskClass(p.risk2Level)}">
-              <span class="risk-level-dot"></span>
-              <span class="risk-label">Risk 2: ${p.risk2Level || "N/A"}</span>
-            </div>
-            ${
-              p.risk2Note
-                ? `<div class="risk-note">${p.risk2Note}</div>`
-                : ""
-            }
-          </div>
-        `;
-        projectsList.appendChild(projectEl);
-      });
-
-      // --- ADMIN TABLE (CEO CONTROL) ---
-      const adminBody = document.getElementById("admin-project-rows");
-      adminBody.innerHTML = "";
-      projects.forEach((p) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${p.name || "Project " + p.id}</td>
-          <td>${p.stage || "—"}</td>
-          <td>
-            <input class="admin-input" type="number" min="0" max="100" value="${
-              p.actualProgress || ""
-            }" data-id="${p.id}" data-field="actualProgress" />
-          </td>
-          <td>
-            <input class="admin-input" type="number" min="0" max="100" value="${
-              p.plannedProgress || ""
-            }" data-id="${p.id}" data-field="plannedProgress" />
-          </td>
-          <td>
-            <input class="admin-input" type="text" value="${
-              p.risk1Level || ""
-            }" data-id="${p.id}" data-field="risk1Level" />
-          </td>
-          <td>
-            <input class="admin-input" type="text" value="${
-              p.risk2Level || ""
-            }" data-id="${p.id}" data-field="risk2Level" />
-          </td>
-        `;
-        adminBody.appendChild(row);
-      });
-
-      adminBody.addEventListener("change", (e) => {
-        const input = e.target;
-        if (!input.classList.contains("admin-input")) return;
-        const id = input.getAttribute("data-id");
-        const field = input.getAttribute("data-field");
-        const value = input.value;
-
-        const currentOverrides = loadOverrides();
-        const projectOverride = currentOverrides[id] || {};
-        if (field === "actualProgress" || field === "plannedProgress") {
-          projectOverride[field] = parseNumber(value);
-        } else {
-          projectOverride[field] = value;
+    // === EVENT HANDLERS ===
+    projectFilterSelect.addEventListener("change", () => {
+      const value = projectFilterSelect.value;
+      if (value === "first-two") {
+        slotASelect.value = "0";
+        if (projectsData.length > 1) {
+          slotBSelect.value = "1";
         }
-        currentOverrides[id] = projectOverride;
-        saveOverrides(currentOverrides);
-        // إعادة البناء لتحديث بطاقات المشاريع
-        buildDashboard().catch(console.error);
-      }, { once: false });
+      } else {
+        const idx = parseInt(value, 10);
+        slotASelect.value = value;
+        // Keep B as is unless it matches A
+        if (slotBSelect.value === value && projectsData.length > 1) {
+          slotBSelect.value = String((idx + 1) % projectsData.length);
+        }
+      }
+      renderProjects();
+    });
+
+    slotASelect.addEventListener("change", renderProjects);
+    slotBSelect.addEventListener("change", renderProjects);
+
+    // === MAIN LOAD ===
+    async function loadDashboard() {
+      try {
+        const [data1Text, projectsText] = await Promise.all([
+          fetch(DATA1_CSV_URL).then((r) => r.text()),
+          fetch(PROJECTS_CSV_URL).then((r) => r.text()),
+        ]);
+
+        const data1Rows = parseCsv(data1Text);
+        const projectRows = parseCsv(projectsText);
+
+        if (!data1Rows.length) throw new Error("No rows in Data1");
+
+        // Latest month = أول صف (Google Sheets published by order)
+        const latest = data1Rows[0];
+        updateCashAndBudget(latest, data1Rows);
+        updateCashFlowChart(data1Rows);
+
+        projectsData = projectRows;
+        buildProjectOptions();
+
+        const now = new Date();
+        lastUpdateText.textContent =
+          "Last update: " +
+          now.toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+      } catch (err) {
+        console.error(err);
+        lastUpdateText.textContent =
+          "Error loading data from Google Sheets. Please check the published CSV links.";
+      }
     }
 
-    buildDashboard().catch((err) => {
-      console.error("Error building dashboard", err);
-      const label = document.getElementById("last-update-label");
-      label.textContent = "Error loading data from Google Sheets.";
-    });
+    loadDashboard();
   </script>
 </body>
 </html>
