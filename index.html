@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <title>FACC — First Avenue Command Center</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Fonts (يمكن تغييرها لاحقًا إذا أحببت) -->
+  <!-- Font (يمكن تغييرها لاحقاً لو أحببت) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -14,19 +13,19 @@
   />
 
   <style>
+    /* ========== ألوان وهوية FACC ========== */
     :root {
-      /* خلفية رئيسية داكنة قريبة من لون الشعار */
       --bg-dark: #022839;
       --bg-dark-soft: #04323b;
-      --bg-card: #06414c;
-      --turquoise-soft: #0a7a75;
-      --turquoise-soft-2: #34c7c5;
+      --bg-card-soft: #06414c;
+      --turquoise-soft: #0a7a85;
+      --turquoise-soft-alt: #34c7c5;
       --gold: #c5a56c;
       --text-main: #f5f7f8;
-      --text-muted: #aab3bb;
-      --danger: #ff5f5b;
+      --text-muted: #aab3b8;
+      --danger: #ff5b5b;
       --warning: #ffc857;
-      --success: #2dc778;
+      --success: #3cd278;
       --shadow-soft: 0 22px 40px rgba(0, 0, 0, 0.55);
       --radius-lg: 28px;
       --radius-md: 18px;
@@ -45,10 +44,10 @@
         "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #06414c, #02151b 52%);
       color: var(--text-main);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: stretch;
-      min-height: 100vh;
     }
 
     .page {
@@ -58,338 +57,244 @@
       display: flex;
       flex-direction: column;
       gap: 22px;
+      position: relative;
     }
 
-    /* شعار corner seal في الركن السفلي الأيسر */
+    /* ختم الزاوية */
     .corner-seal {
       position: fixed;
-      left: 22px;
-      bottom: 22px;
+      left: 24px;
+      bottom: 24px;
       width: 64px;
       height: 64px;
-      border-radius: 50%;
-      background: #ffffff10;
-      box-shadow: 0 0 0 2px #ffffff22, 0 14px 28px rgba(0, 0, 0, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(8px);
+      opacity: 0.9;
       z-index: 9999;
+      filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.5));
     }
 
-    .corner-seal img {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.8));
-    }
-
-    /* HEADER */
+    /* ========== الهيدر ========== */
     .header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 18px;
     }
 
     .brand {
       display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .brand-kicker {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--turquoise-soft-2);
+      align-items: center;
+      gap: 16px;
     }
 
     .brand-title {
-      font-size: 26px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      font-size: 24px;
       font-weight: 600;
+      letter-spacing: 0.12em;
     }
 
     .brand-subtitle {
       font-size: 13px;
+      color: var(--turquoise-soft-alt);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .brand-ar {
+      font-size: 13px;
       color: var(--text-muted);
+      margin-top: 4px;
     }
 
-    .last-update-badge {
-      display: flex;
+    .status-pill {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 8px 14px;
+      gap: 8px;
+      padding: 6px 14px;
       border-radius: 999px;
-      background: linear-gradient(
-        135deg,
-        rgba(20, 141, 119, 0.2),
-        rgba(0, 0, 0, 0.5)
-      );
-      border: 1px solid #2ad1b166;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.42);
       font-size: 11px;
-    }
-
-    .dot-live {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 0 0 rgba(45, 199, 120, 0.8);
-      animation: pulse 1.6s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(45, 199, 120, 0.8);
-      }
-      70% {
-        transform: scale(1.25);
-        box-shadow: 0 0 0 10px rgba(45, 199, 120, 0);
-      }
-      100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(45, 199, 120, 0);
-      }
-    }
-
-    .last-update-label {
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      color: var(--text-muted);
     }
 
-    .last-update-value {
-      font-weight: 500;
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2ee18a;
+      box-shadow: 0 0 10px rgba(46, 225, 138, 0.7);
     }
 
-    .top-meta {
+    .header-meta {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
     }
 
-    .version-tag {
+    .last-update {
       font-size: 11px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid #ffffff11;
       color: var(--text-muted);
-      background: #00000033;
     }
 
-    /* LAYOUT GRID */
-    .main-grid {
+    .view-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* ========== تخطيط البودي ========== */
+    .layout {
       display: grid;
-      grid-template-columns: 1.1fr 1.2fr;
-      gap: 22px;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.1fr);
+      gap: 20px;
       align-items: flex-start;
     }
 
     .card {
-      background: radial-gradient(circle at top left, #06414c, #021820);
+      background: linear-gradient(135deg, rgba(4, 50, 59, 0.98), #031b26);
       border-radius: var(--radius-lg);
-      padding: 20px 22px;
+      padding: 18px 20px 20px;
       box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
-      border: 1px solid #ffffff14;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        circle at top right,
-        rgba(255, 255, 255, 0.06),
-        transparent 60%
-      );
-      opacity: 0;
-      transition: opacity var(--transition-fast);
-      pointer-events: none;
-    }
-
-    .card:hover::before {
-      opacity: 1;
     }
 
     .card-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 12px;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
     .card-title {
       font-size: 14px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-muted);
     }
 
     .card-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px 11px;
-      border-radius: 999px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      border: 1px solid transparent;
-      background: #ffffff0d;
-    }
-
-    .pill-green {
-      color: #0df0a0;
-      border-color: #0df0a066;
-      background: linear-gradient(
-        135deg,
-        rgba(0, 176, 116, 0.26),
-        rgba(0, 0, 0, 0.7)
-      );
-    }
-
-    .pill-amber {
-      color: var(--warning);
-      border-color: #ffc85788;
-      background: linear-gradient(
-        135deg,
-        rgba(255, 200, 87, 0.25),
-        rgba(0, 0, 0, 0.7)
-      );
-    }
-
-    .pill-red {
-      color: var(--danger);
-      border-color: #ff5f5b88;
-      background: linear-gradient(
-        135deg,
-        rgba(255, 95, 91, 0.28),
-        rgba(0, 0, 0, 0.7)
-      );
-    }
-
-    /* CASH OVERVIEW */
-    .cash-main-value {
-      font-size: 32px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .cash-main-currency {
       font-size: 13px;
       color: var(--text-muted);
-    }
-
-    .cash-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 18px;
-      margin-top: 12px;
-    }
-
-    .cash-caption {
-      font-size: 13px;
-      color: var(--text-muted);
-      max-width: 320px;
-      line-height: 1.5;
-    }
-
-    .chip-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
     }
 
     .chip {
-      display: flex;
-      justify-content: space-between;
+      display: inline-flex;
       align-items: center;
-      padding: 7px 12px;
-      border-radius: var(--radius-pill);
-      background: #00000048;
-      border: 1px solid #ffffff14;
-      font-size: 12px;
-    }
-
-    .chip-label {
-      color: var(--text-muted);
-    }
-
-    .chip-value {
-      font-weight: 500;
-    }
-
-    /* BUDGET & VARIANCE */
-    .budget-main-value {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .budget-caption {
-      font-size: 12px;
-      color: var(--text-muted);
-      max-width: 360px;
-    }
-
-    .budget-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1.1fr;
-      gap: 18px;
-      margin-top: 14px;
-      align-items: stretch;
-    }
-
-    .stat-block {
-      background: #00000040;
-      border-radius: var(--radius-md);
-      padding: 10px 14px;
-      border: 1px solid #ffffff1a;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 12px;
-    }
-
-    .stat-label {
-      color: var(--text-muted);
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      font-size: 10px;
+      background: rgba(0, 0, 0, 0.4);
     }
 
-    .stat-value {
-      font-size: 16px;
+    .chip.good {
+      color: #0fdf9f;
+      background: rgba(15, 223, 159, 0.1);
+    }
+
+    .chip.warn {
+      color: var(--warning);
+      background: rgba(255, 200, 87, 0.12);
+    }
+
+    .chip.bad {
+      color: var(--danger);
+      background: rgba(255, 91, 91, 0.12);
+    }
+
+    .chip.neutral {
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* ========== كروت الكاش والميزانية ========== */
+    .cash-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.05fr);
+      gap: 18px;
+      margin-top: 6px;
+    }
+
+    .cash-main-value {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .currency {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .metric-row strong {
+      color: var(--text-main);
       font-weight: 500;
     }
 
-    .stat-foot {
+    .metric-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot-pill {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--turquoise-soft-alt);
+    }
+
+    .small-caption {
+      margin-top: 8px;
       font-size: 11px;
       color: var(--text-muted);
+    }
+
+    /* ========== كارت الميزانية ========== */
+    .budget-main {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .budget-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill-badge {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 11px;
+    }
+
+    .variance-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      margin-top: 10px;
+      font-size: 12px;
     }
 
-    .stat-pill {
-      padding: 3px 9px;
-      border-radius: 999px;
-      border: 1px solid #ffffff22;
-      font-size: 10px;
-      text-transform: uppercase;
+    .variance-value {
+      font-weight: 500;
     }
 
     .variance-positive {
@@ -400,253 +305,182 @@
       color: var(--danger);
     }
 
-    /* 6-month cashflow projection */
-    .projection-card {
-      background: #00000040;
+    /* ========== شارت التدفقات لستة أشهر ========== */
+    .chart-wrapper {
+      margin-top: 14px;
+      padding: 10px 12px 6px;
       border-radius: var(--radius-md);
-      padding: 12px 14px 14px;
-      border: 1px solid #ffffff1a;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      background: radial-gradient(circle at top left, #053341, #02151f);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .projection-header {
+    .chart-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
+      margin-bottom: 4px;
       font-size: 11px;
       color: var(--text-muted);
     }
 
-    .projection-chart {
-      height: 120px;
-      border-radius: 16px;
-      background: radial-gradient(circle at top, #0a2c36, #010b11 70%);
-      padding: 10px 12px;
+    .chart-legend {
       display: flex;
-      align-items: flex-end;
       gap: 10px;
+      font-size: 10px;
     }
 
-    .projection-bar {
-      flex: 1;
-      border-radius: 999px;
-      overflow: hidden;
-      background: #ffffff10;
-      position: relative;
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    .projection-bar-fill {
-      position: absolute;
-      inset: auto 0 0;
-      height: 0;
-      border-radius: 999px;
-      background: linear-gradient(
-        180deg,
-        #34c7c5,
-        #0a7a75 55%,
-        #ff5f5b 100%
-      );
-      transition: height 600ms ease-out;
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--turquoise-soft-alt);
     }
 
-    .projection-bar-label {
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 9px;
-      color: #ffffffcc;
+    .legend-dot.net {
+      background: var(--gold);
     }
 
-    .projection-month {
-      font-size: 9px;
-      text-align: center;
-      margin-top: 4px;
-      color: var(--text-muted);
+    .chart-svg {
+      width: 100%;
+      height: 150px;
     }
 
-    /* PROJECTS SNAPSHOT */
+    /* ========== كارت المشاريع ========== */
     .projects-card {
-      margin-top: 4px;
+      margin-top: 10px;
     }
 
     .projects-header-line {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 6px;
-    }
-
-    .projects-caption {
+      align-items: center;
+      margin-top: 4px;
       font-size: 12px;
       color: var(--text-muted);
     }
 
-    .projects-body {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
+    .smart-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .project-slot-labels {
+    .smart-filter select {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-pill);
+      padding: 3px 10px;
+      color: var(--text-main);
+      font-size: 11px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .project-list {
+      margin-top: 12px;
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-card {
+      background: linear-gradient(135deg, #031b26, #052c35);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-slot-label {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      opacity: 0.9;
+    }
+
+    .project-name {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .project-stage {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .project-dates {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
       gap: 8px;
       margin-bottom: 6px;
     }
 
-    .slot-pill {
-      padding: 5px 12px;
-      border-radius: 999px;
-      border: 1px solid #ffffff14;
-      font-size: 11px;
-      background: #00000055;
-      cursor: default;
-    }
-
-    .slot-pill span {
-      opacity: 0.7;
-    }
-
-    .project-card {
-      border-radius: var(--radius-md);
-      padding: 14px 16px 14px;
-      background: linear-gradient(
-        135deg,
-        rgba(5, 64, 79, 0.96),
-        rgba(0, 0, 0, 0.9)
-      );
-      border: 1px solid #ffffff26;
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.7);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .project-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        circle at top right,
-        rgba(255, 255, 255, 0.06),
-        transparent 60%
-      );
-      opacity: 0;
-      transition: opacity var(--transition-fast);
-      pointer-events: none;
-    }
-
-    .project-card:hover::after {
-      opacity: 1;
-    }
-
-    .project-header {
+    .project-progress-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 6px;
-    }
-
-    .project-name {
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    .project-phase {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .project-meta {
-      font-size: 11px;
-      color: var(--text-muted);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 10px;
-    }
-
-    .project-meta span strong {
-      color: #ffffffde;
-      font-weight: 500;
-    }
-
-    .progress-row {
-      display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .progress-label {
+      margin-bottom: 4px;
       font-size: 11px;
-      color: var(--text-muted);
-      min-width: 64px;
     }
 
-    .progress-track {
+    .progress-bar {
       position: relative;
       flex: 1;
-      height: 7px;
+      height: 6px;
       border-radius: 999px;
-      background: #ffffff14;
+      background: rgba(255, 255, 255, 0.06);
       overflow: hidden;
+      margin: 0 8px;
     }
 
-    .progress-bar-actual,
-    .progress-bar-plan {
+    .progress-fill {
       position: absolute;
       top: 0;
       left: 0;
-      height: 7px;
-      border-radius: 999px;
+      height: 100%;
+      background: linear-gradient(90deg, var(--turquoise-soft-alt), #53ffb2);
+      border-radius: inherit;
+      transition: width var(--transition-fast);
     }
 
-    .progress-bar-actual {
-      background: linear-gradient(90deg, #34c7c5, #0a7a75);
-    }
-
-    .progress-bar-plan {
-      background: linear-gradient(90deg, #ffc857, #ff9f1c);
-      opacity: 0.6;
-    }
-
-    .progress-values {
-      font-size: 11px;
-      min-width: 70px;
-      text-align: right;
-    }
-
-    .risk-row {
+    .project-risk-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 4px;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 6px;
       font-size: 11px;
     }
 
-    .risk-pill {
+    .risk-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 9px;
+      padding: 3px 8px;
       border-radius: 999px;
-      background: #00000066;
-      border: 1px solid #ffffff22;
+      font-size: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      white-space: nowrap;
     }
 
     .risk-dot {
-      width: 9px;
-      height: 9px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--warning);
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
-    }
-
-    .risk-high .risk-dot {
       background: var(--danger);
     }
 
@@ -658,807 +492,749 @@
       background: var(--success);
     }
 
-    .risk-note {
+    .risk-text {
       color: var(--text-muted);
-    }
-
-    /* CEO ADMIN FOOTER */
-    .admin-card {
+      font-size: 10px;
       margin-top: 4px;
     }
 
-    .admin-body {
-      margin-top: 8px;
+    /* ========== كارت كنترول المدير التنفيذي ========== */
+    .admin-card {
+      margin-top: 10px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.16);
       font-size: 11px;
       color: var(--text-muted);
-      line-height: 1.6;
     }
 
-    .admin-row {
+    .admin-grid {
       display: flex;
       justify-content: space-between;
       gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 4px;
+      margin-top: 8px;
+      align-items: flex-start;
     }
 
-    .admin-pill {
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px dashed #ffffff33;
+    .admin-selects {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .admin-selects label {
       font-size: 11px;
+    }
+
+    .admin-selects select {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      color: var(--text-main);
+      font-size: 11px;
+      outline: none;
+      min-width: 120px;
+      cursor: pointer;
     }
 
     .admin-note {
       font-size: 10px;
-      opacity: 0.8;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 360px;
     }
 
-    /* RESPONSIVE */
+    .badge-desktop-only {
+      align-self: flex-start;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* ========== النصوص الجانبية الرأسية ========== */
+    .vertical-tag {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      transform-origin: center;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.32);
+      pointer-events: none;
+    }
+
+    .vertical-version {
+      position: fixed;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.28);
+      pointer-events: none;
+    }
+
+    /* ========== ريسبونسف بسيط للشاشات الأصغر ========== */
     @media (max-width: 1100px) {
-      .main-grid {
+      .layout {
         grid-template-columns: 1fr;
       }
-    }
-
-    @media (max-width: 768px) {
-      .page {
-        padding: 18px 14px 26px;
-      }
-      .brand-title {
-        font-size: 20px;
-      }
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .corner-seal {
-        display: none; /* نسخة الموبايل لاحقاً لها تصميمها */
+      .vertical-tag,
+      .vertical-version {
+        display: none;
       }
     }
   </style>
-
-  <!-- Google Charts loader لاستخدام Google Visualization API -->
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
-
 <body>
-  <!-- Corner seal (الصورة موجودة في المستودع باسم seal.png) -->
-  <div class="corner-seal">
-    <img src="seal.png" alt="FACC Seal" />
-  </div>
+  <!-- ختم الجادة في الزاوية -->
+  <img src="seal.png" alt="FACC Seal" class="corner-seal" />
 
-  <main class="page">
+  <div class="page">
+    <!-- الهيدر -->
     <header class="header">
       <div class="brand">
-        <div class="brand-kicker">
-          FIRST AVENUE FOR INVESTMENT | الجادة الأولى للاستثمار
-        </div>
-        <h1 class="brand-title">FACC — COMMAND CENTER</h1>
-        <div class="brand-subtitle">
-          Live snapshot for cash, budget & projects · لمحة حية عن السيولة
-          والمشاريع
+        <div>
+          <div class="brand-title">FACC — COMMAND CENTER</div>
+          <div class="brand-subtitle">FIRST AVENUE FOR INVESTMENT</div>
+          <div class="brand-ar">الجادة الأولى للإستثمار | لوحة القيادة التنفيذية للرئيس التنفيذي</div>
         </div>
       </div>
 
-      <div class="top-meta">
-        <div class="last-update-badge">
-          <span class="dot-live"></span>
-          <span class="last-update-label">Last update</span>
-          <span id="last-update-value" class="last-update-value">—</span>
+      <div class="header-meta">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          LIVE SNAPSHOT
         </div>
-        <span class="version-tag">v1.0 · Desktop dashboard</span>
+        <div class="last-update" id="last-update"></div>
+        <div class="view-tag">INTERNAL CEO VIEW — DESKTOP</div>
       </div>
     </header>
 
-    <section class="main-grid">
-      <!-- CASH & BUDGET COLUMN -->
+    <!-- جسم الصفحة -->
+    <main class="layout">
+      <!-- العمود الأيسر: الكاش + الميزانية + الشارت -->
       <section class="card">
         <div class="card-header">
           <div>
-            <div class="card-title">CASH OVERVIEW · السيولة النقدية</div>
-            <div class="card-subtitle">
-              Bank balance after latest payments · رصيد النقد بعد آخر المدفوعات
-            </div>
+            <div class="card-title">CASH OVERVIEW</div>
+            <div class="card-subtitle">Bank balance after latest payments</div>
           </div>
-          <span id="cash-status-pill" class="pill pill-green">HEALTHY</span>
-        </div>
-
-        <div>
-          <div class="cash-main-value" id="cash-main-value">
-            704,779.76 <span class="cash-main-currency">SAR</span>
-          </div>
+          <span class="chip good" id="cash-status-chip">COMFORTABLE</span>
         </div>
 
         <div class="cash-grid">
-          <p class="cash-caption">
-            Cash is higher than short-term obligations خلال 30 يوم. هذه النظرة
-            تستخدم بيانات شيت <strong>Data1</strong> (الصف الأحدث).
-          </p>
-
-          <div class="chip-stack">
-            <div class="chip">
-              <span class="chip-label">Pending payments</span>
-              <span class="chip-value" id="chip-pending">2,000 SAR</span>
-            </div>
-            <div class="chip">
-              <span class="chip-label">30-day obligations</span>
-              <span class="chip-value" id="chip-obligations">41,501.42 SAR</span>
-            </div>
-            <div class="chip">
-              <span class="chip-label">Coverage ratio (Cash / 30D)</span>
-              <span class="chip-value" id="chip-coverage">—</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="budget-grid" style="margin-top: 20px">
+          <!-- كارت الكاش -->
           <div>
-            <div class="card-title" style="margin-bottom: 4px">
-              BUDGET & VARIANCE 2026 · ميزانية ٢٠٢٦
-            </div>
-            <div class="budget-caption">
-              View approved budget مقابل المصروف الفعلي وحد الصرف الشهري
-              (Cap/month).
+            <div class="cash-main-value">
+              <span id="cash-balance">0</span>
+              <span class="currency">SAR</span>
             </div>
 
-            <div class="stat-block" style="margin-top: 10px">
-              <div class="stat-label">Approved budget (YEAR 2026)</div>
-              <div class="stat-value" id="budget-total">3,269,785 SAR</div>
-              <div class="stat-foot">
-                <span id="budget-ytd-label">Actual spend YTD</span>
-                <span id="budget-ytd-value">0 SAR</span>
+            <div class="metric-row">
+              <div class="metric-label">
+                <span class="dot-pill"></span>
+                Pending payments
               </div>
+              <strong id="pending-payments">0 SAR</strong>
             </div>
 
-            <div class="stat-block" style="margin-top: 8px">
-              <div class="stat-label">Monthly cap (auto control)</div>
-              <div class="stat-value" id="cap-month">60,310 SAR</div>
-              <div class="stat-foot">
-                <span id="variance-label">Variance vs cap</span>
-                <span
-                  id="variance-value"
-                  class="variance-positive stat-pill"
-                ></span>
+            <div class="metric-row">
+              <div class="metric-label">
+                <span class="dot-pill"></span>
+                30-day obligations
               </div>
-            </div>
-          </div>
-
-          <div class="projection-card">
-            <div class="projection-header">
-              <span>Cash-flow projection · توقع السيولة (6 أشهر)</span>
-              <span id="projection-summary">—</span>
+              <strong id="obligation-30d">0 SAR</strong>
             </div>
 
-            <div id="projection-chart" class="projection-chart">
-              <!-- ستُملأ ديناميكياً -->
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PROJECTS & ADMIN COLUMN -->
-      <section>
-        <section class="card projects-card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">
-                PROJECTS SNAPSHOT · مشاريع قيد التنفيذ
-              </div>
-              <div class="card-subtitle">
-                عرض لمشروعين في آن واحد (Slot A & B). التبديل بين المشاريع يتم
-                من لوحة التحكم لاحقاً.
-              </div>
-            </div>
-          </div>
-
-          <div class="projects-header-line">
-            <div class="project-slot-labels">
-              <div class="slot-pill">
-                Slot A · <span id="slot-a-label">Project 1</span>
-              </div>
-              <div class="slot-pill">
-                Slot B · <span id="slot-b-label">Project 2</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="projects-body">
-            <!-- Project A -->
-            <article class="project-card" id="project-card-a">
-              <div class="project-header">
-                <div>
-                  <div class="project-name" id="proj-a-name">Business Front</div>
-                  <div class="project-phase" id="proj-a-stage">
-                    Design & licensing
-                  </div>
-                </div>
-                <span class="pill pill-amber" id="proj-a-phase-pill"
-                  >ON PLAN</span
-                >
-              </div>
-
-              <div class="project-meta" id="proj-a-meta">
-                <!-- filled by JS -->
-              </div>
-
-              <div class="progress-row">
-                <div class="progress-label">Progress</div>
-                <div class="progress-track">
-                  <div
-                    id="proj-a-progress-actual"
-                    class="progress-bar-actual"
-                    style="width: 60%"
-                  ></div>
-                  <div
-                    id="proj-a-progress-plan"
-                    class="progress-bar-plan"
-                    style="width: 72%"
-                  ></div>
-                </div>
-                <div class="progress-values" id="proj-a-progress-labels">
-                  60% / 72%
-                </div>
-              </div>
-
-              <div class="risk-row" id="proj-a-risks">
-                <!-- risks -->
-              </div>
-            </article>
-
-            <!-- Project B -->
-            <article class="project-card" id="project-card-b">
-              <div class="project-header">
-                <div>
-                  <div class="project-name" id="proj-b-name">Jada School</div>
-                  <div class="project-phase" id="proj-b-stage">
-                    Design & licensing
-                  </div>
-                </div>
-                <span class="pill pill-green" id="proj-b-phase-pill"
-                  >EARLY PHASE</span
-                >
-              </div>
-
-              <div class="project-meta" id="proj-b-meta">
-                <!-- filled by JS -->
-              </div>
-
-              <div class="progress-row">
-                <div class="progress-label">Progress</div>
-                <div class="progress-track">
-                  <div
-                    id="proj-b-progress-actual"
-                    class="progress-bar-actual"
-                    style="width: 10%"
-                  ></div>
-                  <div
-                    id="proj-b-progress-plan"
-                    class="progress-bar-plan"
-                    style="width: 30%"
-                  ></div>
-                </div>
-                <div class="progress-values" id="proj-b-progress-labels">
-                  10% / 30%
-                </div>
-              </div>
-
-              <div class="risk-row" id="proj-b-risks">
-                <!-- risks -->
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="card admin-card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">
-                CEO CONTROLS (ADMIN) · لوحة تحكم الرئيس التنفيذي
-              </div>
-              <div class="card-subtitle">
-                التعديل على المشاريع يتم من واجهة الداشبورد (Desktop only) ثم
-                تُرسل التحديثات إلى شيت
-                <strong>Projects</strong> وتنعكس على نسخة الجوال لاحقاً.
-              </div>
-            </div>
-            <span class="pill">DESKTOP ONLY</span>
-          </div>
-
-          <div class="admin-body">
-            <div class="admin-row">
-              <div class="admin-pill">
-                Stage, Start date, Duration, Actual/Planned progress
-              </div>
-              <div class="admin-pill">
-                Risk 1 &amp; 2 (level + notes) مع امكانية تبديل المشاريع في Slot
-                A / B
-              </div>
-            </div>
-            <p class="admin-note" style="margin-top: 10px">
-              * حالياً يتم قراءة البيانات فقط من Google Sheets (من دون كتابة).
-              في الإصدار القادم سنضيف لوحة تحكم فعلية تكتب إلى الشيت مباشرة
-              ثم تنعكس على نسخة الجوال.
+            <p class="small-caption">
+              Cash position versus short-term obligations (after pending payments and 30-day commitments).
             </p>
           </div>
-        </section>
+
+          <!-- كارت الميزانية -->
+          <div>
+            <div class="card-header" style="margin-bottom: 4px;">
+              <div>
+                <div class="card-title">BUDGET &amp; VARIANCE</div>
+                <div class="card-subtitle">Year 2026 budget vs projected spend</div>
+              </div>
+              <span class="chip neutral" id="budget-status-chip">ON TRACK</span>
+            </div>
+
+            <div class="budget-main">
+              <span id="budget-total">0</span>
+              <span class="currency">SAR</span>
+            </div>
+
+            <div class="budget-meta">
+              <div>
+                <div style="font-size: 11px; color: var(--text-muted);">Projected spend (net)</div>
+                <div style="font-weight: 500;" id="projected-spend">0 SAR</div>
+              </div>
+              <div>
+                <div style="font-size: 11px; color: var(--text-muted);">Auto monthly cap</div>
+                <div style="font-weight: 500;" id="monthly-cap">0 SAR</div>
+              </div>
+            </div>
+
+            <div class="variance-row">
+              <div class="pill-badge">
+                Variance vs budget:
+                <span id="variance-pct">(0%)</span>
+              </div>
+              <div class="variance-value" id="variance-amount">0 SAR</div>
+            </div>
+
+            <p class="small-caption">
+              Budget is read from <strong>Data1</strong> (Budget_Total for 2026). Variance uses actual + forecasted expenses.
+            </p>
+          </div>
+        </div>
+
+        <!-- شارت التدفقات لستة أشهر -->
+        <div class="chart-wrapper">
+          <div class="chart-header">
+            <span>Cash flow projection — next 6 months</span>
+            <div class="chart-legend">
+              <div class="legend-item">
+                <span class="legend-dot"></span> Net cash
+              </div>
+            </div>
+          </div>
+          <svg class="chart-svg" viewBox="0 0 100 50" preserveAspectRatio="none" id="cash-chart"></svg>
+          <div class="small-caption">
+            Based on Income_Forcast − Expense_Forcast from <strong>Data1</strong>, starting from net cash after 30-day obligations.
+          </div>
+        </div>
       </section>
-    </section>
-  </main>
+
+      <!-- العمود الأيمن: المشاريع + كنترول المدير -->
+      <section class="card projects-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">PROJECTS SNAPSHOT</div>
+            <div class="card-subtitle">ثلاثة مشاريع كحد أقصى يتم تنفيذها في نفس الوقت</div>
+          </div>
+          <span class="chip neutral">LIVE FROM PROJECTS SHEET</span>
+        </div>
+
+        <div class="projects-header-line">
+          <span>مشروعات الجادة | Projects radar</span>
+          <div class="smart-filter">
+            <span style="font-size: 11px;">Smart filter</span>
+            <select id="slot-a-select"></select>
+            <select id="slot-b-select"></select>
+          </div>
+        </div>
+
+        <div class="project-list">
+          <!-- مشروع Slot A -->
+          <article class="project-card" id="project-slot-a">
+            <div class="project-slot-label">SLOT A</div>
+            <div class="project-name" id="projA-name">—</div>
+            <div class="project-stage" id="projA-stage">—</div>
+            <div class="project-dates">
+              <span id="projA-dates">—</span>
+              <span id="projA-duration">—</span>
+            </div>
+
+            <div class="project-progress-row">
+              <span style="font-size: 11px;">Progress</span>
+              <div class="progress-bar">
+                <div class="progress-fill" id="projA-progress-fill" style="width:0%;"></div>
+              </div>
+              <span id="projA-progress-label">0% / 0%</span>
+            </div>
+
+            <div class="project-risk-row">
+              <div>
+                <div class="risk-badge" id="projA-risk1-badge">
+                  <span class="risk-dot"></span>
+                  <span id="projA-risk1-level">—</span>
+                </div>
+                <div class="risk-text" id="projA-risk1-note">—</div>
+              </div>
+              <div>
+                <div class="risk-badge" id="projA-risk2-badge">
+                  <span class="risk-dot"></span>
+                  <span id="projA-risk2-level">—</span>
+                </div>
+                <div class="risk-text" id="projA-risk2-note">—</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- مشروع Slot B -->
+          <article class="project-card" id="project-slot-b">
+            <div class="project-slot-label">SLOT B</div>
+            <div class="project-name" id="projB-name">—</div>
+            <div class="project-stage" id="projB-stage">—</div>
+            <div class="project-dates">
+              <span id="projB-dates">—</span>
+              <span id="projB-duration">—</span>
+            </div>
+
+            <div class="project-progress-row">
+              <span style="font-size: 11px;">Progress</span>
+              <div class="progress-bar">
+                <div class="progress-fill" id="projB-progress-fill" style="width:0%;"></div>
+              </div>
+              <span id="projB-progress-label">0% / 0%</span>
+            </div>
+
+            <div class="project-risk-row">
+              <div>
+                <div class="risk-badge" id="projB-risk1-badge">
+                  <span class="risk-dot"></span>
+                  <span id="projB-risk1-level">—</span>
+                </div>
+                <div class="risk-text" id="projB-risk1-note">—</div>
+              </div>
+              <div>
+                <div class="risk-badge" id="projB-risk2-badge">
+                  <span class="risk-dot"></span>
+                  <span id="projB-risk2-level">—</span>
+                </div>
+                <div class="risk-text" id="projB-risk2-note">—</div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- كنترول المدير التنفيذي -->
+        <div class="admin-card">
+          <div class="admin-grid">
+            <div class="admin-selects">
+              <span class="badge-desktop-only">CEO CONTROLS (ADMIN) — DESKTOP ONLY</span>
+
+              <label>
+                Slot A project (Project_ID):
+                <select id="admin-slot-a"></select>
+              </label>
+
+              <label>
+                Slot B project (Project_ID):
+                <select id="admin-slot-b"></select>
+              </label>
+            </div>
+
+            <p class="admin-note">
+              • هذا التحكم يقوم فقط باختيار المشروع المعروض في Slot A و Slot B على شاشة الديسكتوب والجوال.<br />
+              • بيانات المشروع التفصيلية (Stage, Start Date, Duration, Progress, Risks) يتم تحديثها من شيت
+              <strong>Projects</strong> في Google Sheets.<br />
+              • بمجرد تحديث الشيت، تقوم لوحة القيادة بقراءة البيانات الجديدة عند إعادة تحميل الصفحة، ليتم عكسها تلقائياً على
+              نسخة الديسكتوب ونسخة الجوال (التي سنبنيها لاحقاً).
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- نصوص رأسية -->
+    <div class="vertical-tag">
+      FACC — FIRST AVENUE COMMAND CENTER | INTERNAL CEO VIEW
+    </div>
+    <div class="vertical-version">
+      v1.0 — DESKTOP DASHBOARD
+    </div>
+  </div>
 
   <script>
-    // ========= إعداد Google Sheets =========
-    // ضع هنا الـ Sheet ID الخاص بك (هو الموجود في الرابط)
-    const SHEET_ID = "14Z3TPLYq5ufs2lTX_qkeDsV2inZeFwfMwwG9NMQQwHc";
-    const DATA1_RANGE = "Data1!A1:J200";
-    const PROJECTS_RANGE = "Projects!A1:K50";
+    // ===== روابط CSV =====
+    const DATA1_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=0&single=true&output=csv";
 
-    // مراجع للعناصر في الصفحة
-    const cashMainEl = document.getElementById("cash-main-value");
-    const pendingEl = document.getElementById("chip-pending");
-    const obligEl = document.getElementById("chip-obligations");
-    const coverageEl = document.getElementById("chip-coverage");
-    const cashStatusPill = document.getElementById("cash-status-pill");
+    const PROJECTS_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=146585938&single=true&output=csv";
 
-    const budgetTotalEl = document.getElementById("budget-total");
-    const budgetYtdValueEl = document.getElementById("budget-ytd-value");
-    const varianceLabelEl = document.getElementById("variance-label");
-    const varianceValueEl = document.getElementById("variance-value");
-    const capMonthEl = document.getElementById("cap-month");
-    const projectionChartEl = document.getElementById("projection-chart");
-    const projectionSummaryEl =
-      document.getElementById("projection-summary");
-    const lastUpdateEl = document.getElementById("last-update-value");
+    // ===== أدوات مساعدة =====
+    function formatSAR(value) {
+      const n = Number(value) || 0;
+      return n.toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
+      });
+    }
 
-    const slotALabel = document.getElementById("slot-a-label");
-    const slotBLabel = document.getElementById("slot-b-label");
+    function parseCSV(text) {
+      const rows = text.trim().split(/\r?\n/);
+      const headers = rows[0].split(",");
+      return rows.slice(1).map((row) => {
+        const cols = row.split(",");
+        const obj = {};
+        headers.forEach((h, i) => {
+          obj[h.trim()] = (cols[i] || "").trim();
+        });
+        return obj;
+      });
+    }
 
-    // عناصر مشروع A
-    const projA = {
-      name: document.getElementById("proj-a-name"),
-      stage: document.getElementById("proj-a-stage"),
-      meta: document.getElementById("proj-a-meta"),
-      progressActual: document.getElementById("proj-a-progress-actual"),
-      progressPlan: document.getElementById("proj-a-progress-plan"),
-      progressLabels: document.getElementById("proj-a-progress-labels"),
-      risks: document.getElementById("proj-a-risks"),
-      phasePill: document.getElementById("proj-a-phase-pill"),
-    };
+    function setChip(el, tone, label) {
+      el.classList.remove("good", "warn", "bad", "neutral");
+      el.classList.add(tone);
+      el.textContent = label;
+    }
 
-    // عناصر مشروع B
-    const projB = {
-      name: document.getElementById("proj-b-name"),
-      stage: document.getElementById("proj-b-stage"),
-      meta: document.getElementById("proj-b-meta"),
-      progressActual: document.getElementById("proj-b-progress-actual"),
-      progressPlan: document.getElementById("proj-b-progress-plan"),
-      progressLabels: document.getElementById("proj-b-progress-labels"),
-      risks: document.getElementById("proj-b-risks"),
-      phasePill: document.getElementById("proj-b-phase-pill"),
-    };
+    function riskClass(level) {
+      const lv = (level || "").toLowerCase();
+      if (lv.startsWith("high")) return "";
+      if (lv.startsWith("medium")) return "risk-medium";
+      if (lv.startsWith("low")) return "risk-low";
+      return "";
+    }
 
-    // تنسيق أرقام بالريال
-    function fmtSar(num) {
-      if (num === null || num === undefined || isNaN(num)) return "0 SAR";
-      return (
-        num.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }) + " SAR"
+    // ===== تحميل Data1 =====
+    async function loadData1() {
+      const res = await fetch(DATA1_CSV_URL);
+      const text = await res.text();
+      const rows = parseCSV(text);
+
+      if (!rows.length) return;
+
+      // نفترض أن الصف الأول هو الشهر الحالي (DEC-25) كما في إعدادك
+      const currentRow = rows[0];
+      const yearRows = rows.slice(1); // أشهر 2026
+
+      const cashBalance = Number(currentRow["Cash_Balance"] || 0);
+      const pendingPayments = Number(currentRow["Pending_Payments"] || 0);
+      const obligation30D = Number(currentRow["Obligation_30D"] || 0);
+
+      // ميزانية السنة: أول صف يحتوي Budget_Total
+      const budgetRow = rows.find(
+        (r) => r["Budget_Total"] && r["Budget_Total"].trim() !== ""
       );
-    }
+      const budgetTotal = budgetRow ? Number(budgetRow["Budget_Total"] || 0) : 0;
 
-    function fmtPercent(num) {
-      if (num === null || num === undefined || isNaN(num)) return "0%";
-      return num.toFixed(0) + "%";
-    }
+      const incomeForecastTotal = yearRows.reduce(
+        (sum, r) => sum + Number(r["Income_Forcast"] || 0),
+        0
+      );
+      const expenseForecastTotal = yearRows.reduce(
+        (sum, r) => sum + Number(r["Expense_Forcast"] || 0),
+        0
+      );
+      const actualYTD = yearRows.reduce(
+        (sum, r) => sum + Number(r["Actual_Expense"] || 0),
+        0
+      );
 
-    // ======== دوال تعبئة الداشبورد من البيانات الخام ========
+      const projectedSpend = expenseForecastTotal + actualYTD;
+      const variance = budgetTotal - projectedSpend;
+      const variancePct = budgetTotal
+        ? Math.round((variance / budgetTotal) * 100)
+        : 0;
+      const monthlyCap = budgetTotal / 12 || 0;
 
-    function updateCashAndBudgetFromData1(rows) {
-      // rows: مصفوفة أسطر من Data1 بدون الهيدر
-      // نبحث عن آخر صف فيه Cash_Balance (الصف الأحدث)
-      let latestRow = null;
-      for (const row of rows) {
-        const cash = row[1]; // B = Cash_Balance
-        if (cash !== null && cash !== "") {
-          latestRow = row;
-          break; // لأن البيانات مرتبة تنازلياً (DEC-25 ثم JAN-26 ...)
-        }
-      }
-      if (!latestRow) return;
+      // تحديث كروت الكاش والميزانية
+      document.getElementById("cash-balance").textContent =
+        formatSAR(cashBalance);
+      document.getElementById(
+        "pending-payments"
+      ).textContent = `${formatSAR(pendingPayments)} SAR`;
+      document.getElementById(
+        "obligation-30d"
+      ).textContent = `${formatSAR(obligation30D)} SAR`;
 
-      const cashBalance = Number(latestRow[1]) || 0;
-      const pending = Number(latestRow[2]) || 0;
-      const obligation30 = Number(latestRow[3]) || 0;
+      document.getElementById("budget-total").textContent =
+        formatSAR(budgetTotal);
+      document.getElementById(
+        "projected-spend"
+      ).textContent = `${formatSAR(projectedSpend)} SAR`;
+      document.getElementById(
+        "monthly-cap"
+      ).textContent = `${formatSAR(monthlyCap)} SAR`;
 
-      // Budget_Total: نأخذ أول قيمة غير صفرية في عمود E
-      let budgetTotal = 0;
-      for (const row of rows) {
-        const val = Number(row[4]) || 0;
-        if (val > 0) {
-          budgetTotal = val;
-          break;
-        }
-      }
+      const varianceAmountEl = document.getElementById("variance-amount");
+      varianceAmountEl.textContent = `${formatSAR(variance)} SAR`;
+      const variancePctEl = document.getElementById("variance-pct");
+      variancePctEl.textContent = `(${variancePct}% ${
+        variance >= 0 ? "under" : "over"
+      } budget)`;
 
-      // Actual_Expense YTD = مجموع عمود I لكل الشهور التي فيها صرف فعلي
-      let actualYtd = 0;
-      for (const row of rows) {
-        const exp = Number(row[8]) || 0;
-        actualYtd += exp;
-      }
-
-      const coverage =
-        obligation30 > 0 ? (cashBalance / obligation30) * 1.0 : null;
-
-      // Cap per month = budget / 12 (يمكن تعديل المعادلة لاحقاً)
-      const capMonth = budgetTotal > 0 ? budgetTotal / 12 : 0;
-
-      // variance مقابل Cap هذا الشهر = (Cap - Actual_Expense لأحدث شهر)
-      const latestActual = Number(latestRow[8]) || 0;
-      const variance = capMonth - latestActual;
-
-      // تعبئة العناصر
-      cashMainEl.innerHTML =
-        cashBalance.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }) + ' <span class="cash-main-currency">SAR</span>';
-
-      pendingEl.textContent = fmtSar(pending);
-      obligEl.textContent = fmtSar(obligation30);
-
-      if (coverage !== null) {
-        coverageEl.textContent = coverage.toFixed(2) + "×";
-      } else {
-        coverageEl.textContent = "—";
-      }
-
-      // حالة السيولة حسب نسبة التغطية
-      if (coverage >= 3) {
-        cashStatusPill.textContent = "COMFORTABLE";
-        cashStatusPill.className = "pill pill-green";
-      } else if (coverage >= 1.2) {
-        cashStatusPill.textContent = "STABLE";
-        cashStatusPill.className = "pill pill-amber";
-      } else {
-        cashStatusPill.textContent = "TIGHT";
-        cashStatusPill.className = "pill pill-red";
-      }
-
-      budgetTotalEl.textContent = fmtSar(budgetTotal);
-      budgetYtdValueEl.textContent = fmtSar(actualYtd);
-
-      capMonthEl.textContent = fmtSar(capMonth);
-
+      varianceAmountEl.classList.remove(
+        "variance-positive",
+        "variance-negative"
+      );
       if (variance >= 0) {
-        varianceLabelEl.textContent = "Room vs monthly cap";
-        varianceValueEl.textContent = fmtSar(variance);
-        varianceValueEl.classList.remove("variance-negative");
-        varianceValueEl.classList.add("variance-positive");
+        varianceAmountEl.classList.add("variance-positive");
       } else {
-        varianceLabelEl.textContent = "Over monthly cap";
-        varianceValueEl.textContent = fmtSar(Math.abs(variance));
-        varianceValueEl.classList.remove("variance-positive");
-        varianceValueEl.classList.add("variance-negative");
+        varianceAmountEl.classList.add("variance-negative");
       }
 
-      // تحديث حقل "آخر تحديث" من تاريخ اليوم (يمكن تعديله لاحقاً ليقرأ من الشيت)
+      // حالة الكاش
+      const cashStatusChip = document.getElementById("cash-status-chip");
+      const coverage = obligation30D
+        ? cashBalance / obligation30D
+        : cashBalance > 0
+        ? 3
+        : 0;
+
+      if (coverage >= 2) {
+        setChip(cashStatusChip, "good", "COMFORTABLE");
+      } else if (coverage >= 1) {
+        setChip(cashStatusChip, "warn", "TIGHT");
+      } else {
+        setChip(cashStatusChip, "bad", "CRITICAL");
+      }
+
+      // حالة الميزانية
+      const budgetStatusChip = document.getElementById("budget-status-chip");
+      if (variancePct >= 10) {
+        setChip(budgetStatusChip, "good", "AHEAD OF BUDGET");
+      } else if (variancePct >= 0) {
+        setChip(budgetStatusChip, "neutral", "ON TRACK");
+      } else if (variancePct <= -10) {
+        setChip(budgetStatusChip, "bad", "OVER BUDGET");
+      } else {
+        setChip(budgetStatusChip, "warn", "TIGHT VS BUDGET");
+      }
+
+      // شارت التدفقات لـ 6 أشهر
+      buildCashChart({
+        rows: yearRows,
+        cashBalance,
+        pendingPayments,
+        obligation30D,
+      });
+    }
+
+    function buildCashChart({ rows, cashBalance, pendingPayments, obligation30D }) {
+      const svg = document.getElementById("cash-chart");
+      svg.innerHTML = "";
+
+      const months = rows.slice(0, 6); // أول ستة أشهر من 2026
+      if (!months.length) return;
+
+      let availableStart =
+        cashBalance - pendingPayments - obligation30D; // نقطة البداية
+      let running = availableStart;
+
+      const points = months.map((r) => {
+        const income = Number(r["Income_Forcast"] || 0);
+        const expense = Number(r["Expense_Forcast"] || 0);
+        const net = income - expense;
+        running += net;
+        return {
+          label: r["Month"] || "",
+          value: running,
+        };
+      });
+
+      // استخراج الحدود للرسم
+      const values = [availableStart, ...points.map((p) => p.value)];
+      const minVal = Math.min(...values);
+      const maxVal = Math.max(...values);
+      const range = maxVal - minVal || 1;
+
+      // تحويل نقطة إلى إحداثيات SVG (0-100 في X ، 0-50 في Y)
+      function toX(i) {
+        const n = points.length;
+        return (i / (n - 1 || 1)) * 95 + 3; // هامش بسيط
+      }
+      function toY(val) {
+        const norm = (val - minVal) / range; // 0..1
+        const y = 45 - norm * 35; // عكسي لأن SVG y للأسفل
+        return y;
+      }
+
+      // خط الكاش
+      let d = "";
+      points.forEach((p, idx) => {
+        const x = toX(idx);
+        const y = toY(p.value);
+        d += (idx === 0 ? "M" : "L") + x + " " + y + " ";
+      });
+
+      const path = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path"
+      );
+      path.setAttribute("d", d.trim());
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "#c5a56c");
+      path.setAttribute("stroke-width", "1.2");
+      path.setAttribute("stroke-linejoin", "round");
+      path.setAttribute("stroke-linecap", "round");
+      svg.appendChild(path);
+
+      // نقاط و قيم
+      points.forEach((p, idx) => {
+        const x = toX(idx);
+        const y = toY(p.value);
+
+        const circle = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle"
+        );
+        circle.setAttribute("cx", x);
+        circle.setAttribute("cy", y);
+        circle.setAttribute("r", "1.4");
+        circle.setAttribute("fill", "#ffffff");
+        svg.appendChild(circle);
+
+        const label = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        label.setAttribute("x", x);
+        label.setAttribute("y", 48);
+        label.setAttribute("text-anchor", "middle");
+        label.setAttribute("font-size", "4");
+        label.setAttribute("fill", "#8ea3b0");
+        const m = (p.label || "").split("-")[0]; // جزء الشهر فقط
+        label.textContent = m;
+        svg.appendChild(label);
+      });
+    }
+
+    // ===== تحميل بيانات المشاريع =====
+    let projects = [];
+    let slotAId = null;
+    let slotBId = null;
+
+    async function loadProjects() {
+      const res = await fetch(PROJECTS_CSV_URL);
+      const text = await res.text();
+      projects = parseCSV(text).filter((p) => p["Project_ID"]);
+
+      if (!projects.length) return;
+
+      // افتراضياً: أول مشروعين للـ Slots
+      slotAId = projects[0]["Project_ID"];
+      slotBId = projects[1] ? projects[1]["Project_ID"] : projects[0]["Project_ID"];
+
+      setupProjectSelects();
+      renderProjectSlots();
+    }
+
+    function setupProjectSelects() {
+      const optionsHtml = projects
+        .map(
+          (p) =>
+            `<option value="${p["Project_ID"]}">${p["Project_ID"]} — ${p["Project_Name"]}</option>`
+        )
+        .join("");
+
+      const slotASelect = document.getElementById("slot-a-select");
+      const slotBSelect = document.getElementById("slot-b-select");
+      const adminSlotA = document.getElementById("admin-slot-a");
+      const adminSlotB = document.getElementById("admin-slot-b");
+
+      slotASelect.innerHTML = optionsHtml;
+      slotBSelect.innerHTML = optionsHtml;
+      adminSlotA.innerHTML = optionsHtml;
+      adminSlotB.innerHTML = optionsHtml;
+
+      slotASelect.value = slotAId;
+      adminSlotA.value = slotAId;
+      slotBSelect.value = slotBId;
+      adminSlotB.value = slotBId;
+
+      function updateSlotsFromAdmin() {
+        slotAId = adminSlotA.value;
+        slotBId = adminSlotB.value;
+        slotASelect.value = slotAId;
+        slotBSelect.value = slotBId;
+        renderProjectSlots();
+      }
+
+      adminSlotA.addEventListener("change", updateSlotsFromAdmin);
+      adminSlotB.addEventListener("change", updateSlotsFromAdmin);
+
+      slotASelect.addEventListener("change", (e) => {
+        slotAId = e.target.value;
+        adminSlotA.value = slotAId;
+        renderProjectSlots();
+      });
+
+      slotBSelect.addEventListener("change", (e) => {
+        slotBId = e.target.value;
+        adminSlotB.value = slotBId;
+        renderProjectSlots();
+      });
+    }
+
+    function renderProjectSlots() {
+      const projA = projects.find((p) => p["Project_ID"] === slotAId) || projects[0];
+      const projB =
+        projects.find((p) => p["Project_ID"] === slotBId) ||
+        projects[projects.length - 1];
+
+      renderProjectCard("A", projA);
+      renderProjectCard("B", projB);
+    }
+
+    function renderProjectCard(slot, p) {
+      if (!p) return;
+
+      const prefix = slot === "A" ? "projA" : "projB";
+
+      const nameEl = document.getElementById(`${prefix}-name`);
+      const stageEl = document.getElementById(`${prefix}-stage`);
+      const datesEl = document.getElementById(`${prefix}-dates`);
+      const durEl = document.getElementById(`${prefix}-duration`);
+      const progFillEl = document.getElementById(`${prefix}-progress-fill`);
+      const progLabelEl = document.getElementById(`${prefix}-progress-label`);
+      const r1Badge = document.getElementById(`${prefix}-risk1-badge`);
+      const r2Badge = document.getElementById(`${prefix}-risk2-badge`);
+      const r1LevelEl = document.getElementById(`${prefix}-risk1-level`);
+      const r2LevelEl = document.getElementById(`${prefix}-risk2-level`);
+      const r1NoteEl = document.getElementById(`${prefix}-risk1-note`);
+      const r2NoteEl = document.getElementById(`${prefix}-risk2-note`);
+
+      const startDate = p["Start_Date"] || "";
+      const duration = Number(p["Planned_Duration"] || 0);
+      const actualProg = Number(p["Actual_Progress"] || 0);
+      const plannedProg = Number(p["Planned_Progress"] || 0);
+      const risk1Level = p["Risk1_level"] || "";
+      const risk2Level = p["Risk2_level"] || "";
+
+      nameEl.textContent = p["Project_Name"] || "—";
+      stageEl.textContent = p["Stage_text"] || "—";
+      datesEl.textContent = startDate ? `Start: ${startDate}` : "Start: —";
+      durEl.textContent = duration
+        ? `Duration: ${duration} days`
+        : "Duration: —";
+
+      const width = Math.max(0, Math.min(100, actualProg));
+      progFillEl.style.width = width + "%";
+      progLabelEl.textContent = `${actualProg || 0}% / ${plannedProg || 0}%`;
+
+      r1Badge.className = "risk-badge " + riskClass(risk1Level);
+      r2Badge.className = "risk-badge " + riskClass(risk2Level);
+
+      r1LevelEl.textContent = risk1Level || "—";
+      r2LevelEl.textContent = risk2Level || "—";
+      r1NoteEl.textContent = p["Risk1_Note"] || "—";
+      r2NoteEl.textContent = p["Risk2_Note"] || "—";
+    }
+
+    // ===== آخر تحديث =====
+    function updateLastUpdate() {
+      const el = document.getElementById("last-update");
       const now = new Date();
-      lastUpdateEl.textContent = now.toLocaleString("en-GB", {
+      const formatter = new Intl.DateTimeFormat("en-GB", {
         day: "2-digit",
         month: "short",
-        year: "2-digit",
+        year: "numeric",
         hour: "2-digit",
         minute: "2-digit",
       });
-
-      // إعداد توقع التدفقات النقدية 6 أشهر
-      buildCashflowProjection(rows, latestRow, cashBalance);
+      el.textContent = "Last update: " + formatter.format(now);
     }
 
-    function buildCashflowProjection(rows, latestRow, startingCash) {
-      // نحدد index الصف الحالي
-      const idx = rows.indexOf(latestRow);
-      const horizonRows = rows.slice(idx, idx + 7); // شهر حالي + 6 بعده
-
-      const points = [];
-      let running = startingCash;
-      for (let i = 0; i < horizonRows.length; i++) {
-        const r = horizonRows[i];
-        const monthLabel = r[0] || "";
-        const incF = Number(r[5]) || 0; // Income_Forcast
-        const expF = Number(r[6]) || 0; // Expense_Forcast
-        if (i > 0) {
-          // من الشهر القادم نضيف/نطرح الصافي
-          running += incF - expF;
-        }
-        points.push({
-          month: String(monthLabel),
-          cash: running,
-        });
-      }
-
-      // ملخص سريع
-      if (points.length > 1) {
-        const start = points[0].cash;
-        const end = points[points.length - 1].cash;
-        const diff = end - start;
-        const dir = diff >= 0 ? "up" : "down";
-        projectionSummaryEl.textContent = `${
-          dir === "up" ? "▲" : "▼"
-        } ${fmtSar(Math.abs(diff))} over 6 months`;
-        projectionSummaryEl.style.color =
-          diff >= 0 ? "var(--success)" : "var(--danger)";
-      }
-
-      // رسم الأعمدة
-      projectionChartEl.innerHTML = "";
-      if (points.length <= 1) return;
-
-      const maxCash = Math.max(...points.map((p) => p.cash));
-      const minCash = Math.min(...points.map((p) => p.cash));
-      const span = maxCash - minCash || 1;
-
-      points.forEach((p, idx) => {
-        const wrapper = document.createElement("div");
-        wrapper.style.flex = "1";
-        wrapper.style.display = "flex";
-        wrapper.style.flexDirection = "column";
-        wrapper.style.alignItems = "stretch";
-
-        const bar = document.createElement("div");
-        bar.className = "projection-bar";
-
-        const fill = document.createElement("div");
-        fill.className = "projection-bar-fill";
-
-        const normalized = (p.cash - minCash) / span;
-        const height = 20 + normalized * 70; // من 20% إلى 90%
-        fill.style.height = height + "%";
-
-        const label = document.createElement("div");
-        label.className = "projection-bar-label";
-        label.textContent = (p.cash / 1000).toFixed(0) + "k";
-
-        bar.appendChild(fill);
-        bar.appendChild(label);
-
-        const month = document.createElement("div");
-        month.className = "projection-month";
-        month.textContent = p.month || `M${idx + 1}`;
-
-        wrapper.appendChild(bar);
-        wrapper.appendChild(month);
-        projectionChartEl.appendChild(wrapper);
-      });
-    }
-
-    function mapRiskLevelToClass(level) {
-      if (!level) return "risk-medium";
-      const v = String(level).toLowerCase();
-      if (v.startsWith("h")) return "risk-high";
-      if (v.startsWith("l")) return "risk-low";
-      return "risk-medium";
-    }
-
-    function fillProjectCard(card, row) {
-      const [
-        projectId,
-        projectName,
-        stageText,
-        startDate,
-        plannedDuration,
-        actualProgress,
-        plannedProgress,
-        risk1Level,
-        risk1Note,
-        risk2Level,
-        risk2Note,
-      ] = row;
-
-      card.name.textContent = projectName || "—";
-      card.stage.textContent = stageText || "";
-
-      // meta
-      const startStr = startDate ? String(startDate) : "—";
-      const durStr = plannedDuration ? plannedDuration + " days" : "—";
-      card.meta.innerHTML = `
-        <span><strong>Start:</strong> ${startStr}</span>
-        <span><strong>Duration:</strong> ${durStr}</span>
-      `;
-
-      const actual = Number(actualProgress) || 0;
-      const plan = Number(plannedProgress) || 0;
-
-      const actualPct = Math.max(0, Math.min(100, actual));
-      const planPct = Math.max(0, Math.min(100, plan));
-
-      card.progressActual.style.width = actualPct + "%";
-      card.progressPlan.style.width = planPct + "%";
-      card.progressLabels.textContent =
-        fmtPercent(actualPct) + " / " + fmtPercent(planPct);
-
-      // Phase pill (بسيطة: حسب الفرق بين actual و planned)
-      const delta = actualPct - planPct;
-      if (delta >= -5 && delta <= 5) {
-        card.phasePill.textContent = "ON PLAN";
-        card.phasePill.className = "pill pill-amber";
-      } else if (delta > 5) {
-        card.phasePill.textContent = "AHEAD";
-        card.phasePill.className = "pill pill-green";
-      } else {
-        card.phasePill.textContent = "DELAYED";
-        card.phasePill.className = "pill pill-red";
-      }
-
-      // Risks
-      card.risks.innerHTML = "";
-
-      if (risk1Level || risk1Note) {
-        const pill1 = document.createElement("div");
-        pill1.className =
-          "risk-pill " + mapRiskLevelToClass(risk1Level || "medium");
-        pill1.innerHTML = `
-          <span class="risk-dot"></span>
-          <span><strong>Risk 1:</strong> ${risk1Level || ""}</span>
-          <span class="risk-note">${risk1Note || ""}</span>
-        `;
-        card.risks.appendChild(pill1);
-      }
-
-      if (risk2Level || risk2Note) {
-        const pill2 = document.createElement("div");
-        pill2.className =
-          "risk-pill " + mapRiskLevelToClass(risk2Level || "medium");
-        pill2.innerHTML = `
-          <span class="risk-dot"></span>
-          <span><strong>Risk 2:</strong> ${risk2Level || ""}</span>
-          <span class="risk-note">${risk2Note || ""}</span>
-        `;
-        card.risks.appendChild(pill2);
-      }
-    }
-
-    function updateProjectsFromSheet(rows) {
-      if (!rows || rows.length === 0) return;
-
-      // نفترض أن الصف الأول بعد الهيدر هو Project 1 والثاني Project 2
-      const projARow = rows[0] || [];
-      const projBRow = rows[1] || rows[0] || [];
-
-      slotALabel.textContent = projARow[1] || "Project A";
-      slotBLabel.textContent = projBRow[1] || "Project B";
-
-      fillProjectCard(projA, projARow);
-      fillProjectCard(projB, projBRow);
-    }
-
-    // ========== تحميل البيانات من Google Sheets ==========
-
-    function loadFromSheets() {
-      google.charts.load("current", { packages: ["corechart"] });
-      google.charts.setOnLoadCallback(() => {
-        // نستخدم Visualization API لقراءة النطاقين
-        const base =
-          "https://docs.google.com/spreadsheets/d/" +
-          SHEET_ID +
-          "/gviz/tq?";
-
-        const data1Query = new google.visualization.Query(
-          base + "sheet=Data1&range=A1:J200"
-        );
-        const projectsQuery = new google.visualization.Query(
-          base + "sheet=Projects&range=A1:K50"
-        );
-
-        data1Query.send((response) => {
-          if (response.isError()) {
-            console.warn("Data1 error, using fallback demo data.");
-            useFallbackDemoData();
-            return;
-          }
-          const table = response.getDataTable();
-          const rows = [];
-          for (let r = 1; r < table.getNumberOfRows(); r++) {
-            const row = [];
-            for (let c = 0; c < table.getNumberOfColumns(); c++) {
-              row.push(table.getValue(r, c));
-            }
-            rows.push(row);
-          }
-          updateCashAndBudgetFromData1(rows);
-        });
-
-        projectsQuery.send((response) => {
-          if (response.isError()) {
-            console.warn("Projects error, using fallback demo projects.");
-            useFallbackDemoProjects();
-            return;
-          }
-          const table = response.getDataTable();
-          const rows = [];
-          for (let r = 1; r < table.getNumberOfRows(); r++) {
-            const row = [];
-            for (let c = 0; c < table.getNumberOfColumns(); c++) {
-              row.push(table.getValue(r, c));
-            }
-            rows.push(row);
-          }
-          updateProjectsFromSheet(rows);
-        });
-      });
-    }
-
-    // ========== بيانات افتراضية في حال لم يعمل الربط ==========
-
-    function useFallbackDemoData() {
-      const rows = [
-        // Month, Cash_Balance, Pending, Obligation_30D, Budget_Total, Income_Forecast, Expense_Forecast, Income_Month, Actual_Expense, (col J فارغ)
-        [
-          "DEC-25",
-          704779.76,
-          2000,
-          41501.42,
-          0,
-          747500,
-          60310,
-          60310,
-          0,
-          null,
-        ],
-        ["JAN-26", null, null, null, 3269785, 287500, 260310, 60310, 0, null],
-        ["FEB-26", null, null, null, 0, 415984, 60310, 60310, 0, null],
-        ["MAR-26", null, null, null, 0, 0, 60310, 60310, 0, null],
-        ["APR-26", null, null, null, 0, 0, 60310, 60310, 0, null],
-        ["MAY-26", null, null, null, 0, 0, 60310, 60310, 0, null],
-        ["JUN-26", null, null, null, 0, 0, 60310, 60310, 0, null],
-      ];
-      updateCashAndBudgetFromData1(rows);
-    }
-
-    function useFallbackDemoProjects() {
-      const rows = [
-        [
-          1,
-          "Business Front",
-          "Design & licensing",
-          "25-Sep-2025",
-          120,
-          60,
-          72,
-          "High",
-          "Schedule delay",
-          "Medium",
-          "Parking requirement",
-        ],
-        [
-          2,
-          "Jada School",
-          "Design & licensing",
-          "28-Dec-2024",
-          180,
-          10,
-          30,
-          "High",
-          "Municipality approval",
-          "High",
-          "Schedule delay",
-        ],
-      ];
-      updateProjectsFromSheet(rows);
-    }
-
-    // تشغيل
-    (function init() {
-      try {
-        loadFromSheets();
-      } catch (e) {
-        console.warn("Sheets load failed, using fallback demo.", e);
-        useFallbackDemoData();
-        useFallbackDemoProjects();
-      }
+    // ===== تشغيل كل شيء =====
+    (async function init() {
+      updateLastUpdate();
+      await Promise.all([loadData1(), loadProjects()]);
     })();
   </script>
 </body>
