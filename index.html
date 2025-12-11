@@ -1,7 +1,855 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8" />
-    <title>FACC - First Avenue Command Center</title> </head> <body>
-    <h1>FACC Desktop Dashboard - Placeholder</h1>
-    <p>سنربط هذه الصفحة لاحقاً مع Google Sheets.</p> </body> </html>
+  <meta charset="UTF-8" />
+  <title>FACC — First Avenue Command Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Font (يمكن تغييرها لاحقاً لما تحب) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg-dark: #022830;           /* خلفية رئيسية داكنة قريبة من لون الشعار */
+      --bg-dark-soft: #04323b;      /* كروت */
+      --bg-dark-softer: #06414c;
+      --turquoise: #00a7a5;         /* تركواز الهوية */
+      --turquoise-soft: #34c7c5;
+      --gold: #c5a56c;
+      --text-main: #f5f7f8;
+      --text-muted: #aab3b8;
+      --danger: #ff5f5f;
+      --warning: #ffc857;
+      --success: #3cd278;
+      --shadow-soft: 0 22px 40px rgba(0, 0, 0, 0.55);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
+      --transition-fast: 160ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #06414c, #02151b 52%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1440px;
+      padding: 28px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #dfe7ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+
+    .logo-circle img {
+      width: 120%;
+      height: 120%;
+      object-fit: cover;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      color: var(--turquoise-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      border-radius: var(--radius-pill);
+      padding: 6px 12px;
+      background: rgba(4, 44, 52, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00e676;
+      box-shadow: 0 0 12px rgba(0, 230, 118, 0.7);
+    }
+
+    /* ===== LAYOUT GRID ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: 3fr 2.4fr;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* ===== CARDS GENERAL ===== */
+    .card {
+      background: radial-gradient(circle at top left, var(--bg-dark-softer), var(--bg-dark-soft));
+      border-radius: var(--radius-lg);
+      padding: 18px 20px 18px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      transform-origin: center;
+      transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast),
+        background 220ms ease-out;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), transparent 55%);
+      opacity: 0;
+      transition: opacity 220ms ease-out;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+      border-color: rgba(0, 255, 255, 0.12);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title span.en {
+      color: var(--turquoise-soft);
+      font-weight: 500;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .status-pill {
+      border-radius: var(--radius-pill);
+      padding: 5px 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .status-pill--good {
+      background: rgba(60, 210, 120, 0.09);
+      color: var(--success);
+      border-color: rgba(60, 210, 120, 0.45);
+    }
+
+    .status-pill--warn {
+      background: rgba(255, 200, 87, 0.08);
+      color: var(--warning);
+      border-color: rgba(255, 200, 87, 0.5);
+    }
+
+    .status-pill--bad {
+      background: rgba(255, 95, 95, 0.06);
+      color: var(--danger);
+      border-color: rgba(255, 95, 95, 0.5);
+    }
+
+    /* ===== CASH SUMMARY ===== */
+    .cash-main-value {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .cash-main-label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .cash-meta-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .pill-mini {
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-mini b {
+      color: var(--text-main);
+    }
+
+    /* ===== BUDGET & VARIANCE ===== */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .metric {
+      background: linear-gradient(145deg, rgba(3, 38, 48, 0.9), rgba(1, 22, 29, 0.9));
+      border-radius: var(--radius-md);
+      padding: 10px 11px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .metric-value {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .metric-tag {
+      font-size: 10px;
+      color: var(--turquoise-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-top: 2px;
+    }
+
+    .metric-chip {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--text-muted);
+    }
+
+    .metric-chip--up {
+      color: var(--success);
+    }
+
+    .metric-chip--down {
+      color: var(--danger);
+    }
+
+    /* ===== CASH FLOW CHART (PLACEHOLDER) ===== */
+    .chart-wrapper {
+      margin-top: 6px;
+      background: radial-gradient(circle at top left, #06414c, #031e25);
+      border-radius: var(--radius-md);
+      padding: 10px 12px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .chart-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    .legend-dot--primary {
+      background: var(--turquoise-soft);
+    }
+
+    .legend-dot--floor {
+      border: 2px dashed var(--gold);
+      background: transparent;
+    }
+
+    .chart-canvas {
+      width: 100%;
+      height: 168px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.9));
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Placeholder line */
+    .chart-placeholder-line {
+      position: absolute;
+      left: 4%;
+      right: 4%;
+      top: 65%;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    }
+
+    /* ===== PROJECTS PANEL ===== */
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .filter-slots {
+      display: inline-flex;
+      gap: 6px;
+      padding: 3px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .slot-pill {
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition:
+        background var(--transition-fast),
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        transform var(--transition-fast);
+    }
+
+    .slot-pill--active {
+      background: linear-gradient(135deg, var(--turquoise), var(--turquoise-soft));
+      color: #00161c;
+      border-color: rgba(255, 255, 255, 0.18);
+      font-weight: 600;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.6);
+    }
+
+    .slot-pill--muted {
+      color: var(--text-muted);
+      background: transparent;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .project-card {
+      background: linear-gradient(145deg, rgba(4, 50, 62, 0.9), rgba(2, 24, 30, 0.95));
+      border-radius: var(--radius-md);
+      padding: 11px 12px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .project-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .project-name {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .project-stage {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .project-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--turquoise-soft), var(--turquoise));
+      width: 60%;
+    }
+
+    .progress-tick {
+      position: absolute;
+      top: -2px;
+      width: 2px;
+      bottom: -2px;
+      background: var(--gold);
+      left: 70%;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
+    }
+
+    .progress-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .risk-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .risk-tag {
+      padding: 3px 6px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+    }
+
+    .risk-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--warning);
+    }
+
+    .risk-dot--high {
+      background: var(--danger);
+    }
+
+    .risk-dot--medium {
+      background: var(--warning);
+    }
+
+    .risk-dot--low {
+      background: var(--success);
+    }
+
+    /* ===== FOOT ===== */
+    .footer {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      opacity: 0.7;
+    }
+
+    .footer span.highlight {
+      color: var(--turquoise-soft);
+    }
+
+    /* ===== RESPONSIVE (لابتوب / ديسكتوب أساسي) ===== */
+    @media (max-width: 1024px) {
+      .page {
+        padding: 20px 16px 28px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        align-items: flex-start;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cash-main-value {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand">
+        <div class="logo-circle">
+          <!-- عند البناء الفعلي نستبدل src بصورة الشعار الحقيقية -->
+          <!-- <img src="logo-facc.png" alt="First Avenue for Investment" /> -->
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">FACC — Command Center</div>
+          <div class="brand-subtitle">First Avenue for investment | الجادة الأولى للإستثمار</div>
+        </div>
+      </div>
+
+      <div class="header-meta">
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span>Live snapshot for cash, budget &amp; projects</span>
+        </div>
+        <div class="pill">
+          Last update: <span id="last-update">—</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN GRID -->
+    <section class="grid">
+      <!-- LEFT COLUMN -->
+      <div class="column">
+        <!-- CASH OVERVIEW -->
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                Cash overview
+                <span class="en">السيولة الحالية</span>
+              </div>
+              <div class="card-sub">Bank balance after latest payments.</div>
+            </div>
+            <div class="status-pill status-pill--good">
+              Comfortable
+            </div>
+          </div>
+
+          <div class="cash-main-value" id="cash-balance">704,779.76 SAR</div>
+          <div class="cash-main-label">Cash is higher than short-term obligations.</div>
+
+          <div class="cash-meta-row">
+            <div class="pill-mini">
+              <span>Pending payments</span>
+              <b id="pending-payments">2,000 SAR</b>
+            </div>
+            <div class="pill-mini">
+              <span>30-day obligations</span>
+              <b id="obligation-30d">41,501.42 SAR</b>
+            </div>
+            <div class="pill-mini">
+              <span>Control status</span>
+              <b id="control-status">Healthy</b>
+            </div>
+          </div>
+        </section>
+
+        <!-- BUDGET & CASH FLOW -->
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                Budget &amp; variance
+                <span class="en">ميزانية 2026</span>
+              </div>
+              <div class="card-sub">View spend vs approved budget and monthly cap.</div>
+            </div>
+            <div class="status-pill status-pill--warn" id="budget-status-pill">
+              On track
+            </div>
+          </div>
+
+          <div class="budget-grid">
+            <div class="metric">
+              <div class="metric-label">Approved budget</div>
+              <div class="metric-value" id="budget-total">3,269,785 SAR</div>
+              <div class="metric-tag">Year 2026</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Actual spend (YTD)</div>
+              <div class="metric-value" id="actual-ytd">0 SAR</div>
+              <div class="metric-tag">Updated monthly</div>
+              <div class="metric-chip metric-chip--up" id="variance-chip">
+                0% used
+              </div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Cap per month</div>
+              <div class="metric-value" id="cap-month">60,310 SAR</div>
+              <div class="metric-tag">Auto control</div>
+              <div class="metric-chip metric-chip--down" id="cap-alert">
+                Under cap
+              </div>
+            </div>
+          </div>
+
+          <!-- CASH FLOW PLACEHOLDER CHART -->
+          <div class="chart-wrapper">
+            <div class="chart-header">
+              <div class="chart-title">Cash flow projection — next 6 months</div>
+              <div class="chart-legend">
+                <span><span class="legend-dot legend-dot--primary"></span>Projected cash</span>
+                <span><span class="legend-dot legend-dot--floor"></span>Safety floor</span>
+              </div>
+            </div>
+            <div class="chart-canvas" id="cashflow-chart">
+              <div class="chart-placeholder-line"></div>
+              <!-- لاحقاً سيُرسم الخط الفعلي بالـ JS -->
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="column">
+        <section class="card">
+          <div class="projects-header">
+            <div>
+              <div class="card-title">
+                Projects radar
+                <span class="en">مشروعات الجادة</span>
+              </div>
+              <div class="card-sub">Track phase, progress and key risks for each project.</div>
+            </div>
+            <div class="filter-slots">
+              <button class="slot-pill slot-pill--active" id="slot-a-btn">Slot A</button>
+              <button class="slot-pill slot-pill--muted" id="slot-b-btn">Slot B</button>
+            </div>
+          </div>
+
+          <div class="projects-grid">
+            <!-- Project Slot A -->
+            <article class="project-card" id="project-slot-a">
+              <div class="project-header-line">
+                <div>
+                  <div class="project-name" id="proj-a-name">Business Front</div>
+                  <div class="project-stage" id="proj-a-stage">Design &amp; licensing phase</div>
+                </div>
+                <div class="project-stage" id="proj-a-dates">Start: 25 Sep 2025 · 120 days</div>
+              </div>
+
+              <div class="project-progress-row">
+                <div class="progress-bar">
+                  <div class="progress-inner" id="proj-a-progress-bar"></div>
+                  <div class="progress-tick" id="proj-a-tick"></div>
+                </div>
+                <div class="progress-label" id="proj-a-progress-label">60% / 70%</div>
+              </div>
+
+              <div class="risk-row">
+                <div class="risk-tag">
+                  <span class="risk-dot risk-dot--high"></span>
+                  <span id="proj-a-risk1">High – schedule delay</span>
+                </div>
+                <div class="risk-tag">
+                  <span class="risk-dot risk-dot--medium"></span>
+                  <span id="proj-a-risk2">Medium – parking requirement</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Project Slot B -->
+            <article class="project-card" id="project-slot-b">
+              <div class="project-header-line">
+                <div>
+                  <div class="project-name" id="proj-b-name">Jada School</div>
+                  <div class="project-stage" id="proj-b-stage">Design &amp; licensing</div>
+                </div>
+                <div class="project-stage" id="proj-b-dates">Start: 28 Dec 2024 · 180 days</div>
+              </div>
+
+              <div class="project-progress-row">
+                <div class="progress-bar">
+                  <div class="progress-inner" id="proj-b-progress-bar"></div>
+                  <div class="progress-tick" id="proj-b-tick"></div>
+                </div>
+                <div class="progress-label" id="proj-b-progress-label">70% / 70%</div>
+              </div>
+
+              <div class="risk-row">
+                <div class="risk-tag">
+                  <span class="risk-dot risk-dot--high"></span>
+                  <span id="proj-b-risk1">High – schedule delay</span>
+                </div>
+                <div class="risk-tag">
+                  <span class="risk-dot risk-dot--high"></span>
+                  <span id="proj-b-risk2">High – parking requirement</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>FACC — First Avenue Command Center · internal CEO view</span>
+      <span class="highlight">v1.0 · Desktop dashboard</span>
+    </footer>
+  </main>
+
+  <script>
+    // مجرد placeholder الآن — لاحقاً سنستبدل هذه القيم بقراءة من Google Sheets (Data1 + Projects)
+
+    function formatSAR(value) {
+      return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " SAR";
+    }
+
+    function populateStaticDemo() {
+      // مثال أرقام test (من الشيت تقريباً)
+      const cashBalance = 704779.76;
+      const pendingPayments = 2000;
+      const obligations30D = 41501.42;
+      const budgetTotal = 3269785;
+      const actualYTD = 0; // حتى ندخل أول شهر
+      const capMonth = 60310;
+
+      document.getElementById("cash-balance").textContent = formatSAR(cashBalance);
+      document.getElementById("pending-payments").textContent = formatSAR(pendingPayments);
+      document.getElementById("obligation-30d").textContent = formatSAR(obligations30D);
+      document.getElementById("budget-total").textContent = formatSAR(budgetTotal);
+      document.getElementById("actual-ytd").textContent = formatSAR(actualYTD);
+      document.getElementById("cap-month").textContent = formatSAR(capMonth);
+
+      const usedPercent = budgetTotal === 0 ? 0 : (actualYTD / budgetTotal) * 100;
+      const varianceChip = document.getElementById("variance-chip");
+      varianceChip.textContent = usedPercent.toFixed(1) + "% used";
+
+      const capAlert = document.getElementById("cap-alert");
+      capAlert.textContent = "Under cap";
+
+      // تحديث وقت آخر تحديث (من الجهاز)
+      const now = new Date();
+      document.getElementById("last-update").textContent = now.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", populateStaticDemo);
+  </script>
+</body>
+</html>
