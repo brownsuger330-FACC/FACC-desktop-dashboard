@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>FACC — First Avenue Command Center</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+ 
   <style>
     :root {
       --bg-dark: #02282f;
@@ -23,13 +23,13 @@
       --radius-lg: 22px;
       --radius-md: 18px;
     }
-
+ 
     *,
     *::before,
     *::after {
       box-sizing: border-box;
     }
-
+ 
     body {
       margin: 0;
       padding: 0;
@@ -39,7 +39,7 @@
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
     }
-
+ 
     .page {
       min-height: 100vh;
       display: flex;
@@ -47,20 +47,20 @@
       padding: 26px 32px 40px;
       gap: 22px;
     }
-
+ 
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 18px;
     }
-
+ 
     .brand-block {
       display: flex;
       align-items: center;
       gap: 18px;
     }
-
+ 
     .logo-seal {
       width: 54px;
       height: 54px;
@@ -74,7 +74,7 @@
       position: relative;
       overflow: hidden;
     }
-
+ 
     .logo-seal img {
       width: 135%;
       height: auto;
@@ -82,32 +82,32 @@
       filter: drop-shadow(0 0 6px rgba(0,0,0,0.5));
       transform: translateY(1px);
     }
-
+ 
     .title-block {
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
-
+ 
     .title-main {
       font-size: 22px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #f5f8f9;
     }
-
+ 
     .title-sub {
       font-size: 15px;
       color: var(--turquoise-soft);
       letter-spacing: 0.16em;
       text-transform: uppercase;
     }
-
+ 
     .title-ar {
       font-size: 13px;
       color: var(--text-muted);
     }
-
+ 
     .header-badge {
       display: flex;
       align-items: center;
@@ -118,7 +118,7 @@
       border: 1px solid rgba(255,255,255,0.06);
       box-shadow: 0 10px 35px rgba(0,0,0,0.6);
     }
-
+ 
     .header-badge-dot {
       width: 9px;
       height: 9px;
@@ -126,19 +126,19 @@
       background: var(--accent-green);
       box-shadow: 0 0 8px rgba(46, 204, 113,0.9);
     }
-
+ 
     .header-badge-label {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.22em;
       color: var(--text-muted);
     }
-
+ 
     .header-badge-value {
       font-size: 12px;
       color: #f3fafc;
     }
-
+ 
     .grid-main {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
@@ -147,13 +147,13 @@
       flex: 1;
       min-height: 0;
     }
-
+ 
     .col {
       display: flex;
       flex-direction: column;
       gap: 18px;
     }
-
+ 
     .card {
       background: radial-gradient(circle at top left, #094652 0%, #041c22 65%, #021115 100%);
       border-radius: var(--radius-lg);
@@ -168,7 +168,7 @@
         border-color 160ms ease-out,
         background 200ms ease-out;
     }
-
+ 
     .card::before {
       content: "";
       position: absolute;
@@ -180,18 +180,18 @@
       transition: opacity 220ms ease-out;
       pointer-events: none;
     }
-
+ 
     .card:hover {
       transform: translateY(-4px);
       box-shadow: 0 18px 60px rgba(0,0,0,0.85);
       border-color: rgba(17,197,198,0.4);
       background: radial-gradient(circle at top left, #0b5663 0%, #031a20 65%, #010b0f 100%);
     }
-
+ 
     .card:hover::before {
       opacity: 1;
     }
-
+ 
     .card-header {
       display: flex;
       align-items: center;
@@ -199,14 +199,14 @@
       gap: 10px;
       margin-bottom: 8px;
     }
-
+ 
     .card-title {
       font-size: 13px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-muted);
     }
-
+ 
     .kpi-chip {
       font-size: 11px;
       padding: 5px 10px;
@@ -216,48 +216,48 @@
       text-transform: uppercase;
       letter-spacing: 0.16em;
     }
-
+ 
     .chip-green {
       color: var(--accent-green);
       border-color: rgba(46, 204, 113, 0.6);
       box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.2);
     }
-
+ 
     .chip-amber {
       color: var(--accent-yellow);
       border-color: rgba(244, 201, 93, 0.6);
       box-shadow: 0 0 0 1px rgba(244, 201, 93, 0.2);
     }
-
+ 
     .chip-red {
       color: var(--accent-red);
       border-color: rgba(255, 85, 96, 0.7);
       box-shadow: 0 0 0 1px rgba(255, 85, 96, 0.25);
     }
-
+ 
     .kpi-main {
       display: flex;
       align-items: baseline;
       gap: 6px;
       margin: 4px 0 4px;
     }
-
+ 
     .kpi-value {
       font-size: 26px;
       font-weight: 600;
       letter-spacing: 0.03em;
     }
-
+ 
     .kpi-unit {
       font-size: 12px;
       color: var(--text-muted);
     }
-
+ 
     .kpi-sub {
       font-size: 12px;
       color: var(--text-muted);
     }
-
+ 
     .kpi-footer {
       margin-top: 10px;
       display: flex;
@@ -267,7 +267,7 @@
       color: var(--text-muted);
       flex-wrap: wrap;
     }
-
+ 
     .pill-small {
       padding: 3px 8px;
       border-radius: 999px;
@@ -284,11 +284,11 @@
       font-size: 12px;
       color: var(--text-muted);
     }
-
+ 
     .mini-row strong {
       color: #f6fafc;
     }
-
+ 
     .bar-shell {
       flex: 1;
       height: 6px;
@@ -297,7 +297,7 @@
       overflow: hidden;
       position: relative;
     }
-
+ 
     .bar-fill {
       height: 100%;
       width: 62%;
@@ -305,7 +305,7 @@
       background: linear-gradient(90deg, var(--turquoise), var(--turquoise-soft));
       box-shadow: 0 0 12px rgba(17,197,198,0.8);
     }
-
+ 
     .bar-tick {
       position: absolute;
       top: -2px;
@@ -328,7 +328,7 @@
       color: var(--accent-red);
       border: 1px solid rgba(255,85,96,0.45);
     }
-
+ 
     .variance-pill span.arrow {
       font-size: 11px;
     }
@@ -336,7 +336,7 @@
     .chart-card {
       padding: 18px 20px 18px;
     }
-
+ 
     .chart-header {
       display: flex;
       align-items: center;
@@ -344,42 +344,42 @@
       gap: 14px;
       margin-bottom: 10px;
     }
-
+ 
     .chart-title {
       font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 0.14em;
       color: var(--text-muted);
     }
-
+ 
     .chart-legend {
       display: flex;
       align-items: center;
       gap: 12px;
       font-size: 11px;
     }
-
+ 
     .legend-item {
       display: inline-flex;
       align-items: center;
       gap: 5px;
     }
-
+ 
     .legend-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
     }
-
+ 
     .legend-dot.blue {
       background: var(--turquoise-soft);
       box-shadow: 0 0 10px rgba(84,211,212,0.9);
     }
-
+ 
     .legend-dot.gold {
       background: var(--accent-gold);
     }
-
+ 
     .chart-body {
       background: radial-gradient(circle at top, #0a3d45 0%, #021117 65%, #00080b 100%);
       border-radius: 18px;
@@ -388,7 +388,7 @@
       position: relative;
       overflow: hidden;
     }
-
+ 
     .chart-grid {
       position: absolute;
       inset: 0;
@@ -398,7 +398,7 @@
       opacity: 0.7;
       pointer-events: none;
     }
-
+ 
     .chart-svg {
       width: 100%;
       max-height: 210px;
@@ -406,13 +406,13 @@
       position: relative;
       z-index: 1;
     }
-
+ 
     .chart-footer {
       margin-top: 10px;
       font-size: 11px;
       color: var(--text-muted);
     }
-
+ 
     .chart-footer strong {
       color: #f5fafc;
     }
@@ -420,7 +420,7 @@
     .projects-card {
       padding: 16px 18px 16px;
     }
-
+ 
     .projects-header {
       display: flex;
       align-items: center;
@@ -428,21 +428,21 @@
       gap: 10px;
       margin-bottom: 10px;
     }
-
+ 
     .projects-title {
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: var(--text-muted);
     }
-
+ 
     .projects-filter {
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 12px;
     }
-
+ 
     .select {
       background: rgba(0,0,0,0.45);
       border-radius: 999px;
@@ -453,17 +453,17 @@
       gap: 6px;
       cursor: default;
     }
-
+ 
     .select span {
       font-size: 12px;
       color: #f3fafc;
     }
-
+ 
     .select small {
       font-size: 11px;
       color: var(--text-muted);
     }
-
+ 
     .project-row {
       padding: 10px 11px 10px;
       border-radius: 14px;
@@ -474,23 +474,23 @@
       gap: 6px;
       margin-top: 6px;
     }
-
+ 
     .project-row + .project-row {
       margin-top: 8px;
     }
-
+ 
     .project-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
-
+ 
     .project-name {
       font-size: 13px;
       font-weight: 500;
     }
-
+ 
     .project-meta {
       font-size: 11px;
       color: var(--text-muted);
@@ -498,13 +498,13 @@
       gap: 10px;
       flex-wrap: wrap;
     }
-
+ 
     .project-badges {
       display: flex;
       align-items: center;
       gap: 6px;
     }
-
+ 
     .badge-stage {
       padding: 3px 9px;
       border-radius: 999px;
@@ -513,20 +513,20 @@
       color: var(--turquoise-soft);
       background: rgba(0,0,0,0.35);
     }
-
+ 
     .progress-shell {
       margin-top: 4px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
+ 
     .progress-labels {
       font-size: 11px;
       color: var(--text-muted);
       min-width: 78px;
     }
-
+ 
     .progress-bar {
       flex: 1;
       height: 7px;
@@ -535,7 +535,7 @@
       position: relative;
       overflow: hidden;
     }
-
+ 
     .progress-fill {
       height: 100%;
       width: 60%;
@@ -543,7 +543,7 @@
       border-radius: inherit;
       box-shadow: 0 0 12px rgba(17,197,198,0.9);
     }
-
+ 
     .progress-tick {
       position: absolute;
       top: -2px;
@@ -554,14 +554,14 @@
       background: var(--accent-gold);
       box-shadow: 0 0 8px rgba(197,165,108,0.9);
     }
-
+ 
     .progress-percent {
       font-size: 11px;
       min-width: 52px;
       text-align: right;
       color: #f6fafc;
     }
-
+ 
     .risk-chips {
       margin-top: 4px;
       display: flex;
@@ -569,7 +569,7 @@
       gap: 6px;
       font-size: 11px;
     }
-
+ 
     .risk-chip {
       display: inline-flex;
       align-items: center;
@@ -580,34 +580,34 @@
       background: rgba(0,0,0,0.38);
       color: var(--text-muted);
     }
-
+ 
     .risk-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
     }
-
+ 
     .risk-dot.red {
       background: var(--accent-red);
       box-shadow: 0 0 8px rgba(255,85,96,0.9);
     }
-
+ 
     .risk-dot.yellow {
       background: var(--accent-yellow);
       box-shadow: 0 0 8px rgba(244,201,93,0.9);
     }
-
+ 
     .panel-label {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
       color: var(--text-muted);
     }
-
+ 
     .admin-card {
       padding: 14px 16px 14px;
     }
-
+ 
     .admin-footer {
       margin-top: 10px;
       display: flex;
@@ -618,7 +618,7 @@
       color: var(--text-muted);
       flex-wrap: wrap;
     }
-
+ 
     .btn-ghost {
       padding: 6px 12px;
       border-radius: 999px;
@@ -633,7 +633,7 @@
       align-items: center;
       gap: 6px;
     }
-
+ 
     .btn-ghost span.dot {
       width: 7px;
       height: 7px;
@@ -641,7 +641,7 @@
       background: var(--accent-gold);
       box-shadow: 0 0 8px rgba(197,165,108,0.85);
     }
-
+ 
     .admin-form {
       margin-top: 6px;
       font-size: 11px;
@@ -650,19 +650,19 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px 10px;
     }
-
+ 
     .admin-field {
       display: flex;
       flex-direction: column;
       gap: 3px;
     }
-
+ 
     .admin-field label {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
     }
-
+ 
     .admin-field input,
     .admin-field select,
     .admin-field textarea {
@@ -676,15 +676,15 @@
       resize: vertical;
       min-height: 24px;
     }
-
+ 
     .admin-field textarea {
       min-height: 40px;
     }
-
+ 
     .admin-row-wide {
       grid-column: 1 / -1;
     }
-
+ 
     .admin-actions {
       margin-top: 6px;
       display: flex;
@@ -692,7 +692,7 @@
       gap: 8px;
       font-size: 11px;
     }
-
+ 
     .btn-apply {
       padding: 6px 12px;
       border-radius: 999px;
@@ -703,29 +703,29 @@
       text-transform: uppercase;
       cursor: pointer;
     }
-
+ 
     .btn-apply:hover {
       background: rgba(17,197,198,0.28);
     }
-
+ 
     .admin-note {
       margin-top: 4px;
       font-size: 10px;
       color: var(--text-muted);
     }
-
+ 
     @media (max-width: 1200px) {
       .page {
         padding: 18px 20px 26px;
       }
     }
-
+ 
     @media (max-width: 1024px) {
       .grid-main {
         grid-template-columns: 1fr;
       }
     }
-
+ 
     @media (max-width: 768px) {
       .page {
         padding: 16px;
@@ -736,7 +736,7 @@
     }
   </style>
 </head>
-
+ 
 <body>
   <div class="page">
     <header class="header">
@@ -761,7 +761,7 @@
         </div>
       </div>
     </header>
-
+ 
     <main class="grid-main">
       <!-- العمود الأيسر: كاش + ميزانية + كاب + تشارت -->
       <section class="col">
@@ -786,7 +786,7 @@
               <span class="pill-small" id="pendingLabel">Pending: — SAR</span>
             </div>
           </article>
-
+ 
           <!-- Budget control -->
           <article class="card">
             <div class="card-header">
@@ -815,7 +815,7 @@
             </div>
           </article>
         </div>
-
+ 
         <!-- Monthly cap + control status -->
         <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:16px;">
           <article class="card">
@@ -841,7 +841,7 @@
               </span>
             </div>
           </article>
-
+ 
           <article class="card">
             <div class="card-header">
               <div class="card-title">Control status</div>
@@ -857,14 +857,14 @@
             </div>
           </article>
         </div>
-
+ 
         <!-- Cash flow chart -->
         <article class="card chart-card">
           <div class="chart-header">
             <div>
               <div class="chart-title">Cash flow projection — 6 months</div>
               <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
-                توقع السيولة الصافية بالاعتماد على Income_Forcast &amp; Expense_Forcast
+                توقع السيولة الصافية بالاعتماد علىIncome_Forcast &amp; Expense_Forcast
               </div>
             </div>
             <div class="chart-legend">
@@ -883,7 +883,7 @@
           </div>
         </article>
       </section>
-
+ 
       <!-- العمود الأيمن: Projects + CEO Control -->
       <section class="col">
         <!-- Projects snapshot -->
@@ -892,7 +892,7 @@
             <div>
               <div class="projects-title">Projects snapshot</div>
               <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
-                يعرض مشروعين في آن واحد – يتم تغذيتها من تبويب <strong>Projects</strong>.
+                يعرض مشروعين في آن واحد – يتم تغذيتها من تبويب<strong>Projects</strong>.
               </div>
             </div>
             <div class="projects-filter">
@@ -904,59 +904,59 @@
               </div>
             </div>
           </div>
-
+ 
           <div id="projectsContainer">
             <!-- سيتم توليد كروت المشاريع من الجافاسكربت -->
           </div>
         </article>
-
+ 
         <!-- CEO Controls (Admin) -->
         <article class="card admin-card">
           <div class="card-header" style="margin-bottom:6px;">
             <div class="card-title">CEO controls (Admin)</div>
             <div class="kpi-chip">Desktop only</div>
           </div>
-
+ 
           <div style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:6px;">
             تحكم كامل في بيانات المشروع مباشرة من الداشبورد (محلياً في المتصفح):
           </div>
-
+ 
           <div class="admin-form" id="adminForm">
             <div class="admin-field admin-row-wide">
               <label for="adminProjectSelect">Project selector (يرتبط أيضاً بالفلتر أعلاه)</label>
               <select id="adminProjectSelect"></select>
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminName">Project name</label>
               <input id="adminName" type="text" />
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminStage">Stage text</label>
               <input id="adminStage" type="text" />
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminStart">Start date</label>
               <input id="adminStart" type="text" placeholder="25-Sep-2025" />
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminDuration">Duration (days)</label>
               <input id="adminDuration" type="number" />
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminActual">Actual %</label>
               <input id="adminActual" type="number" min="0" max="100" />
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminPlanned">Planned %</label>
               <input id="adminPlanned" type="number" min="0" max="100" />
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminRisk1Level">Risk 1 level</label>
               <select id="adminRisk1Level">
@@ -966,12 +966,12 @@
                 <option>Low</option>
               </select>
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminRisk1Note">Risk 1 note</label>
               <input id="adminRisk1Note" type="text" />
             </div>
-
+ 
             <div class="admin-field">
               <label for="adminRisk2Level">Risk 2 level</label>
               <select id="adminRisk2Level">
@@ -981,46 +981,81 @@
                 <option>Low</option>
               </select>
             </div>
-
+ 
             <div class="admin-field admin-row-wide">
               <label for="adminRisk2Note">Risk 2 note</label>
               <textarea id="adminRisk2Note"></textarea>
             </div>
           </div>
-
+ 
           <div class="admin-actions">
             <button class="btn-apply" id="btnApplyChanges">Apply locally</button>
           </div>
-
+ 
           <div class="admin-footer">
             <div class="btn-ghost">
               <span class="dot"></span>
               SAMPLE — READ FROM SHEETS / LOCAL WRITE ONLY
             </div>
             <span class="admin-note">
-              عند الضغط على <strong>Apply locally</strong> يتم تحديث كروت المشاريع فوراً داخل الداشبورد.
-              لربط التغييرات فعلياً مع Google Sheets نضيف لاحقاً Google Apps Script آمن.
+              عند الضغط على <strong>Apply locally</strong>يتم تحديث كروت المشاريع فوراً داخل الداشبورد.
+              لربط التغييرات فعلياً مع Google Sheets نضيف لاحقاًGoogle Apps Script آمن.
             </span>
           </div>
         </article>
       </section>
     </main>
   </div>
-
+ 
   <script>
     // =============================
     //  إعداد الروابط الثابتة للشيت
     // =============================
     const DATA1_CSV =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=0&single=true&output=csv";
-
+ 
     const PROJECTS_CSV =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=146585938&single=true&output=csv";
 
     // =============================
+    //  WRITE-BACK to Google Sheets (Apps Script Web App)
+    // =============================
+    const WEBAPP_URL =
+      "https://script.google.com/macros/s/AKfycbyglN1rhEP0MjWlXik_F9-rcZSjAo3oscR9GySuDtgbNhhB2ZPd0mUmo3iCOl4L7--TJQ/exec";
+
+    const SECRET =
+      "b35bb77e-ad8f-4bd5-8642-94fd06c8ae8b-f431d4ea-6189-44f6-a29d-3820dbc7c4e9";
+
+    function setLiveSnapshotLabel(text) {
+      const el = document.getElementById("lastUpdateLabel");
+      if (el) el.textContent = text;
+    }
+
+    function setApplyButtonState(isSaving) {
+      const btn = document.getElementById("btnApplyChanges");
+      if (!btn) return;
+      btn.disabled = !!isSaving;
+      btn.style.opacity = isSaving ? "0.6" : "1";
+      btn.style.cursor = isSaving ? "not-allowed" : "pointer";
+      btn.textContent = isSaving ? "Saving..." : "Apply locally";
+    }
+
+    async function writeBackProject(project) {
+      const res = await fetch(WEBAPP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ secret: SECRET, project })
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!data.ok) throw new Error(data.error || "Write-back failed");
+      return data;
+    }
+ 
+    // =============================
     //  دوال مساعدة
     // =============================
-
+ 
     function parseCSV(text) {
       const lines = text.trim().split(/\r?\n/);
       const headers = lines[0].split(",").map(h => h.trim());
@@ -1033,61 +1068,61 @@
         return obj;
       });
     }
-
+ 
     function num(v) {
       if (v === undefined || v === null || v === "") return 0;
       return parseFloat(String(v).replace(/,/g, "")) || 0;
     }
-
+ 
     function formatInt(n) {
       return Math.round(n).toLocaleString("en-US");
     }
-
+ 
     function formatSar(n) {
       return formatInt(n) + " SAR";
     }
-
+ 
     function clamp(v, min, max) {
       return Math.max(min, Math.min(max, v));
     }
-
+ 
     // =============================
     //  تحميل البيانات ثم الرسم
     // =============================
     let data1Rows = [];
     let projects = [];
     let selectedProjectIndex = 0;
-
+ 
     function renderCashAndBudget() {
       if (!data1Rows.length) return;
-
+ 
       const rows = data1Rows;
       const nowRow = rows[0]; // نفترض أول صف هو الفترة الحالية
-
+ 
       const cashBalance = num(nowRow.Cash_Balance);
       const pending = num(nowRow.Pending_Payments);
       const obl30d = num(nowRow.Obligation_30D);
       const approvedBudget = num(nowRow.Budget_Total);
-
+ 
       // Actual YTD = مجموع Actual_Expense
       const actualYtd = rows.reduce((sum, r) => sum + num(r.Actual_Expense), 0);
-
+ 
       const budgetRemaining = Math.max(approvedBudget - actualYtd, 0);
-
+ 
       const totalMonths = rows.length || 1;
       const monthsWithActual = rows.filter(r => num(r.Actual_Expense) > 0).length;
       const expectedByNow =
         approvedBudget * (monthsWithActual / totalMonths || 0);
       const variance =
         expectedByNow > 0 ? ((actualYtd - expectedByNow) / expectedByNow) * 100 : 0;
-
+ 
       document.getElementById("cashBalanceValue").textContent =
         formatInt(cashBalance);
       document.getElementById("obl30dLabel").textContent =
         "Obligations 30D: " + formatSar(obl30d);
       document.getElementById("pendingLabel").textContent =
         "Pending: " + formatSar(pending);
-
+ 
       const cashStatusChip = document.getElementById("cashStatusChip");
       const ratio = obl30d > 0 ? cashBalance / obl30d : 999;
       if (ratio >= 2) {
@@ -1102,14 +1137,14 @@
         cashStatusChip.classList.remove("chip-green", "chip-amber");
         cashStatusChip.classList.add("chip-red");
       }
-
+ 
       document.getElementById("budgetApproved").textContent =
         formatInt(approvedBudget);
       document.getElementById("budgetActual").textContent =
         formatInt(actualYtd);
       document.getElementById("budgetRemaining").textContent =
         formatInt(budgetRemaining);
-
+ 
       const variancePill = document.getElementById("budgetVariance");
       const vAbs = Math.abs(variance);
       const arrowSpan = variancePill.querySelector(".arrow");
@@ -1121,7 +1156,7 @@
           " " + vAbs.toFixed(1) + "% " + (variance >= 0 ? "over plan" : "under plan")
         )
       );
-
+ 
       // لون الشيب حسب الانحراف
       const budgetChip = document.getElementById("budgetChip");
       budgetChip.classList.remove("chip-green", "chip-amber", "chip-red");
@@ -1135,7 +1170,7 @@
         budgetChip.textContent = "Attention";
         budgetChip.classList.add("chip-red");
       }
-
+ 
       // Monthly cap: 25% من (budgetRemaining / remainingMonths) بحد أعلى 200k
       const remainingMonths = totalMonths - monthsWithActual || totalMonths;
       let suggestedCap =
@@ -1145,24 +1180,24 @@
       if (!isFinite(suggestedCap) || suggestedCap <= 0) suggestedCap = 200000;
       const hardCap = 200000;
       const cap = Math.min(hardCap, suggestedCap);
-
+ 
       document.getElementById("capValue").textContent = formatInt(cap);
       const capFill = document.getElementById("capBarFill");
       const capTick = document.getElementById("capBarTick");
       const pct = clamp((cap / hardCap) * 100, 0, 100);
       capFill.style.width = pct + "%";
       capTick.style.left = Math.min(pct + 5, 95) + "%";
-
+ 
       document.getElementById("capRuleText").textContent =
         "Rule: 25% of remaining budget / remaining months (max " +
         formatSar(hardCap) +
         ")";
-
+ 
       // Control status بسيط مبني على cash ratio و variance
       const controlChip = document.getElementById("controlChip");
       const controlText = document.getElementById("controlText");
       const controlDetails = document.getElementById("controlDetails");
-
+ 
       if (ratio >= 2 && vAbs <= 5) {
         controlChip.textContent = "Healthy";
         controlChip.className = "kpi-chip chip-green";
@@ -1186,19 +1221,21 @@
         controlDetails.innerHTML =
           "• السيولة أقل من الالتزامات قصيرة الأجل أو الانحراف كبير عن الخطة<br/>" +
           "• يجب مراجعة الالتزامات وخطة الصرف فوراً<br/>" +
-          "• يوصى برفع تقرير تفصيلي للمالك";
+          "• يوصى بررفع تقرير تفصيلي للمالك";
       }
-
-      // تحديث نص "آخر تحديث"
+ 
+      // تحديث نص "آخر تحديث" (كما هو)
       const firstMonth = nowRow.Month || "";
-      document.getElementById("lastUpdateLabel").textContent =
-        "Live snapshot • latest row in Data1 (" + firstMonth + ")";
+      if (!String(document.getElementById("lastUpdateLabel").textContent || "").includes("Saved")) {
+        document.getElementById("lastUpdateLabel").textContent =
+          "Live snapshot • latest row in Data1 (" + firstMonth + ")";
+      }
     }
 
     function renderChart() {
       if (!data1Rows.length) return;
 
-      const rows = data1Rows.slice(0, 6); // أول 6 أشهر
+      const rows = data1Rows.slice(0, 6);
       const values = rows.map(r => num(r.Income_Forcast) - num(r.Expense_Forcast));
       const labels = rows.map(r => r.Month || "");
 
@@ -1217,7 +1254,6 @@
 
       const maxVal = Math.max(...values, 0) || 1;
       const minVal = Math.min(...values, 0);
-
       const span = maxVal - minVal || 1;
 
       values.forEach((v, i) => {
@@ -1230,15 +1266,11 @@
         ys.push(y);
       });
 
-      // خط الحد الأدنى الآمن = 0
       const safeY =
         topPad +
         (1 - (0 - minVal) / span) * (height - topPad - bottomPad);
 
-      const safeLine = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-      );
+      const safeLine = document.createElementNS("http://www.w3.org/2000/svg","line");
       safeLine.setAttribute("x1", leftPad);
       safeLine.setAttribute("y1", safeY);
       safeLine.setAttribute("x2", width - rightPad);
@@ -1248,15 +1280,27 @@
       safeLine.setAttribute("stroke-dasharray", "4 5");
       svg.appendChild(safeLine);
 
-      // path
-      const path = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
+      const defs = document.createElementNS("http://www.w3.org/2000/svg","defs");
+      const grad = document.createElementNS("http://www.w3.org/2000/svg","linearGradient");
+      grad.setAttribute("id", "cfLine");
+      grad.setAttribute("x1", "0");
+      grad.setAttribute("x2", "1");
+      grad.setAttribute("y1", "0");
+      grad.setAttribute("y2", "0");
+      const stop1 = document.createElementNS("http://www.w3.org/2000/svg","stop");
+      stop1.setAttribute("offset", "0%");
+      stop1.setAttribute("stop-color", "#54d3d4");
+      const stop2 = document.createElementNS("http://www.w3.org/2000/svg","stop");
+      stop2.setAttribute("offset", "100%");
+      stop2.setAttribute("stop-color", "#11c5c6");
+      grad.appendChild(stop1);
+      grad.appendChild(stop2);
+      defs.appendChild(grad);
+      svg.appendChild(defs);
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg","path");
       let d = "";
-      xs.forEach((x, i) => {
-        d += (i === 0 ? "M" : "L") + x + " " + ys[i] + " ";
-      });
+      xs.forEach((x, i) => { d += (i === 0 ? "M" : "L") + x + " " + ys[i] + " "; });
       path.setAttribute("d", d);
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", "url(#cfLine)");
@@ -1265,46 +1309,9 @@
       path.setAttribute("stroke-linejoin", "round");
       svg.appendChild(path);
 
-      // gradient
-      const defs = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "defs"
-      );
-      const grad = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "linearGradient"
-      );
-      grad.setAttribute("id", "cfLine");
-      grad.setAttribute("x1", "0");
-      grad.setAttribute("x2", "1");
-      grad.setAttribute("y1", "0");
-      grad.setAttribute("y2", "0");
-      const stop1 = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "stop"
-      );
-      stop1.setAttribute("offset", "0%");
-      stop1.setAttribute("stop-color", "#54d3d4");
-      const stop2 = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "stop"
-      );
-      stop2.setAttribute("offset", "100%");
-      stop2.setAttribute("stop-color", "#11c5c6");
-      grad.appendChild(stop1);
-      grad.appendChild(stop2);
-      defs.appendChild(grad);
-      svg.appendChild(defs);
-
-      // النقاط + الأرقام فوق كل نقطة
       values.forEach((v, i) => {
-        const cx = xs[i];
-        const cy = ys[i];
-
-        const circle = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "circle"
-        );
+        const cx = xs[i], cy = ys[i];
+        const circle = document.createElementNS("http://www.w3.org/2000/svg","circle");
         circle.setAttribute("cx", cx);
         circle.setAttribute("cy", cy);
         circle.setAttribute("r", "4.3");
@@ -1313,10 +1320,7 @@
         circle.setAttribute("stroke-width", "1.4");
         svg.appendChild(circle);
 
-        const txt = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "text"
-        );
+        const txt = document.createElementNS("http://www.w3.org/2000/svg","text");
         txt.setAttribute("x", cx);
         txt.setAttribute("y", cy - 8);
         txt.setAttribute("text-anchor", "middle");
@@ -1326,14 +1330,10 @@
         svg.appendChild(txt);
       });
 
-      // labels للأشهر
       labels.forEach((label, i) => {
         const tx = xs[i];
         const ty = height - 12;
-        const text = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "text"
-        );
+        const text = document.createElementNS("http://www.w3.org/2000/svg","text");
         text.setAttribute("x", tx);
         text.setAttribute("y", ty);
         text.setAttribute("text-anchor", "middle");
@@ -1343,7 +1343,6 @@
         svg.appendChild(text);
       });
 
-      // تعليق أسفل التشارت
       const maxIndex = values.indexOf(Math.max(...values));
       const bestMonth = labels[maxIndex] || "";
       document.getElementById("chartComment").innerHTML =
@@ -1356,7 +1355,7 @@
       const lv = (level || "").toLowerCase();
       if (lv === "high") return "red";
       if (lv === "medium") return "yellow";
-      if (lv === "low") return "green"; // لن نستخدمها كبقعة لون ثالثة الآن
+      if (lv === "low") return "green";
       return null;
     }
 
@@ -1433,35 +1432,26 @@
     function renderProjects() {
       if (!projects.length) return;
 
-      // نعرض مشروعين فقط في كل مرة: الأساسي + الذي يليه
       const mainIndex = selectedProjectIndex % projects.length;
       const secondIndex = (mainIndex + 1) % projects.length;
 
       const mainProject = projects[mainIndex];
-      const secondProject =
-        projects.length > 1 ? projects[secondIndex] : null;
+      const secondProject = projects.length > 1 ? projects[secondIndex] : null;
 
       const container = document.getElementById("projectsContainer");
       let html = buildProjectRow(mainProject);
-      if (secondProject) {
-        html += buildProjectRow(secondProject);
-      }
+      if (secondProject) html += buildProjectRow(secondProject);
       container.innerHTML = html;
 
-      // تحديث الفلتر
       document.getElementById("projectFilterName").textContent =
         mainProject.Project_Name || "—";
       document.getElementById("projectFilterMeta").textContent =
         "Project ID: " + (mainProject.Project_ID || "");
 
-      // تحديث قائمة الـ CEO Control
       const select = document.getElementById("adminProjectSelect");
       select.innerHTML = projects
-        .map(
-          (p, idx) =>
-            `<option value="${idx}" ${
-              idx === mainIndex ? "selected" : ""
-            }>${p.Project_ID || ""} — ${p.Project_Name || ""}</option>`
+        .map((p, idx) =>
+          `<option value="${idx}" ${idx === mainIndex ? "selected" : ""}>${p.Project_ID || ""} — ${p.Project_Name || ""}</option>`
         )
         .join("");
 
@@ -1473,20 +1463,13 @@
       document.getElementById("adminName").value = project.Project_Name || "";
       document.getElementById("adminStage").value = project.Stage_text || "";
       document.getElementById("adminStart").value = project.Start_Date || "";
-      document.getElementById("adminDuration").value =
-        project.Planned_Duration || "";
-      document.getElementById("adminActual").value =
-        project.Actual_Progress || "";
-      document.getElementById("adminPlanned").value =
-        project.Planned_Progress || "";
-      document.getElementById("adminRisk1Level").value =
-        project.Risk1_level || "";
-      document.getElementById("adminRisk1Note").value =
-        project.Risk1_Note || "";
-      document.getElementById("adminRisk2Level").value =
-        project.Risk2_level || "";
-      document.getElementById("adminRisk2Note").value =
-        project.Risk2_Note || "";
+      document.getElementById("adminDuration").value = project.Planned_Duration || "";
+      document.getElementById("adminActual").value = project.Actual_Progress || "";
+      document.getElementById("adminPlanned").value = project.Planned_Progress || "";
+      document.getElementById("adminRisk1Level").value = project.Risk1_level || "";
+      document.getElementById("adminRisk1Note").value = project.Risk1_Note || "";
+      document.getElementById("adminRisk2Level").value = project.Risk2_level || "";
+      document.getElementById("adminRisk2Note").value = project.Risk2_Note || "";
     }
 
     function applyAdminChanges() {
@@ -1497,20 +1480,13 @@
       p.Project_Name = document.getElementById("adminName").value;
       p.Stage_text = document.getElementById("adminStage").value;
       p.Start_Date = document.getElementById("adminStart").value;
-      p.Planned_Duration =
-        document.getElementById("adminDuration").value;
-      p.Actual_Progress =
-        document.getElementById("adminActual").value;
-      p.Planned_Progress =
-        document.getElementById("adminPlanned").value;
-      p.Risk1_level =
-        document.getElementById("adminRisk1Level").value;
-      p.Risk1_Note =
-        document.getElementById("adminRisk1Note").value;
-      p.Risk2_level =
-        document.getElementById("adminRisk2Level").value;
-      p.Risk2_Note =
-        document.getElementById("adminRisk2Note").value;
+      p.Planned_Duration = document.getElementById("adminDuration").value;
+      p.Actual_Progress = document.getElementById("adminActual").value;
+      p.Planned_Progress = document.getElementById("adminPlanned").value;
+      p.Risk1_level = document.getElementById("adminRisk1Level").value;
+      p.Risk1_Note = document.getElementById("adminRisk1Note").value;
+      p.Risk2_level = document.getElementById("adminRisk2Level").value;
+      p.Risk2_Note = document.getElementById("adminRisk2Note").value;
 
       renderProjects();
     }
@@ -1523,8 +1499,6 @@
         .then(([data1Text, projectsText]) => {
           data1Rows = parseCSV(data1Text);
           projects = parseCSV(projectsText);
-
-          // تأكد من وجود بيانات مشاريع على الأقل
           projects = projects.filter(p => p.Project_Name || p.Project_ID);
 
           renderCashAndBudget();
@@ -1535,20 +1509,37 @@
           console.error("Error loading CSV:", err);
         });
 
-      // ربط أحداث الـ CEO Control
-      document
-        .getElementById("adminProjectSelect")
-        .addEventListener("change", e => {
-          selectedProjectIndex = parseInt(e.target.value, 10) || 0;
-          renderProjects();
-        });
+      document.getElementById("adminProjectSelect").addEventListener("change", e => {
+        selectedProjectIndex = parseInt(e.target.value, 10) || 0;
+        renderProjects();
+      });
 
-      document
-        .getElementById("btnApplyChanges")
-        .addEventListener("click", e => {
-          e.preventDefault();
-          applyAdminChanges();
-        });
+      // ✅ Apply locally + Write-back to Sheets
+      document.getElementById("btnApplyChanges").addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        // 1) Apply locally (كما كان)
+        applyAdminChanges();
+
+        // 2) Write-back إلى Google Sheets
+        try {
+          setApplyButtonState(true);
+          setLiveSnapshotLabel("Saving project to Sheets…");
+
+          const project = projects[selectedProjectIndex];
+          const result = await writeBackProject(project);
+
+          const pid = (project && project.Project_ID) ? project.Project_ID : "—";
+          setLiveSnapshotLabel("Saved ✔︎ • Project " + pid + " • Sheets updated");
+          console.log("Write-back OK:", result);
+        } catch (err) {
+          console.error("Write-back failed:", err);
+          setLiveSnapshotLabel("Save failed ✖︎ • Check Apps Script permissions / WebApp");
+          alert("Save to Sheets failed:\n" + (err && err.message ? err.message : err));
+        } finally {
+          setApplyButtonState(false);
+        }
+      });
     });
   </script>
 </body>
