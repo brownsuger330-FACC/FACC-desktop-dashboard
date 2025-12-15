@@ -22,6 +22,7 @@
       --shadow-soft: 0 14px 45px rgba(0,0,0,0.55);
       --radius-lg: 22px;
       --radius-md: 18px;
+      --radius-sm: 14px;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -35,6 +36,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ===== Page ===== */
     .page {
       min-height: 100vh;
       display: flex;
@@ -43,6 +45,7 @@
       gap: 22px;
     }
 
+    /* ===== Header ===== */
     .header {
       display: flex;
       align-items: center;
@@ -54,6 +57,7 @@
       display: flex;
       align-items: center;
       gap: 18px;
+      min-width: 0;
     }
 
     .logo-seal {
@@ -68,6 +72,7 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      flex: 0 0 auto;
     }
 
     .logo-seal img {
@@ -78,22 +83,25 @@
       transform: translateY(1px);
     }
 
-    .title-block { display: flex; flex-direction: column; gap: 4px; }
-
+    .title-block { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
     .title-main {
       font-size: 22px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #f5f8f9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-
     .title-sub {
       font-size: 15px;
       color: var(--turquoise-soft);
       letter-spacing: 0.16em;
       text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-
     .title-ar { font-size: 13px; color: var(--text-muted); }
 
     .header-badge {
@@ -105,6 +113,8 @@
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.06);
       box-shadow: 0 10px 35px rgba(0,0,0,0.6);
+      flex: 0 0 auto;
+      max-width: 420px;
     }
 
     .header-badge-dot {
@@ -113,6 +123,7 @@
       border-radius: 50%;
       background: var(--accent-green);
       box-shadow: 0 0 8px rgba(46, 204, 113,0.9);
+      flex: 0 0 auto;
     }
 
     .header-badge-label {
@@ -121,9 +132,9 @@
       letter-spacing: 0.22em;
       color: var(--text-muted);
     }
-
     .header-badge-value { font-size: 12px; color: #f3fafc; }
 
+    /* ===== Layout ===== */
     .grid-main {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
@@ -135,6 +146,7 @@
 
     .col { display: flex; flex-direction: column; gap: 18px; }
 
+    /* ===== Card ===== */
     .card {
       background: radial-gradient(circle at top left, #094652 0%, #041c22 65%, #021115 100%);
       border-radius: var(--radius-lg);
@@ -239,8 +251,8 @@
     }
     .variance-pill span.arrow { font-size: 11px; }
 
+    /* ===== Chart ===== */
     .chart-card { padding: 18px 20px 18px; }
-
     .chart-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
     .chart-title  { font-size: 14px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); }
 
@@ -274,12 +286,14 @@
     .chart-footer { margin-top: 10px; font-size: 11px; color: var(--text-muted); }
     .chart-footer strong { color: #f5fafc; }
 
+    /* ===== Projects ===== */
     .projects-card { padding: 16px 18px 16px; }
-
     .projects-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
     .projects-title  { font-size: 13px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-muted); }
 
     .projects-filter { display: flex; align-items: center; gap: 8px; font-size: 12px; flex-wrap: wrap; }
+    .panel-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); }
+
     .select {
       background: rgba(0,0,0,0.45);
       border-radius: 999px;
@@ -291,7 +305,6 @@
       cursor: default;
       white-space: nowrap;
     }
-
     .select span { font-size: 12px; color: #f3fafc; }
     .select small { font-size: 11px; color: var(--text-muted); }
 
@@ -340,6 +353,7 @@
       border: 1px solid rgba(255,255,255,0.08);
       background: rgba(0,0,0,0.38);
       color: var(--text-muted);
+      max-width: 100%;
     }
 
     .risk-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -347,8 +361,7 @@
     .risk-dot.yellow { background: var(--accent-yellow); box-shadow: 0 0 8px rgba(244,201,93,0.9); }
     .risk-dot.green  { background: var(--accent-green); box-shadow: 0 0 8px rgba(46,204,113,0.9); }
 
-    .panel-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); }
-
+    /* ===== Admin ===== */
     .admin-card { padding: 14px 16px 14px; }
 
     .admin-form {
@@ -366,22 +379,22 @@
     .admin-field input,
     .admin-field select,
     .admin-field textarea {
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(0,0,0,0.38);
       color: #f5fafc;
-      padding: 4px 6px;
-      font-size: 11px;
+      padding: 6px 8px;
+      font-size: 12px;
       font-family: inherit;
       resize: vertical;
-      min-height: 24px;
+      min-height: 34px;
+      outline: none;
     }
-    .admin-field textarea { min-height: 40px; }
-
+    .admin-field textarea { min-height: 52px; }
     .admin-row-wide { grid-column: 1 / -1; }
 
     .admin-actions {
-      margin-top: 8px;
+      margin-top: 10px;
       display: flex;
       justify-content: flex-end;
       gap: 8px;
@@ -389,27 +402,31 @@
       flex-wrap: wrap;
     }
 
-    .btn-apply {
-      padding: 6px 12px;
+    .btn-apply, .btn-save {
+      padding: 10px 14px;
       border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      user-select: none;
+    }
+
+    .btn-apply {
       border: 1px solid rgba(17,197,198,0.7);
       background: rgba(17,197,198,0.16);
       color: #e8feff;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
     }
     .btn-apply:hover { background: rgba(17,197,198,0.28); }
 
     .btn-save {
-      padding: 6px 12px;
-      border-radius: 999px;
       border: 1px solid rgba(197,165,108,0.75);
       background: rgba(197,165,108,0.14);
       color: #fff3dd;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
     }
     .btn-save:hover { background: rgba(197,165,108,0.22); }
 
@@ -427,7 +444,7 @@
     }
 
     .btn-ghost {
-      padding: 6px 12px;
+      padding: 8px 12px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.14);
       background: rgba(0,0,0,0.4);
@@ -438,7 +455,7 @@
       cursor: default;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       white-space: nowrap;
     }
 
@@ -452,9 +469,144 @@
 
     .admin-note { margin-top: 4px; font-size: 10px; color: var(--text-muted); }
 
-    @media (max-width: 1200px) { .page { padding: 18px 20px 26px; } }
-    @media (max-width: 1024px) { .grid-main { grid-template-columns: 1fr; } }
-    @media (max-width: 768px)  { .page { padding: 16px; } .admin-form { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    /* ===== Mobile Enhancements ===== */
+    .mobile-actions {
+      display: none;
+    }
+
+    .admin-collapsible {
+      margin-top: 10px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.20);
+      overflow: hidden;
+    }
+    .admin-toggle {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #f5fafc;
+      padding: 12px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .admin-toggle small {
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .admin-toggle .chev {
+      width: 26px; height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+    }
+
+    .admin-collapsible-body {
+      padding: 0 12px 12px;
+      display: none;
+    }
+    .admin-collapsible.open .admin-collapsible-body { display: block; }
+
+    /* ===== Responsive breakpoints ===== */
+    @media (max-width: 1200px) {
+      .page { padding: 18px 20px 26px; }
+    }
+
+    @media (max-width: 1024px) {
+      .grid-main { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 820px) {
+      .header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .header-badge { max-width: 100%; }
+      .title-main { letter-spacing: 0.10em; }
+      .title-sub  { letter-spacing: 0.12em; }
+    }
+
+    @media (max-width: 768px) {
+      .page { padding: 14px 14px 96px; gap: 14px; } /* leave space for sticky actions */
+
+      .grid-main { gap: 14px; }
+      .col { gap: 14px; }
+
+      /* Make cards slightly tighter */
+      .card { padding: 14px 14px; border-radius: 18px; }
+      .chart-card { padding: 14px 14px; }
+      .projects-card { padding: 14px 14px; }
+      .admin-card { padding: 14px 14px; }
+
+      /* KPI layout stacks */
+      .kpi-value { font-size: 24px; }
+      .kpi-unit { font-size: 11px; }
+
+      /* Force grid blocks to single column */
+      .mobile-stack-2,
+      .mobile-stack-2b { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      .mobile-stack-2b { grid-template-columns: 1fr; }
+
+      /* Chart becomes more compact */
+      .chart-body { padding: 14px 12px 12px; }
+      .chart-svg { max-height: 190px; }
+      .chart-grid { background-size: 46px 22px; }
+
+      /* Projects tighten */
+      .project-top { align-items: flex-start; }
+      .project-badges { justify-content: flex-start; }
+      .progress-shell { gap: 8px; }
+      .progress-labels { display: none; }
+      .progress-percent { min-width: 0; }
+
+      /* Admin form 1 column on mobile */
+      .admin-form { grid-template-columns: 1fr; }
+      .admin-actions { display: none; } /* replaced by sticky mobile actions */
+      .admin-footer { gap: 8px; }
+      .btn-ghost { width: 100%; justify-content: center; }
+
+      /* Sticky actions (mobile only) */
+      .mobile-actions {
+        display: flex;
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        padding: 10px 12px 12px;
+        gap: 10px;
+        background: rgba(0,0,0,0.55);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,255,255,0.08);
+        z-index: 9999;
+      }
+      .mobile-actions .btn-apply,
+      .mobile-actions .btn-save {
+        flex: 1;
+        padding: 12px 14px;
+        font-size: 11px;
+      }
+
+      /* Arabic blocks look better on mobile */
+      .title-ar,
+      #cashSubText,
+      #controlDetails,
+      .chart-header div:last-child,
+      .chart-footer,
+      .admin-note {
+        direction: rtl;
+        text-align: right;
+      }
+    }
   </style>
 </head>
 
@@ -484,7 +636,7 @@
     <main class="grid-main">
       <!-- Left column -->
       <section class="col">
-        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mobile-stack-2" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
           <article class="card">
             <div class="card-header">
               <div><div class="card-title">Cash balance</div></div>
@@ -519,7 +671,7 @@
           </article>
         </div>
 
-        <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:16px;">
+        <div class="mobile-stack-2b" style="display:grid;grid-template-columns:1.15fr .85fr;gap:16px;">
           <article class="card">
             <div class="card-header">
               <div class="card-title">Monthly spending cap</div>
@@ -562,7 +714,7 @@
           <div class="chart-header">
             <div>
               <div class="chart-title">Cash flow projection — 6 months</div>
-              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">توقع السيولة الصافية بالاعتماد على Income_Forecast &amp; Expense_Forecast</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">توقع السيولة الصافية بالاعتماد علىIncome_Forecast &amp; Expense_Forecast</div>
             </div>
             <div class="chart-legend">
               <span class="legend-item"><span class="legend-dot blue"></span>السيولة المتوقعة</span>
@@ -573,7 +725,7 @@
             <div class="chart-grid"></div>
             <svg class="chart-svg" id="cashChart" viewBox="0 0 420 210" aria-hidden="true"></svg>
           </div>
-          <div class="chart-footer" id="chartComment"><strong>تحليل تجريبي:</strong> سيتم توليد التعليق حسب الأرقام الفعلية من الشيت.</div>
+          <div class="chart-footer" id="chartComment"><strong>تحليل تجريبي:</strong>سيتم توليد التعليق حسب الأرقام الفعلية من الشيت.</div>
         </article>
       </section>
 
@@ -596,6 +748,7 @@
           <div id="projectsContainer"></div>
         </article>
 
+        <!-- Admin: desktop shows full, mobile collapsible -->
         <article class="card admin-card">
           <div class="card-header" style="margin-bottom:6px;">
             <div class="card-title">CEO controls (Admin)</div>
@@ -606,85 +759,103 @@
             تحكم كامل في بيانات المشروع من الداشبورد + حفظ مباشر إلى Google Sheets عبر WebApp.
           </div>
 
-          <div class="admin-form" id="adminForm">
-            <div class="admin-field admin-row-wide">
-              <label for="adminProjectSelect">Project selector (يرتبط أيضاً بالفلتر أعلاه)</label>
-              <select id="adminProjectSelect"></select>
+          <!-- Collapsible wrapper (works on desktop too, but only visible UX on mobile) -->
+          <div class="admin-collapsible" id="adminCollapsible">
+            <button class="admin-toggle" id="adminToggle" type="button">
+              <div style="display:flex;flex-direction:column;gap:2px;align-items:flex-start;">
+                <div>Admin Editor</div>
+                <small>Open / close edit panel</small>
+              </div>
+              <span class="chev" id="adminChev">⌄</span>
+            </button>
+            <div class="admin-collapsible-body">
+              <div class="admin-form" id="adminForm">
+                <div class="admin-field admin-row-wide">
+                  <label for="adminProjectSelect">Project selector (يرتبط أيضاً بالفلتر أعلاه)</label>
+                  <select id="adminProjectSelect"></select>
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminName">Project name</label>
+                  <input id="adminName" type="text" />
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminStage">Stage text</label>
+                  <input id="adminStage" type="text" />
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminStart">Start date</label>
+                  <input id="adminStart" type="text" placeholder="25-Sep-2025" />
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminDuration">Duration (days)</label>
+                  <input id="adminDuration" type="number" />
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminActual">Actual %</label>
+                  <input id="adminActual" type="number" min="0" max="100" />
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminPlanned">Planned %</label>
+                  <input id="adminPlanned" type="number" min="0" max="100" />
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminRisk1Level">Risk 1 level</label>
+                  <select id="adminRisk1Level">
+                    <option value="">(none)</option>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                  </select>
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminRisk1Note">Risk 1 note</label>
+                  <input id="adminRisk1Note" type="text" />
+                </div>
+
+                <div class="admin-field">
+                  <label for="adminRisk2Level">Risk 2 level</label>
+                  <select id="adminRisk2Level">
+                    <option value="">(none)</option>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                  </select>
+                </div>
+
+                <div class="admin-field admin-row-wide">
+                  <label for="adminRisk2Note">Risk 2 note</label>
+                  <textarea id="adminRisk2Note"></textarea>
+                </div>
+              </div>
+
+              <div class="admin-actions">
+                <button class="btn-apply" id="btnApplyChanges">Apply locally</button>
+                <button class="btn-save" id="btnSaveToSheets">Save to Sheets</button>
+              </div>
+
+              <div class="admin-footer">
+                <div class="btn-ghost"><span class="dot"></span>DESKTOP ONLY • READ FROM SHEETS • WRITE VIA WEBAPP</div>
+                <span class="admin-note" id="saveNote">جاهز للحفظ — اختر مشروع ثم عدّل ثم اضغطSave to Sheets.</span>
+              </div>
             </div>
-
-            <div class="admin-field">
-              <label for="adminName">Project name</label>
-              <input id="adminName" type="text" />
-            </div>
-
-            <div class="admin-field">
-              <label for="adminStage">Stage text</label>
-              <input id="adminStage" type="text" />
-            </div>
-
-            <div class="admin-field">
-              <label for="adminStart">Start date</label>
-              <input id="adminStart" type="text" placeholder="25-Sep-2025" />
-            </div>
-
-            <div class="admin-field">
-              <label for="adminDuration">Duration (days)</label>
-              <input id="adminDuration" type="number" />
-            </div>
-
-            <div class="admin-field">
-              <label for="adminActual">Actual %</label>
-              <input id="adminActual" type="number" min="0" max="100" />
-            </div>
-
-            <div class="admin-field">
-              <label for="adminPlanned">Planned %</label>
-              <input id="adminPlanned" type="number" min="0" max="100" />
-            </div>
-
-            <div class="admin-field">
-              <label for="adminRisk1Level">Risk 1 level</label>
-              <select id="adminRisk1Level">
-                <option value="">(none)</option>
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-              </select>
-            </div>
-
-            <div class="admin-field">
-              <label for="adminRisk1Note">Risk 1 note</label>
-              <input id="adminRisk1Note" type="text" />
-            </div>
-
-            <div class="admin-field">
-              <label for="adminRisk2Level">Risk 2 level</label>
-              <select id="adminRisk2Level">
-                <option value="">(none)</option>
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-              </select>
-            </div>
-
-            <div class="admin-field admin-row-wide">
-              <label for="adminRisk2Note">Risk 2 note</label>
-              <textarea id="adminRisk2Note"></textarea>
-            </div>
-          </div>
-
-          <div class="admin-actions">
-            <button class="btn-apply" id="btnApplyChanges">Apply locally</button>
-            <button class="btn-save" id="btnSaveToSheets">Save to Sheets</button>
-          </div>
-
-          <div class="admin-footer">
-            <div class="btn-ghost"><span class="dot"></span>DESKTOP ONLY • READ FROM SHEETS • WRITE VIA WEBAPP</div>
-            <span class="admin-note" id="saveNote">جاهز للحفظ — اختر مشروع ثم عدّل ثم اضغط Save to Sheets.</span>
           </div>
         </article>
       </section>
     </main>
+  </div>
+
+  <!-- Sticky Mobile Actions -->
+  <div class="mobile-actions" id="mobileActions">
+    <button class="btn-apply" id="btnApplyChangesMobile" type="button">Apply locally</button>
+    <button class="btn-save" id="btnSaveToSheetsMobile" type="button">Save to Sheets</button>
   </div>
 
   <script>
@@ -703,7 +874,7 @@
     const WEBAPP_URL =
       "https://script.google.com/macros/s/AKfycbz8YYJI37jZ6QeIuKW3W_XMMOWWrZ0fPBJg8dsbkhO7UsbUHDc2lQ_QriEhSgB-lI8h5A/exec";
 
-    // ضع الـ Secret هنا كما هو (من Apps Script → setup)
+    // Secret (as you provided)
     const WEBAPP_SECRET =
       "b35bb77e-ad8f-4bd5-8642-94fd06c8ae8b-f431d4ea-6189-44f6-a29d-3820dbc7c4e9";
 
@@ -739,7 +910,7 @@
         let inQuotes = false;
         for (let i = 0; i < line.length; i++) {
           const ch = line[i];
-          if (ch === '"' ) {
+          if (ch === '"') {
             if (inQuotes && line[i+1] === '"') { cur += '"'; i++; }
             else { inQuotes = !inQuotes; }
           } else if (ch === "," && !inQuotes) {
@@ -772,20 +943,15 @@
 
     // ======================================================
     // Render: Cash + Budget
-    // (Aligned to your agreed Data1 fields:
-    //  Income_Month, Actual_Expense, Pending_Payments, Cash_Balance,
-    //  Budget_Approved, Obligations_30D, Income_Forecast, Expense_Forecast
-    //  + we keep fallbacks for old names)
     // ======================================================
     function renderCashAndBudget() {
       if (!data1Rows.length) return;
 
-      // assume first row is latest
       const nowRow = data1Rows[0];
 
       const cashBalance = num(pick(nowRow, ["Cash_Balance", "CashBalance"]));
       const pending     = num(pick(nowRow, ["Pending_Payments", "Pending", "PendingPayments"]));
-      const obl30d       = num(pick(nowRow, ["Obligations_30D", "Obligation_30D", "Obligations30D"]));
+      const obl30d      = num(pick(nowRow, ["Obligations_30D", "Obligation_30D", "Obligations30D"]));
       const approvedBudget = num(pick(nowRow, ["Budget_Approved", "Budget_Total", "BudgetApproved", "BudgetTotal"]));
 
       const actualYtd = data1Rows.reduce((sum, r) => sum + num(pick(r, ["Actual_Expense", "ActualExpense"])), 0);
@@ -900,7 +1066,7 @@
         xs.push(x); ys.push(y);
       });
 
-      // defs + gradient (add FIRST so it works reliably)
+      // defs + gradient
       const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
       const grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
       grad.setAttribute("id", "cfLine");
@@ -1103,7 +1269,6 @@
       const idx = selectedProjectIndex;
       const p = projects[idx];
 
-      // keep ID as-is
       p.Project_Name = document.getElementById("adminName").value;
       p.Stage_text = document.getElementById("adminStage").value;
       p.Start_Date = document.getElementById("adminStart").value;
@@ -1123,7 +1288,6 @@
 
     // ======================================================
     // WRITE BACK to Google Sheets (via WebApp)
-    // IMPORTANT: avoid CORS preflight by sending Content-Type: text/plain
     // ======================================================
     function setSaveUI(label, chipClass, note) {
       const chip = document.getElementById("saveChip");
@@ -1137,7 +1301,6 @@
     async function postToWebApp(payload, tryNoCorsFallback = true) {
       const body = JSON.stringify(payload);
 
-      // Attempt 1: normal CORS (text/plain to reduce preflight issues)
       try {
         const res = await fetch(WEBAPP_URL, {
           method: "POST",
@@ -1157,7 +1320,6 @@
         }
         return json || { ok: true, raw: text };
       } catch (err) {
-        // Attempt 2: no-cors fallback (cannot read response, but often sends successfully)
         if (!tryNoCorsFallback) throw err;
 
         await fetch(WEBAPP_URL, {
@@ -1173,7 +1335,6 @@
     }
 
     function buildProjectPayload(project) {
-      // ensure clean project object with expected columns
       return {
         Project_ID: pick(project, ["Project_ID","ID"], ""),
         Project_Name: pick(project, ["Project_Name","Name"], ""),
@@ -1192,15 +1353,11 @@
     async function saveSelectedProjectToSheets() {
       if (!projects.length) return;
 
-      const idx = selectedProjectIndex % projects.length;
-      const current = projects[idx];
-
-      // first apply local changes to ensure project object is updated
       applyAdminChanges();
 
+      const idx = selectedProjectIndex % projects.length;
       const row = buildProjectPayload(projects[idx]);
 
-      // minimal validation
       if (!row.Project_ID) {
         alert("Project_ID فارغ — لا يمكن الحفظ بدون ID.");
         return;
@@ -1208,8 +1365,10 @@
 
       setSaveUI("SAVING…", "chip-amber", "جاري الحفظ إلى Google Sheets عبر WebApp…");
       const btn = document.getElementById("btnSaveToSheets");
-      btn.classList.add("btn-disabled");
-      btn.disabled = true;
+      if (btn) { btn.classList.add("btn-disabled"); btn.disabled = true; }
+
+      const btnM = document.getElementById("btnSaveToSheetsMobile");
+      if (btnM) { btnM.classList.add("btn-disabled"); btnM.disabled = true; }
 
       try {
         const payload = {
@@ -1218,23 +1377,20 @@
           service: "FACC Projects write-back WebApp",
           sheet: "Projects",
           idColumn: "Project_ID",
-          row,        // primary
-          project: row // fallback
+          row,
+          project: row
         };
 
-        const resp = await postToWebApp(payload, true);
+        await postToWebApp(payload, true);
 
-        setSaveUI("Saved", "chip-green", "تم الحفظ بنجاح ✅ سيتم تحديث البيانات من الشيت الآن…");
-
-        // reload projects from Sheets to reflect what is stored
+        setSaveUI("Saved", "chip-green", "تم الحفظ بنجاح✅ سيتم تحديث البيانات من الشيت الآن…");
         await refreshProjectsFromSheets(true);
-
       } catch (err) {
-        setSaveUI("Failed", "chip-red", "فشل الحفظ. غالباً إعدادات WebApp/الصلاحيات أو CORS.");
+        setSaveUI("Failed", "chip-red", "فشل الحفظ. غالباً إعدادات WebApp/الصحة أو CORS.");
         alert("Save to Sheets failed:\n" + (err?.message || String(err)));
       } finally {
-        btn.classList.remove("btn-disabled");
-        btn.disabled = false;
+        if (btn) { btn.classList.remove("btn-disabled"); btn.disabled = false; }
+        if (btnM) { btnM.classList.remove("btn-disabled"); btnM.disabled = false; }
       }
     }
 
@@ -1246,7 +1402,6 @@
       const text = await fetch(PROJECTS_CSV).then(r => r.text());
       let newProjects = parseCSV(text).filter(p => pick(p, ["Project_Name","Name","Project_ID","ID"], "") !== "");
 
-      // normalize key names (keep as your canonical columns)
       newProjects = newProjects.map(p => ({
         Project_ID: pick(p, ["Project_ID","ID"], ""),
         Project_Name: pick(p, ["Project_Name","Name"], ""),
@@ -1268,7 +1423,7 @@
       else selectedProjectIndex = 0;
 
       renderProjects();
-      setSaveUI("Live", "chip-green", "تم التحديث من Google Sheets ✅");
+      setSaveUI("Live", "chip-green", "تم التحديث منGoogle Sheets ✅");
     }
 
     async function boot() {
@@ -1279,9 +1434,8 @@
         ]);
 
         data1Rows = parseCSV(data1Text);
-        projects = parseCSV(projectsText).filter(p => pick(p, ["Project_Name","Name","Project_ID","ID"], "") !== "");
 
-        // normalize projects columns
+        projects = parseCSV(projectsText).filter(p => pick(p, ["Project_Name","Name","Project_ID","ID"], "") !== "");
         projects = projects.map(p => ({
           Project_ID: pick(p, ["Project_ID","ID"], ""),
           Project_Name: pick(p, ["Project_Name","Name"], ""),
@@ -1300,7 +1454,6 @@
         renderChart();
         renderProjects();
         setSaveUI("Live", "chip-green", "جاهز للحفظ — عدّل ثم اضغط Save to Sheets.");
-
       } catch (err) {
         console.error("Boot error:", err);
         setSaveUI("Offline", "chip-red", "تعذر تحميل البيانات من الشيت. تأكد من Publish CSV.");
@@ -1308,10 +1461,40 @@
     }
 
     // ======================================================
+    // UI: Admin collapsible + mobile buttons
+    // ======================================================
+    function isMobile() {
+      return window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
+    }
+
+    function setupAdminCollapsible() {
+      const wrap = document.getElementById("adminCollapsible");
+      const btn = document.getElementById("adminToggle");
+      const chev = document.getElementById("adminChev");
+      if (!wrap || !btn || !chev) return;
+
+      // Default: open on desktop, closed on mobile
+      const applyDefault = () => {
+        if (isMobile()) wrap.classList.remove("open");
+        else wrap.classList.add("open");
+        chev.textContent = wrap.classList.contains("open") ? "⌃" : "⌄";
+      };
+
+      btn.addEventListener("click", () => {
+        wrap.classList.toggle("open");
+        chev.textContent = wrap.classList.contains("open") ? "⌃" : "⌄";
+      });
+
+      window.addEventListener("resize", applyDefault);
+      applyDefault();
+    }
+
+    // ======================================================
     // Events
     // ======================================================
     document.addEventListener("DOMContentLoaded", () => {
       boot();
+      setupAdminCollapsible();
 
       document.getElementById("adminProjectSelect").addEventListener("change", (e) => {
         selectedProjectIndex = parseInt(e.target.value, 10) || 0;
@@ -1319,15 +1502,38 @@
         setSaveUI("Live", "chip-green", "تم اختيار مشروع. عدّل ثم احفظ.");
       });
 
-      document.getElementById("btnApplyChanges").addEventListener("click", (e) => {
-        e.preventDefault();
-        applyAdminChanges();
-      });
+      const applyBtn = document.getElementById("btnApplyChanges");
+      if (applyBtn) {
+        applyBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          applyAdminChanges();
+        });
+      }
 
-      document.getElementById("btnSaveToSheets").addEventListener("click", async (e) => {
-        e.preventDefault();
-        await saveSelectedProjectToSheets();
-      });
+      const saveBtn = document.getElementById("btnSaveToSheets");
+      if (saveBtn) {
+        saveBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          await saveSelectedProjectToSheets();
+        });
+      }
+
+      // Mobile sticky buttons
+      const applyM = document.getElementById("btnApplyChangesMobile");
+      const saveM = document.getElementById("btnSaveToSheetsMobile");
+
+      if (applyM) {
+        applyM.addEventListener("click", (e) => {
+          e.preventDefault();
+          applyAdminChanges();
+        });
+      }
+      if (saveM) {
+        saveM.addEventListener("click", async (e) => {
+          e.preventDefault();
+          await saveSelectedProjectToSheets();
+        });
+      }
     });
   </script>
 </body>
