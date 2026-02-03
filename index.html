@@ -36,7 +36,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== Page ===== */
     .page {
       min-height: 100vh;
       display: flex;
@@ -45,7 +44,6 @@
       gap: 22px;
     }
 
-    /* ===== Header ===== */
     .header {
       display: flex;
       align-items: center;
@@ -134,7 +132,6 @@
     }
     .header-badge-value { font-size: 12px; color: #f3fafc; }
 
-    /* ===== Layout ===== */
     .grid-main {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
@@ -146,7 +143,6 @@
 
     .col { display: flex; flex-direction: column; gap: 18px; }
 
-    /* ===== Card ===== */
     .card {
       background: radial-gradient(circle at top left, #094652 0%, #041c22 65%, #021115 100%);
       border-radius: var(--radius-lg);
@@ -251,7 +247,6 @@
     }
     .variance-pill span.arrow { font-size: 11px; }
 
-    /* ===== Chart ===== */
     .chart-card { padding: 18px 20px 18px; }
     .chart-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
     .chart-title  { font-size: 14px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); }
@@ -286,7 +281,6 @@
     .chart-footer { margin-top: 10px; font-size: 11px; color: var(--text-muted); }
     .chart-footer strong { color: #f5fafc; }
 
-    /* ===== Projects ===== */
     .projects-card { padding: 16px 18px 16px; }
     .projects-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
     .projects-title  { font-size: 13px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-muted); }
@@ -361,7 +355,6 @@
     .risk-dot.yellow { background: var(--accent-yellow); box-shadow: 0 0 8px rgba(244,201,93,0.9); }
     .risk-dot.green  { background: var(--accent-green); box-shadow: 0 0 8px rgba(46,204,113,0.9); }
 
-    /* ===== Admin ===== */
     .admin-card { padding: 14px 16px 14px; }
 
     .admin-form {
@@ -469,10 +462,7 @@
 
     .admin-note { margin-top: 4px; font-size: 10px; color: var(--text-muted); }
 
-    /* ===== Mobile Enhancements ===== */
-    .mobile-actions {
-      display: none;
-    }
+    .mobile-actions { display: none; }
 
     .admin-collapsible {
       margin-top: 10px;
@@ -518,7 +508,6 @@
     }
     .admin-collapsible.open .admin-collapsible-body { display: block; }
 
-    /* ===== Responsive breakpoints ===== */
     @media (max-width: 1200px) {
       .page { padding: 18px 20px 26px; }
     }
@@ -539,45 +528,38 @@
     }
 
     @media (max-width: 768px) {
-      .page { padding: 14px 14px 96px; gap: 14px; } /* leave space for sticky actions */
+      .page { padding: 14px 14px 96px; gap: 14px; }
 
       .grid-main { gap: 14px; }
       .col { gap: 14px; }
 
-      /* Make cards slightly tighter */
       .card { padding: 14px 14px; border-radius: 18px; }
       .chart-card { padding: 14px 14px; }
       .projects-card { padding: 14px 14px; }
       .admin-card { padding: 14px 14px; }
 
-      /* KPI layout stacks */
       .kpi-value { font-size: 24px; }
       .kpi-unit { font-size: 11px; }
 
-      /* Force grid blocks to single column */
       .mobile-stack-2,
       .mobile-stack-2b { display: grid; grid-template-columns: 1fr; gap: 12px; }
       .mobile-stack-2b { grid-template-columns: 1fr; }
 
-      /* Chart becomes more compact */
       .chart-body { padding: 14px 12px 12px; }
       .chart-svg { max-height: 190px; }
       .chart-grid { background-size: 46px 22px; }
 
-      /* Projects tighten */
       .project-top { align-items: flex-start; }
       .project-badges { justify-content: flex-start; }
       .progress-shell { gap: 8px; }
       .progress-labels { display: none; }
       .progress-percent { min-width: 0; }
 
-      /* Admin form 1 column on mobile */
       .admin-form { grid-template-columns: 1fr; }
-      .admin-actions { display: none; } /* replaced by sticky mobile actions */
+      .admin-actions { display: none; }
       .admin-footer { gap: 8px; }
       .btn-ghost { width: 100%; justify-content: center; }
 
-      /* Sticky actions (mobile only) */
       .mobile-actions {
         display: flex;
         position: fixed;
@@ -596,7 +578,6 @@
         font-size: 11px;
       }
 
-      /* Arabic blocks look better on mobile */
       .title-ar,
       #cashSubText,
       #controlDetails,
@@ -634,7 +615,6 @@
     </header>
 
     <main class="grid-main">
-      <!-- Left column -->
       <section class="col">
         <div class="mobile-stack-2" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
           <article class="card">
@@ -729,7 +709,6 @@
         </article>
       </section>
 
-      <!-- Right column -->
       <section class="col">
         <article class="card projects-card">
           <div class="projects-header">
@@ -748,7 +727,6 @@
           <div id="projectsContainer"></div>
         </article>
 
-        <!-- Admin: desktop shows full, mobile collapsible -->
         <article class="card admin-card">
           <div class="card-header" style="margin-bottom:6px;">
             <div class="card-title">CEO controls (Admin)</div>
@@ -851,35 +829,24 @@
     </main>
   </div>
 
-  <!-- Sticky Mobile Actions -->
   <div class="mobile-actions" id="mobileActions">
     <button class="btn-apply" id="btnApplyChangesMobile" type="button">Apply locally</button>
     <button class="btn-save" id="btnSaveToSheetsMobile" type="button">Save to Sheets</button>
   </div>
 
   <script>
-    // ======================================================
-    // 1) روابط Google Sheets (CSV publish links)
-    // ======================================================
     const DATA1_CSV =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=0&single=true&output=csv";
 
     const PROJECTS_CSV =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=146585938&single=true&output=csv";
 
-    // ======================================================
-    // 2) WebApp (Apps Script) — WRITE BACK
-    // ======================================================
     const WEBAPP_URL =
       "https://script.google.com/macros/s/AKfycbz8YYJI37jZ6QeIuKW3W_XMMOWWrZ0fPBJg8dsbkhO7UsbUHDc2lQ_QriEhSgB-lI8h5A/exec";
 
-    // Secret (as you provided)
     const WEBAPP_SECRET =
       "b35bb77e-ad8f-4bd5-8642-94fd06c8ae8b-f431d4ea-6189-44f6-a29d-3820dbc7c4e9";
 
-    // ======================================================
-    // Helpers
-    // ======================================================
     function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
     function num(v) {
@@ -897,7 +864,6 @@
       return fallback;
     }
 
-    // CSV parser (supports quoted values)
     function parseCSV(text) {
       const rows = [];
       const lines = text.replace(/\r/g, "").split("\n").filter(Boolean);
@@ -933,14 +899,11 @@
       return rows;
     }
 
-    // Month label parser like "NOV-26" / "DEC-25" / "JAN-2026"
     function parseMonthLabel(label) {
       const s = String(label || "").trim().toUpperCase();
       if (!s) return null;
 
       const months = { JAN:1,FEB:2,MAR:3,APR:4,MAY:5,JUN:6,JUL:7,AUG:8,SEP:9,OCT:10,NOV:11,DEC:12 };
-
-      // formats: MON-YY / MON-YYYY
       const m1 = s.match(/^([A-Z]{3})[-\/ ](\d{2}|\d{4})$/);
       if (m1) {
         const mon = months[m1[1]] || null;
@@ -950,7 +913,6 @@
         return { y, m: mon, key: y*100 + mon };
       }
 
-      // fallback: try extract year
       const yOnly = s.match(/(20\d{2})/);
       if (yOnly) {
         const y = parseInt(yOnly[1], 10);
@@ -963,20 +925,18 @@
       return keys.some(k => String(row?.[k] ?? "").trim() !== "");
     }
 
-    // ======================================================
-    // State
-    // ======================================================
+    function hasActual(row) {
+      const v = pick(row, ["Actual_Expense", "Actual Expense", "ActualExpense"], "");
+      return String(v).trim() !== "" && !isNaN(parseFloat(v));
+    }
+
     let data1Rows = [];
     let projects = [];
     let selectedProjectIndex = 0;
 
-    // ======================================================
-    // Select Live Row (IMPORTANT FIX)
-    // ======================================================
     function getLiveRow(rows) {
       if (!rows || !rows.length) return null;
 
-      // Keys as they might appear in CSV headers
       const liveKeys = [
         "Cash_Balance", "Cash Balance", "CashBalance",
         "Obligations_30D", "Obligations 30D", "Obligation_30D", "Obligations30D",
@@ -984,25 +944,21 @@
         "Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved"
       ];
 
-      const candidates = rows.filter(r => hasAnyValue(r, liveKeys));
+      const candidates = rows.filter(r => hasActual(r) || hasAnyValue(r, liveKeys));
       if (!candidates.length) return rows[0];
 
-      // If multiple candidates, pick the latest by Month/Income_Month if possible
       let best = candidates[0];
       let bestKey = -Infinity;
 
       for (const r of candidates) {
         const ml = pick(r, ["Income_Month","Month","month"], "");
         const parsed = parseMonthLabel(ml);
-        const key = parsed ? parsed.key : -Infinity;
+        const key = (parsed && hasActual(r)) ? parsed.key : -Infinity;
         if (key > bestKey) { bestKey = key; best = r; }
       }
       return best;
     }
 
-    // ======================================================
-    // Render: Cash + Budget (reads from Live Row ONLY)
-    // ======================================================
     function renderCashAndBudget() {
       if (!data1Rows.length) return;
 
@@ -1011,14 +967,18 @@
       const cashBalance = num(pick(liveRow, ["Cash_Balance", "Cash Balance", "CashBalance"]));
       const pending     = num(pick(liveRow, ["Pending_Payments", "Pending Payments", "Pending", "PendingPayments"]));
       const obl30d       = num(pick(liveRow, ["Obligations_30D", "Obligations 30D", "Obligation_30D", "Obligations30D"]));
-      const approvedBudget = num(pick(liveRow, ["Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved", "Budget_Total "])); // last one is safe
+      const approvedBudget = num(pick(liveRow, ["Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved", "Budget_Total "])); 
 
-      // Actual YTD: sum all Actual_Expense (ignores blanks)
-      const actualYtd = data1Rows.reduce((sum, r) => sum + num(pick(r, ["Actual_Expense", "Actual Expense", "ActualExpense"])), 0);
+      const actualYtd = data1Rows.reduce((sum, r) => {
+        if (!hasActual(r)) return sum;
+        return sum + num(pick(r, ["Actual_Expense", "Actual Expense", "ActualExpense"]));
+      }, 0);
+
       const budgetRemaining = Math.max(approvedBudget - actualYtd, 0);
 
       const totalMonths = data1Rows.length || 1;
-      const monthsWithActual = data1Rows.filter(r => num(pick(r, ["Actual_Expense", "Actual Expense", "ActualExpense"])) > 0).length;
+      const monthsWithActual = data1Rows.filter(hasActual).length;
+
       const expectedByNow = approvedBudget * (monthsWithActual / totalMonths || 0);
       const variance = expectedByNow > 0 ? ((actualYtd - expectedByNow) / expectedByNow) * 100 : 0;
       const vAbs = Math.abs(variance);
@@ -1047,7 +1007,6 @@
       else if (vAbs <= 15) { budgetChip.textContent = "Monitoring"; budgetChip.classList.add("chip-amber"); }
       else { budgetChip.textContent = "Attention"; budgetChip.classList.add("chip-red"); }
 
-      // Monthly cap: 25% من (budgetRemaining / remainingMonths) بحد أعلى 200k
       const remainingMonths = (totalMonths - monthsWithActual) || totalMonths;
       let suggestedCap = remainingMonths > 0 ? (budgetRemaining / remainingMonths) * 0.25 : budgetRemaining * 0.25;
       if (!isFinite(suggestedCap) || suggestedCap <= 0) suggestedCap = 200000;
@@ -1062,7 +1021,6 @@
       document.getElementById("capRuleText").textContent =
         "Rule: 25% of remaining budget / remaining months (max " + formatSar(hardCap) + ")";
 
-      // Control status
       const controlChip = document.getElementById("controlChip");
       const controlText = document.getElementById("controlText");
       const controlDetails = document.getElementById("controlDetails");
@@ -1098,13 +1056,9 @@
         "Live snapshot • Data1 ( " + (liveMonth || "—") + " )";
     }
 
-    // ======================================================
-    // Render: Chart (reads from Forecast rows ONLY)
-    // ======================================================
     function renderChart() {
       if (!data1Rows.length) return;
 
-      // Only rows that actually have forecast numbers
       const forecastRows = data1Rows.filter(r =>
         String(pick(r, ["Income_Forecast","Income_Forcast","Income Forecast"], "")).trim() !== "" ||
         String(pick(r, ["Expense_Forecast","Expense_Forcast","Expense Forecast"], "")).trim() !== ""
@@ -1137,7 +1091,6 @@
         xs.push(x); ys.push(y);
       });
 
-      // defs + gradient
       const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
       const grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
       grad.setAttribute("id", "cfLine");
@@ -1151,7 +1104,6 @@
       defs.appendChild(grad);
       svg.appendChild(defs);
 
-      // safe line (0)
       const safeY = topPad + (1 - (0 - minVal) / span) * (height - topPad - bottomPad);
       const safeLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
       safeLine.setAttribute("x1", leftPad); safeLine.setAttribute("y1", safeY);
@@ -1161,7 +1113,6 @@
       safeLine.setAttribute("stroke-dasharray", "4 5");
       svg.appendChild(safeLine);
 
-      // path
       const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
       let d = "";
       xs.forEach((x, i) => { d += (i === 0 ? "M" : "L") + x + " " + ys[i] + " "; });
@@ -1173,7 +1124,6 @@
       path.setAttribute("stroke-linejoin", "round");
       svg.appendChild(path);
 
-      // points + value labels
       values.forEach((v, i) => {
         const cx = xs[i], cy = ys[i];
 
@@ -1195,7 +1145,6 @@
         svg.appendChild(txt);
       });
 
-      // month labels
       labels.forEach((label, i) => {
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
         text.setAttribute("x", xs[i]);
@@ -1215,9 +1164,6 @@
         "، ويمكن تعديل سياسة الصرف إذا اقترب الخط من الحد الأدنى الآمن.";
     }
 
-    // ======================================================
-    // Projects rendering (unchanged)
-    // ======================================================
     function mapRiskLevelToColor(level) {
       const lv = (level || "").toLowerCase();
       if (lv === "high") return "red";
@@ -1357,9 +1303,6 @@
       renderProjects();
     }
 
-    // ======================================================
-    // WRITE BACK to Google Sheets (via WebApp)
-    // ======================================================
     function setSaveUI(label, chipClass, note) {
       const chip = document.getElementById("saveChip");
       chip.className = "kpi-chip " + (chipClass || "");
@@ -1465,9 +1408,6 @@
       }
     }
 
-    // ======================================================
-    // Load / Refresh
-    // ======================================================
     async function refreshProjectsFromSheets(keepIndex = true) {
       const oldIndex = selectedProjectIndex;
       const text = await fetch(PROJECTS_CSV).then(r => r.text());
@@ -1531,9 +1471,6 @@
       }
     }
 
-    // ======================================================
-    // UI: Admin collapsible + mobile buttons
-    // ======================================================
     function isMobile() {
       return window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
     }
@@ -1544,7 +1481,6 @@
       const chev = document.getElementById("adminChev");
       if (!wrap || !btn || !chev) return;
 
-      // Default: open on desktop, closed on mobile
       const applyDefault = () => {
         if (isMobile()) wrap.classList.remove("open");
         else wrap.classList.add("open");
@@ -1560,9 +1496,6 @@
       applyDefault();
     }
 
-    // ======================================================
-    // Events
-    // ======================================================
     document.addEventListener("DOMContentLoaded", () => {
       boot();
       setupAdminCollapsible();
@@ -1589,7 +1522,6 @@
         });
       }
 
-      // Mobile sticky buttons
       const applyM = document.getElementById("btnApplyChangesMobile");
       const saveM = document.getElementById("btnSaveToSheetsMobile");
 
