@@ -857,9 +857,26 @@
     function formatInt(n) { return Math.round(n).toLocaleString("en-US"); }
     function formatSar(n) { return formatInt(n) + " SAR"; }
 
-    function pick(obj, keys, fallback = "") {
-      for (const k of keys) {
-        if (obj && Object.prototype.hasOwnProperty.call(obj, k) && String(obj[k]).trim() !== "") return obj[k];
+    function normalizeKey(k) {
+      return String(k || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .replace(/-+/g, "_");
+    }
+
+    function getVal(row, candidates, fallback = "") {
+      if (!row) return fallback;
+      const keys = Object.keys(row);
+      const normIndex = new Map();
+      for (const k of keys) normIndex.set(normalizeKey(k), k);
+
+      for (const c of candidates) {
+        const found = normIndex.get(normalizeKey(c));
+        if (found !== undefined) {
+          const v = row[found];
+          if (String(v).trim() !== "") return v;
+        }
       }
       return fallback;
     }
@@ -912,72 +929,92 @@
         if (m1[2].length === 2) y = 2000 + y;
         return { y, m: mon, key: y*100 + mon };
       }
-
-      const yOnly = s.match(/(20\d{2})/);
-      if (yOnly) {
-        const y = parseInt(yOnly[1], 10);
-        return { y, m: 1, key: y*100 + 1 };
-      }
       return null;
     }
 
     function hasAnyValue(row, keys) {
-      return keys.some(k => String(row?.[k] ?? "").trim() !== "");
+      return keys.some(k => String(getVal(row, [k], "")).trim() !== "");
     }
 
-    function hasActual(row) {
-      const v = pick(row, ["Actual_Expense", "Actual Expense", "ActualExpense"], "");
-      return String(v).trim() !== "" && !isNaN(parseFloat(v));
+    function hasActualExpense(row) {
+      const v = getVal(row, ["Actual_Expense", "Actual Expense", "ActualExpense"], "");
+      return String(v).trim() !== "" && !isNaN(parseFloat(String(v).replace(/,/g, "")));
+    }
+
+    function rowMonthKey(row) {
+      const m = getVal(row, ["Month"], "");
+      const parsed = parseMonthLabel(m);
+      return parsed ? parsed.key : null;
+    }
+
+    function getLatestOperationalRow(rows) {
+      if (!rows || !rows.length) return null;
+
+      const operationalKeys = [
+        "Cash_Balance",
+        "Pending_Payments",
+        "Obligations_30D",
+        "Income_month",
+        "Income_Month",
+        "Actual_Expense"
+      ];
+
+      const candidates = rows
+        .map((r, idx) => ({ r, idx, key: rowMonthKey(r) }))
+        .filter(x => x.key !== null)
+        .filter(x => hasActualExpense(x.r) || hasAnyValue(x.r, operationalKeys));
+
+      if (!candidates.length) return rows[0];
+
+      candidates.sort((a, b) => a.key - b.key);
+      return candidates[candidates.length - 1].r;
+    }
+
+    function getBudgetRow(rows) {
+      if (!rows || !rows.length) return null;
+
+      const candidates = rows
+        .map((r) => ({ r, key: rowMonthKey(r) }))
+        .filter(x => x.key !== null)
+        .filter(x => String(getVal(x.r, ["Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved"], "")).trim() !== "");
+
+      if (!candidates.length) return null;
+
+      candidates.sort((a, b) => a.key - b.key);
+      return candidates[candidates.length - 1].r;
+    }
+
+    function getMonthCount(rows) {
+      const keys = rows.map(r => rowMonthKey(r)).filter(k => k !== null);
+      const uniq = new Set(keys);
+      return Math.max(uniq.size, 1);
     }
 
     let data1Rows = [];
     let projects = [];
     let selectedProjectIndex = 0;
 
-    function getLiveRow(rows) {
-      if (!rows || !rows.length) return null;
-
-      const liveKeys = [
-        "Cash_Balance", "Cash Balance", "CashBalance",
-        "Obligations_30D", "Obligations 30D", "Obligation_30D", "Obligations30D",
-        "Pending_Payments", "Pending Payments", "Pending", "PendingPayments",
-        "Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved"
-      ];
-
-      const candidates = rows.filter(r => hasActual(r) || hasAnyValue(r, liveKeys));
-      if (!candidates.length) return rows[0];
-
-      let best = candidates[0];
-      let bestKey = -Infinity;
-
-      for (const r of candidates) {
-        const ml = pick(r, ["Income_Month","Month","month"], "");
-        const parsed = parseMonthLabel(ml);
-        const key = (parsed && hasActual(r)) ? parsed.key : -Infinity;
-        if (key > bestKey) { bestKey = key; best = r; }
-      }
-      return best;
-    }
-
     function renderCashAndBudget() {
       if (!data1Rows.length) return;
 
-      const liveRow = getLiveRow(data1Rows) || data1Rows[0];
+      const liveRow = getLatestOperationalRow(data1Rows) || data1Rows[0];
+      const budgetRow = getBudgetRow(data1Rows) || liveRow;
 
-      const cashBalance = num(pick(liveRow, ["Cash_Balance", "Cash Balance", "CashBalance"]));
-      const pending     = num(pick(liveRow, ["Pending_Payments", "Pending Payments", "Pending", "PendingPayments"]));
-      const obl30d       = num(pick(liveRow, ["Obligations_30D", "Obligations 30D", "Obligation_30D", "Obligations30D"]));
-      const approvedBudget = num(pick(liveRow, ["Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved", "Budget_Total "])); 
+      const cashBalance = num(getVal(liveRow, ["Cash_Balance", "Cash Balance", "CashBalance"]));
+      const pending     = num(getVal(liveRow, ["Pending_Payments", "Pending Payments", "Pending", "PendingPayments"]));
+      const obl30d      = num(getVal(liveRow, ["Obligations_30D", "Obligations 30D", "Obligation_30D", "Obligations30D"]));
+
+      const approvedBudget = num(getVal(budgetRow, ["Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved"]));
 
       const actualYtd = data1Rows.reduce((sum, r) => {
-        if (!hasActual(r)) return sum;
-        return sum + num(pick(r, ["Actual_Expense", "Actual Expense", "ActualExpense"]));
+        if (!hasActualExpense(r)) return sum;
+        return sum + num(getVal(r, ["Actual_Expense", "Actual Expense", "ActualExpense"]));
       }, 0);
 
       const budgetRemaining = Math.max(approvedBudget - actualYtd, 0);
 
-      const totalMonths = data1Rows.length || 1;
-      const monthsWithActual = data1Rows.filter(hasActual).length;
+      const totalMonths = Math.max(getMonthCount(data1Rows), 1);
+      const monthsWithActual = data1Rows.filter(hasActualExpense).length;
 
       const expectedByNow = approvedBudget * (monthsWithActual / totalMonths || 0);
       const variance = expectedByNow > 0 ? ((actualYtd - expectedByNow) / expectedByNow) * 100 : 0;
@@ -1051,27 +1088,42 @@
           "• يوصى برفع تقرير تفصيلي للمالك";
       }
 
-      const liveMonth = pick(liveRow, ["Income_Month", "Month"], "—");
+      const liveMonth = getVal(liveRow, ["Month"], "—");
       document.getElementById("lastUpdateLabel").textContent =
         "Live snapshot • Data1 ( " + (liveMonth || "—") + " )";
+    }
+
+    function getSortedRowsByMonth(rows) {
+      return rows
+        .map((r) => ({ r, key: rowMonthKey(r) }))
+        .filter(x => x.key !== null)
+        .sort((a, b) => a.key - b.key);
     }
 
     function renderChart() {
       if (!data1Rows.length) return;
 
-      const forecastRows = data1Rows.filter(r =>
-        String(pick(r, ["Income_Forecast","Income_Forcast","Income Forecast"], "")).trim() !== "" ||
-        String(pick(r, ["Expense_Forecast","Expense_Forcast","Expense Forecast"], "")).trim() !== ""
-      );
+      const sorted = getSortedRowsByMonth(data1Rows);
+      if (!sorted.length) return;
 
-      const rows = (forecastRows.length ? forecastRows : data1Rows).slice(0, 6);
+      const liveRow = getLatestOperationalRow(data1Rows) || data1Rows[0];
+      const liveKey = rowMonthKey(liveRow);
+
+      let startIndex = 0;
+      if (liveKey !== null) {
+        const idx = sorted.findIndex(x => x.key === liveKey);
+        if (idx >= 0) startIndex = idx;
+      }
+
+      const windowRows = sorted.slice(startIndex, startIndex + 6).map(x => x.r);
+      const rows = windowRows.length ? windowRows : sorted.slice(0, 6).map(x => x.r);
 
       const values = rows.map(r =>
-        num(pick(r, ["Income_Forecast","Income_Forcast","Income Forecast"])) -
-        num(pick(r, ["Expense_Forecast","Expense_Forcast","Expense Forecast"]))
+        num(getVal(r, ["Income_Forecast", "Income_Forcast", "Income Forecast"])) -
+        num(getVal(r, ["Expense_Forecast", "Expense_Forcast", "Expense Forecast"]))
       );
 
-      const labels = rows.map(r => pick(r, ["Income_Month", "Month"], ""));
+      const labels = rows.map(r => getVal(r, ["Month"], ""));
 
       const svg = document.getElementById("cashChart");
       svg.innerHTML = "";
@@ -1162,6 +1214,14 @@
         "<strong>تحليل مختصر:</strong> أعلى صافي تدفقات متوقعة في " +
         (bestMonth || "إحدى الأشهر") +
         "، ويمكن تعديل سياسة الصرف إذا اقترب الخط من الحد الأدنى الآمن.";
+    }
+
+    function pick(obj, keys, fallback = "") {
+      for (const k of keys) {
+        const v = getVal(obj, [k], "");
+        if (String(v).trim() !== "") return v;
+      }
+      return fallback;
     }
 
     function mapRiskLevelToColor(level) {
@@ -1397,7 +1457,7 @@
 
         await postToWebApp(payload, true);
 
-        setSaveUI("Saved", "chip-green", "تم الحفظ بنجاح✅ سيتم تحديث البيانات من الشيت الآن…");
+        setSaveUI("Saved", "chip-green", "تم الحفظ بنجاح. سيتم تحديث البيانات من الشيت الآن…");
         await refreshProjectsFromSheets(true);
       } catch (err) {
         setSaveUI("Failed", "chip-red", "فشل الحفظ. غالباً إعدادات WebApp/الصحة أو CORS.");
@@ -1434,7 +1494,7 @@
       else selectedProjectIndex = 0;
 
       renderProjects();
-      setSaveUI("Live", "chip-green", "تم التحديث منGoogle Sheets ✅");
+      setSaveUI("Live", "chip-green", "تم التحديث من Google Sheets.");
     }
 
     async function boot() {
