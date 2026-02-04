@@ -247,6 +247,17 @@
     }
     .variance-pill span.arrow { font-size: 11px; }
 
+    .variance-pill.ok {
+      background: rgba(46,204,113,0.12);
+      color: var(--accent-green);
+      border-color: rgba(46,204,113,0.45);
+    }
+    .variance-pill.warn {
+      background: rgba(244,201,93,0.12);
+      color: var(--accent-yellow);
+      border-color: rgba(244,201,93,0.45);
+    }
+
     .chart-card { padding: 18px 20px 18px; }
     .chart-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
     .chart-title  { font-size: 14px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); }
@@ -256,6 +267,7 @@
     .legend-dot   { width: 10px; height: 10px; border-radius: 50%; }
     .legend-dot.blue { background: var(--turquoise-soft); box-shadow: 0 0 10px rgba(84,211,212,0.9); }
     .legend-dot.gold { background: var(--accent-gold); }
+    .legend-dot.teal { background: var(--turquoise); box-shadow: 0 0 10px rgba(17,197,198,0.9); }
 
     .chart-body {
       background: radial-gradient(circle at top, #0a3d45 0%, #021117 65%, #00080b 100%);
@@ -642,11 +654,22 @@
               <div class="kpi-value" id="budgetApproved">—</div>
               <div class="kpi-unit">SAR • Approved budget</div>
             </div>
+
             <div class="mini-row"><span>Actual YTD</span><span><strong id="budgetActual">—</strong> SAR</span></div>
             <div class="mini-row"><span>Budget remaining</span><span><strong id="budgetRemaining">—</strong> SAR</span></div>
+
             <div class="mini-row">
-              <span>Variance</span>
-              <span class="variance-pill" id="budgetVariance"><span class="arrow">▲</span> 0% vs plan</span>
+              <span>Revenue</span>
+              <span class="variance-pill" id="revKpiPill"><span class="arrow">●</span> —% of plan</span>
+            </div>
+            <div class="mini-row">
+              <span>Spending</span>
+              <span class="variance-pill" id="expKpiPill"><span class="arrow">●</span> —% vs plan</span>
+            </div>
+
+            <div class="mini-row" style="margin-top:10px;">
+              <span>YTD variance</span>
+              <span class="variance-pill" id="budgetVariance"><span class="arrow">▲</span> 0% vs pace</span>
             </div>
           </article>
         </div>
@@ -693,19 +716,20 @@
         <article class="card chart-card">
           <div class="chart-header">
             <div>
-              <div class="chart-title">Cash flow projection — 6 months</div>
-              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">توقع السيولة الصافية بالاعتماد علىIncome_Forecast &amp; Expense_Forecast</div>
+              <div class="chart-title">Cash balance projection — 6 months</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Forecast uses Income_Forecast &amp; Expense_Forecast • Actual uses Cash_Balance from Data1</div>
             </div>
             <div class="chart-legend">
-              <span class="legend-item"><span class="legend-dot blue"></span>السيولة المتوقعة</span>
-              <span class="legend-item"><span class="legend-dot gold"></span>الحد الأدنى الآمن</span>
+              <span class="legend-item"><span class="legend-dot blue"></span>Forecast balance</span>
+              <span class="legend-item"><span class="legend-dot teal"></span>Actual balance</span>
+              <span class="legend-item"><span class="legend-dot gold"></span>Safe minimum</span>
             </div>
           </div>
           <div class="chart-body">
             <div class="chart-grid"></div>
             <svg class="chart-svg" id="cashChart" viewBox="0 0 420 210" aria-hidden="true"></svg>
           </div>
-          <div class="chart-footer" id="chartComment"><strong>تحليل تجريبي:</strong>سيتم توليد التعليق حسب الأرقام الفعلية من الشيت.</div>
+          <div class="chart-footer" id="chartComment"><strong>Note:</strong> commentary is generated from latest sheet numbers.</div>
         </article>
       </section>
 
@@ -714,7 +738,7 @@
           <div class="projects-header">
             <div>
               <div class="projects-title">Projects snapshot</div>
-              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">يعرض مشروعين في آن واحد – يتم تغذيتها من تبويب <strong>Projects</strong>.</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Shows 2 projects at once — sourced from <strong>Projects</strong>.</div>
             </div>
             <div class="projects-filter">
               <span class="panel-label">Smart filter</span>
@@ -970,15 +994,25 @@
       return candidates[candidates.length - 1].r;
     }
 
+    // Budget row: fixed baseline from DEC (doesn't change), fallback to latest budget-filled row.
     function getBudgetRow(rows) {
       if (!rows || !rows.length) return null;
 
+      const hasBudget = (r) => String(getVal(r, ["Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved"], "")).trim() !== "";
+
       const candidates = rows
-        .map((r) => ({ r, key: rowMonthKey(r) }))
+        .map((r) => ({ r, key: rowMonthKey(r), m: String(getVal(r, ["Month"], "")).trim().toUpperCase() }))
         .filter(x => x.key !== null)
-        .filter(x => String(getVal(x.r, ["Budget_Total", "Budget Total", "Budget_Approved", "Budget Approved"], "")).trim() !== "");
+        .filter(x => hasBudget(x.r));
 
       if (!candidates.length) return null;
+
+      // Prefer any DEC row (latest DEC by key)
+      const decCandidates = candidates.filter(x => x.m.startsWith("DEC") || x.m.includes("DEC"));
+      if (decCandidates.length) {
+        decCandidates.sort((a, b) => a.key - b.key);
+        return decCandidates[decCandidates.length - 1].r;
+      }
 
       candidates.sort((a, b) => a.key - b.key);
       return candidates[candidates.length - 1].r;
@@ -993,6 +1027,17 @@
     let data1Rows = [];
     let projects = [];
     let selectedProjectIndex = 0;
+
+    function pillSet(el, kind, html) {
+      if (!el) return;
+      el.classList.remove("ok", "warn");
+      el.style.background = "";
+      el.style.color = "";
+      el.style.borderColor = "";
+      if (kind === "ok") el.classList.add("ok");
+      if (kind === "warn") el.classList.add("warn");
+      el.innerHTML = html;
+    }
 
     function renderCashAndBudget() {
       if (!data1Rows.length) return;
@@ -1035,8 +1080,39 @@
       document.getElementById("budgetActual").textContent    = formatInt(actualYtd);
       document.getElementById("budgetRemaining").textContent = formatInt(budgetRemaining);
 
+      // Monthly KPI (current month): Revenue attainment + Spending variance vs plan
+      const plannedIncome = num(getVal(liveRow, ["Income_Forecast", "Income_Forcast", "Income Forecast"]));
+      const plannedExpense = num(getVal(liveRow, ["Expense_Forecast", "Expense_Forcast", "Expense Forecast"]));
+      const actualIncome = num(getVal(liveRow, ["Income_Month", "Income_month", "Income month"]));
+      const actualExpense = num(getVal(liveRow, ["Actual_Expense", "Actual Expense", "ActualExpense"]));
+
+      const revPct = plannedIncome > 0 ? (actualIncome / plannedIncome) * 100 : 0;
+      const expVarPct = plannedExpense > 0 ? ((actualExpense - plannedExpense) / plannedExpense) * 100 : 0;
+
+      const revPill = document.getElementById("revKpiPill");
+      if (plannedIncome <= 0) {
+        pillSet(revPill, "warn", `<span class="arrow">●</span> N/A of plan`);
+      } else {
+        const kind = revPct >= 90 ? "ok" : (revPct >= 60 ? "warn" : "");
+        const arrow = revPct >= 100 ? "▲" : "▼";
+        const pctTxt = revPct.toFixed(1) + "%";
+        pillSet(revPill, kind, `<span class="arrow">${arrow}</span> ${pctTxt} of plan`);
+      }
+
+      const expPill = document.getElementById("expKpiPill");
+      if (plannedExpense <= 0) {
+        pillSet(expPill, "warn", `<span class="arrow">●</span> N/A vs plan`);
+      } else {
+        const abs = Math.abs(expVarPct);
+        const kind = abs <= 10 ? "ok" : (abs <= 25 ? "warn" : "");
+        const arrow = expVarPct > 0 ? "▲" : (expVarPct < 0 ? "▼" : "●");
+        const txt = abs.toFixed(1) + "% " + (expVarPct > 0 ? "over plan" : (expVarPct < 0 ? "under plan" : "on plan"));
+        pillSet(expPill, kind, `<span class="arrow">${arrow}</span> ${txt}`);
+      }
+
+      // Existing YTD pace variance pill (kept) — now clearly "vs pace"
       const variancePill = document.getElementById("budgetVariance");
-      variancePill.innerHTML = `<span class="arrow">${variance >= 0 ? "▲" : "▼"}</span> ${vAbs.toFixed(1)}% ${variance >= 0 ? "over plan" : "under plan"}`;
+      variancePill.innerHTML = `<span class="arrow">${variance >= 0 ? "▲" : "▼"}</span> ${vAbs.toFixed(1)}% ${variance >= 0 ? "over pace" : "under pace"}`;
 
       const budgetChip = document.getElementById("budgetChip");
       budgetChip.classList.remove("chip-green", "chip-amber", "chip-red");
@@ -1062,30 +1138,33 @@
       const controlText = document.getElementById("controlText");
       const controlDetails = document.getElementById("controlDetails");
 
-      if (ratio >= 2 && vAbs <= 5) {
+      // Control logic now considers: liquidity ratio + monthly revenue attainment + monthly spending variance
+      const monthlyOk = (plannedIncome > 0 ? revPct >= 80 : true) && (plannedExpense > 0 ? Math.abs(expVarPct) <= 25 : true);
+
+      if (ratio >= 2 && vAbs <= 5 && monthlyOk) {
         controlChip.textContent = "Healthy";
         controlChip.className = "kpi-chip chip-green";
         controlText.textContent = "Under control";
         controlDetails.innerHTML =
-          "• السيولة تغطي التزامات 30 يوم بهامش مريح<br/>" +
-          "• الانحراف عن الميزانية ضمن النطاق المتفق عليه<br/>" +
-          "• لا توجد تنبيهات حمراء في الأشهر الستة القادمة";
+          "• Liquidity covers 30D obligations with margin<br/>" +
+          "• Budget pace variance within agreed range<br/>" +
+          "• Monthly revenue/spend signals are acceptable";
       } else if (ratio >= 1 && vAbs <= 15) {
         controlChip.textContent = "Watch";
         controlChip.className = "kpi-chip chip-amber";
         controlText.textContent = "Close monitoring";
         controlDetails.innerHTML =
-          "• السيولة تغطي التزامات 30 يوم لكن بهامش محدود<br/>" +
-          "• يوصى بمراجعة خطط الصرف للأشهر القادمة<br/>" +
-          "• مخاطر متوسطة تحتاج متابعة أسبوعية";
+          "• Liquidity covers 30D obligations with limited margin<br/>" +
+          "• Review spending plan for next months<br/>" +
+          "• Monthly revenue/spend variance requires attention";
       } else {
         controlChip.textContent = "Alert";
         controlChip.className = "kpi-chip chip-red";
         controlText.textContent = "Action required";
         controlDetails.innerHTML =
-          "• السيولة أقل من الالتزامات قصيرة الأجل أو الانحراف كبير عن الخطة<br/>" +
-          "• يجب مراجعة الالتزامات وخطة الصرف فوراً<br/>" +
-          "• يوصى برفع تقرير تفصيلي للمالك";
+          "• Liquidity below short-term obligations or variance is high<br/>" +
+          "• Immediate review: obligations and spending plan<br/>" +
+          "• Consider management escalation and cash actions";
       }
 
       const liveMonth = getVal(liveRow, ["Month"], "—");
@@ -1118,12 +1197,31 @@
       const windowRows = sorted.slice(startIndex, startIndex + 6).map(x => x.r);
       const rows = windowRows.length ? windowRows : sorted.slice(0, 6).map(x => x.r);
 
-      const values = rows.map(r =>
+      const labels = rows.map(r => getVal(r, ["Month"], ""));
+
+      // Build forecast balance from live cash balance + forecast net flows
+      const baseCash = num(getVal(liveRow, ["Cash_Balance", "Cash Balance", "CashBalance"]));
+      const forecastNet = rows.map(r =>
         num(getVal(r, ["Income_Forecast", "Income_Forcast", "Income Forecast"])) -
         num(getVal(r, ["Expense_Forecast", "Expense_Forcast", "Expense Forecast"]))
       );
 
-      const labels = rows.map(r => getVal(r, ["Month"], ""));
+      const forecastBalance = [];
+      for (let i = 0; i < rows.length; i++) {
+        const prev = (i === 0) ? baseCash : forecastBalance[i - 1];
+        forecastBalance.push(prev + forecastNet[i]);
+      }
+
+      // Actual balance from sheet (Cash_Balance) if provided in those months
+      const actualBalanceRaw = rows.map(r => {
+        const v = getVal(r, ["Cash_Balance", "Cash Balance", "CashBalance"], "");
+        const n = num(v);
+        return (String(v).trim() === "" ? null : n);
+      });
+
+      // Safe minimum (try column; fallback to 609k)
+      let safeMin = num(getVal(liveRow, ["Safe_Minimum", "Safe_Min", "Safe_Cash_Min", "SafeEnvelope", "Safe_Envelope"], ""));
+      if (!safeMin) safeMin = 609000;
 
       const svg = document.getElementById("cashChart");
       svg.innerHTML = "";
@@ -1131,19 +1229,31 @@
       const width = 420, height = 210;
       const leftPad = 28, rightPad = 20, topPad = 20, bottomPad = 35;
 
-      const maxVal = Math.max(...values, 0) || 1;
-      const minVal = Math.min(...values, 0);
+      // Scale uses both forecast + available actual + safeMin
+      const allVals = [
+        ...forecastBalance,
+        ...actualBalanceRaw.filter(v => v !== null),
+        safeMin
+      ].filter(v => typeof v === "number" && isFinite(v));
+
+      const maxVal = Math.max(...allVals, 0) || 1;
+      const minVal = Math.min(...allVals, 0);
       const span = (maxVal - minVal) || 1;
 
-      const xs = [], ys = [];
-      values.forEach((v, i) => {
-        const x = leftPad + (i / Math.max(values.length - 1, 1)) * (width - leftPad - rightPad);
-        const norm = (v - minVal) / span;
-        const y = topPad + (1 - norm) * (height - topPad - bottomPad);
-        xs.push(x); ys.push(y);
-      });
+      const xs = [];
+      for (let i = 0; i < labels.length; i++) {
+        const x = leftPad + (i / Math.max(labels.length - 1, 1)) * (width - leftPad - rightPad);
+        xs.push(x);
+      }
 
+      const yOf = (v) => {
+        const norm = (v - minVal) / span;
+        return topPad + (1 - norm) * (height - topPad - bottomPad);
+      };
+
+      // defs: forecast gradient
       const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+
       const grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
       grad.setAttribute("id", "cfLine");
       grad.setAttribute("x1", "0"); grad.setAttribute("x2", "1");
@@ -1153,10 +1263,12 @@
       const stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
       stop2.setAttribute("offset", "100%"); stop2.setAttribute("stop-color", "#11c5c6");
       grad.appendChild(stop1); grad.appendChild(stop2);
+
       defs.appendChild(grad);
       svg.appendChild(defs);
 
-      const safeY = topPad + (1 - (0 - minVal) / span) * (height - topPad - bottomPad);
+      // Safe minimum line
+      const safeY = yOf(safeMin);
       const safeLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
       safeLine.setAttribute("x1", leftPad); safeLine.setAttribute("y1", safeY);
       safeLine.setAttribute("x2", width - rightPad); safeLine.setAttribute("y2", safeY);
@@ -1165,19 +1277,22 @@
       safeLine.setAttribute("stroke-dasharray", "4 5");
       svg.appendChild(safeLine);
 
-      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      let d = "";
-      xs.forEach((x, i) => { d += (i === 0 ? "M" : "L") + x + " " + ys[i] + " "; });
-      path.setAttribute("d", d);
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "url(#cfLine)");
-      path.setAttribute("stroke-width", "3");
-      path.setAttribute("stroke-linecap", "round");
-      path.setAttribute("stroke-linejoin", "round");
-      svg.appendChild(path);
+      // Forecast path
+      const fYs = forecastBalance.map(yOf);
+      const fPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      let fd = "";
+      xs.forEach((x, i) => { fd += (i === 0 ? "M" : "L") + x + " " + fYs[i] + " "; });
+      fPath.setAttribute("d", fd);
+      fPath.setAttribute("fill", "none");
+      fPath.setAttribute("stroke", "url(#cfLine)");
+      fPath.setAttribute("stroke-width", "3");
+      fPath.setAttribute("stroke-linecap", "round");
+      fPath.setAttribute("stroke-linejoin", "round");
+      svg.appendChild(fPath);
 
-      values.forEach((v, i) => {
-        const cx = xs[i], cy = ys[i];
+      // Forecast dots + labels (keep numbers visible)
+      forecastBalance.forEach((v, i) => {
+        const cx = xs[i], cy = fYs[i];
 
         const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circle.setAttribute("cx", cx); circle.setAttribute("cy", cy);
@@ -1197,6 +1312,45 @@
         svg.appendChild(txt);
       });
 
+      // Actual dots (show last label only to avoid clutter)
+      actualBalanceRaw.forEach((v, i) => {
+        if (v === null) return;
+        const cx = xs[i], cy = yOf(v);
+
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", cx); circle.setAttribute("cy", cy);
+        circle.setAttribute("r", "5");
+        circle.setAttribute("fill", "#11c5c6");
+        circle.setAttribute("stroke", "#011015");
+        circle.setAttribute("stroke-width", "1.3");
+        svg.appendChild(circle);
+
+        const isLastActual = (i === [...actualBalanceRaw].reverse().findIndex(x => x !== null) ? false : false); // no-op safety
+      });
+
+      // label last actual point only
+      const lastActualIndex = (() => {
+        for (let i = actualBalanceRaw.length - 1; i >= 0; i--) {
+          if (actualBalanceRaw[i] !== null) return i;
+        }
+        return -1;
+      })();
+
+      if (lastActualIndex >= 0) {
+        const v = actualBalanceRaw[lastActualIndex];
+        const cx = xs[lastActualIndex], cy = yOf(v);
+
+        const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txt.setAttribute("x", cx);
+        txt.setAttribute("y", cy - 10);
+        txt.setAttribute("text-anchor", "middle");
+        txt.setAttribute("fill", "#11c5c6");
+        txt.setAttribute("font-size", "9");
+        txt.textContent = formatInt(v);
+        svg.appendChild(txt);
+      }
+
+      // Month labels
       labels.forEach((label, i) => {
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
         text.setAttribute("x", xs[i]);
@@ -1208,12 +1362,25 @@
         svg.appendChild(text);
       });
 
-      const maxIndex = values.indexOf(Math.max(...values));
-      const bestMonth = labels[maxIndex] || "";
+      // Commentary: distance to safe minimum
+      const lastForecast = forecastBalance[forecastBalance.length - 1];
+      const minForecast = Math.min(...forecastBalance);
+      const belowSafeMonths = forecastBalance
+        .map((v, i) => ({ v, i }))
+        .filter(x => x.v < safeMin)
+        .map(x => labels[x.i] || ("M" + (x.i + 1)));
+
+      let note = "";
+      if (belowSafeMonths.length) {
+        note = "Forecast dips below safe minimum in: " + belowSafeMonths.join(", ") + ".";
+      } else {
+        note = "Forecast stays above safe minimum across the 6-month window.";
+      }
+
       document.getElementById("chartComment").innerHTML =
-        "<strong>تحليل مختصر:</strong> أعلى صافي تدفقات متوقعة في " +
-        (bestMonth || "إحدى الأشهر") +
-        "، ويمكن تعديل سياسة الصرف إذا اقترب الخط من الحد الأدنى الآمن.";
+        "<strong>Insight:</strong> Min forecast balance " + formatSar(minForecast) +
+        " • End balance " + formatSar(lastForecast) +
+        " • Safe minimum " + formatSar(safeMin) + "<br/>" + note;
     }
 
     function pick(obj, keys, fallback = "") {
