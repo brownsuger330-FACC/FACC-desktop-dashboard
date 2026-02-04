@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -247,6 +248,22 @@
     }
     .variance-pill span.arrow { font-size: 11px; }
 
+    .pill-good {
+      background: rgba(46,204,113,0.12) !important;
+      color: var(--accent-green) !important;
+      border: 1px solid rgba(46,204,113,0.45) !important;
+    }
+    .pill-warn {
+      background: rgba(244,201,93,0.14) !important;
+      color: var(--accent-yellow) !important;
+      border: 1px solid rgba(244,201,93,0.50) !important;
+    }
+    .pill-bad {
+      background: rgba(255,85,96,0.12) !important;
+      color: var(--accent-red) !important;
+      border: 1px solid rgba(255,85,96,0.45) !important;
+    }
+
     .chart-card { padding: 18px 20px 18px; }
     .chart-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
     .chart-title  { font-size: 14px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); }
@@ -255,7 +272,7 @@
     .legend-item  { display: inline-flex; align-items: center; gap: 5px; }
     .legend-dot   { width: 10px; height: 10px; border-radius: 50%; }
     .legend-dot.blue { background: var(--turquoise-soft); box-shadow: 0 0 10px rgba(84,211,212,0.9); }
-    .legend-dot.teal { background: var(--turquoise); box-shadow: 0 0 10px rgba(17,197,198,0.85); }
+    .legend-dot.teal { background: var(--turquoise); box-shadow: 0 0 10px rgba(17,197,198,0.9); }
     .legend-dot.gold { background: var(--accent-gold); }
 
     .chart-body {
@@ -647,32 +664,18 @@
             <div class="mini-row"><span>Actual YTD</span><span><strong id="budgetActual">—</strong> SAR</span></div>
             <div class="mini-row"><span>Budget remaining</span><span><strong id="budgetRemaining">—</strong> SAR</span></div>
 
-            <!-- KPI block (as agreed) -->
-            <div class="mini-row">
-              <span>Revenue</span>
-              <span class="variance-pill" id="kpiRevenue"><span class="arrow">▼</span> 0.0% of plan</span>
-            </div>
-            <div class="mini-row">
-              <span>Spending</span>
-              <span class="variance-pill" id="kpiSpending"><span class="arrow">▲</span> 0.0% over plan</span>
-            </div>
-            <div class="mini-row">
-              <span>Net</span>
-              <span class="variance-pill" id="kpiNet"><span class="arrow">▼</span> 0.0% vs plan</span>
-            </div>
+            <!-- AGREED KPI SET (ENGLISH) -->
+            <div class="mini-row"><span>Revenue</span><span class="variance-pill" id="kpiRevenue"><span class="arrow">▼</span> —</span></div>
+            <div class="mini-row"><span>Spending</span><span class="variance-pill" id="kpiSpending"><span class="arrow">▲</span> —</span></div>
+            <div class="mini-row"><span>Net</span><span class="variance-pill" id="kpiNet"><span class="arrow">▼</span> —</span></div>
 
             <div class="mini-row">
               <span>YTD variance</span>
-              <span class="variance-pill" id="budgetVariance"><span class="arrow">▲</span> 0% vs plan</span>
+              <span class="variance-pill" id="budgetVariance"><span class="arrow">▲</span> —</span>
             </div>
-            <div class="mini-row">
-              <span>Run-rate</span>
-              <span class="variance-pill" id="kpiRunRate"><span class="arrow">▲</span> 0.0% risk</span>
-            </div>
-            <div class="mini-row">
-              <span>Runway</span>
-              <span class="variance-pill" id="kpiRunway"><span class="arrow">▲</span> — months</span>
-            </div>
+
+            <div class="mini-row"><span>Run-rate</span><span class="variance-pill" id="kpiRunRate"><span class="arrow">▲</span> —</span></div>
+            <div class="mini-row"><span>Runway</span><span class="variance-pill" id="kpiRunway"><span class="arrow">▼</span> —</span></div>
           </article>
         </div>
 
@@ -875,14 +878,17 @@
     const WEBAPP_SECRET =
       "b35bb77e-ad8f-4bd5-8642-94fd06c8ae8b-f431d4ea-6189-44f6-a29d-3820dbc7c4e9";
 
-    // SAFE MINIMUM (as you set): cash buffer for 6 months
-    const SAFE_MINIMUM = 609000;
+    const SAFE_MINIMUM = 609000; // agreed safe minimum (6 months coverage)
 
     function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
     function num(v) {
       if (v === undefined || v === null || v === "") return 0;
-      return parseFloat(String(v).replace(/,/g, "")) || 0;
+      const s = String(v).trim();
+      if (!s) return 0;
+      const cleaned = s.replace(/,/g, "");
+      const n = parseFloat(cleaned);
+      return isFinite(n) ? n : 0;
     }
 
     function formatInt(n) { return Math.round(n).toLocaleString("en-US"); }
@@ -963,19 +969,24 @@
       return null;
     }
 
+    function rowMonthKey(row) {
+      const m = getVal(row, ["Month"], "");
+      const parsed = parseMonthLabel(m);
+      return parsed ? parsed.key : null;
+    }
+
     function hasAnyValue(row, keys) {
       return keys.some(k => String(getVal(row, [k], "")).trim() !== "");
     }
 
     function hasActualExpense(row) {
       const v = getVal(row, ["Actual_Expense"], "");
-      return String(v).trim() !== "" && !isNaN(parseFloat(String(v).replace(/,/g, "")));
+      return String(v).trim() !== "" && isFinite(num(v));
     }
 
-    function rowMonthKey(row) {
-      const m = getVal(row, ["Month"], "");
-      const parsed = parseMonthLabel(m);
-      return parsed ? parsed.key : null;
+    function hasIncomeMonth(row) {
+      const v = getVal(row, ["Income_Month", "Income_month"], "");
+      return String(v).trim() !== "" && isFinite(num(v));
     }
 
     function getLatestOperationalRow(rows) {
@@ -992,7 +1003,7 @@
       const candidates = rows
         .map((r, idx) => ({ r, idx, key: rowMonthKey(r) }))
         .filter(x => x.key !== null)
-        .filter(x => hasActualExpense(x.r) || hasAnyValue(x.r, operationalKeys));
+        .filter(x => hasActualExpense(x.r) || hasIncomeMonth(x.r) || hasAnyValue(x.r, operationalKeys));
 
       if (!candidates.length) return rows[0];
 
@@ -1021,23 +1032,24 @@
         .sort((a, b) => a.key - b.key);
     }
 
-    function yearOfRow(row) {
-      const parsed = parseMonthLabel(getVal(row, ["Month"], ""));
-      return parsed ? parsed.y : null;
+    function setPill(el, mode, text, arrow) {
+      if (!el) return;
+      el.classList.remove("pill-good", "pill-warn", "pill-bad");
+      if (mode === "good") el.classList.add("pill-good");
+      else if (mode === "warn") el.classList.add("pill-warn");
+      else el.classList.add("pill-bad");
+
+      el.innerHTML = `<span class="arrow">${arrow || ""}</span> ${text}`;
     }
 
-    function filterRowsByYear(rows, year) {
-      if (!year) return rows.slice();
-      return rows.filter(r => yearOfRow(r) === year);
+    function pctText(p) {
+      if (!isFinite(p)) return "—";
+      return Math.abs(p).toFixed(1) + "%";
     }
 
-    function setVariancePill(el, pct, modeText) {
-      // pct: numeric, sign matters
-      const abs = Math.abs(pct);
-      const up = pct >= 0;
-      const arrow = up ? "▲" : "▼";
-      el.innerHTML = `<span class="arrow">${arrow}</span> ${abs.toFixed(1)}% ${modeText}`;
-    }
+    let data1Rows = [];
+    let projects = [];
+    let selectedProjectIndex = 0;
 
     function renderCashAndBudget() {
       if (!data1Rows.length) return;
@@ -1051,50 +1063,25 @@
 
       const approvedBudget = num(getVal(budgetRow, ["Budget_Total"]));
 
-      // Work strictly by budget year (prevents mixing DEC-25 into 2026)
-      const budgetYear = yearOfRow(budgetRow) || yearOfRow(liveRow);
-      const yearRows = filterRowsByYear(data1Rows, budgetYear);
+      // ===== KPI inputs (MONTH) =====
+      const mIncomeActual  = num(getVal(liveRow, ["Income_Month", "Income_month"]));
+      const mIncomePlan    = num(getVal(liveRow, ["Income_Forecast"]));
+      const mExpenseActual = num(getVal(liveRow, ["Actual_Expense"]));
+      const mExpensePlan   = num(getVal(liveRow, ["Expense_Forecast"]));
 
-      const actualYtd = yearRows.reduce((sum, r) => {
-        if (!hasActualExpense(r)) return sum;
-        return sum + num(getVal(r, ["Actual_Expense"]));
-      }, 0);
+      // ===== YTD window (up to live month) =====
+      const sorted = getSortedRowsByMonth(data1Rows);
+      const liveKey = rowMonthKey(liveRow);
+      const ytdRows = sorted
+        .filter(x => liveKey !== null ? x.key <= liveKey : true)
+        .map(x => x.r);
 
-      const budgetRemaining = Math.max(approvedBudget - actualYtd, 0);
+      const ytdActualExpense = ytdRows.reduce((sum, r) => sum + num(getVal(r, ["Actual_Expense"])), 0);
+      const ytdPlanExpense   = ytdRows.reduce((sum, r) => sum + num(getVal(r, ["Expense_Forecast"])), 0);
 
-      const totalMonthsInYear = Math.max(new Set(yearRows.map(r => rowMonthKey(r)).filter(Boolean)).size, 12);
-      const monthsWithActual = yearRows.filter(hasActualExpense).length || 0;
+      const budgetRemaining = Math.max(approvedBudget - ytdActualExpense, 0);
 
-      const expectedByNow = (approvedBudget > 0 && monthsWithActual > 0)
-        ? approvedBudget * (monthsWithActual / totalMonthsInYear)
-        : 0;
-
-      const varianceYtd = expectedByNow > 0 ? ((actualYtd - expectedByNow) / expectedByNow) * 100 : 0;
-      const vAbsYtd = Math.abs(varianceYtd);
-
-      // Month KPIs (strictly from live month row)
-      const planIncome = num(getVal(liveRow, ["Income_Forecast"]));
-      const planExpense = num(getVal(liveRow, ["Expense_Forecast"]));
-      const actIncome = num(getVal(liveRow, ["Income_Month"]));
-      const actExpense = num(getVal(liveRow, ["Actual_Expense"]));
-
-      const revenuePct = planIncome > 0 ? (actIncome / planIncome) * 100 : 0; // "% of plan"
-      const spendingPct = planExpense > 0 ? ((actExpense - planExpense) / planExpense) * 100 : 0; // over/under
-      const planNet = planIncome - planExpense;
-      const actNet = actIncome - actExpense;
-      const netPct = (planNet !== 0) ? ((actNet - planNet) / Math.abs(planNet)) * 100 : 0;
-
-      // Run-rate risk: annualized vs approved budget
-      const avgBurn = monthsWithActual > 0 ? (actualYtd / monthsWithActual) : 0;
-      const runRateAnnual = avgBurn > 0 ? (avgBurn * totalMonthsInYear) : 0;
-      const runRateRiskPct = (approvedBudget > 0 && runRateAnnual > 0) ? ((runRateAnnual - approvedBudget) / approvedBudget) * 100 : 0;
-
-      // Runway: (cash - safe minimum) / avg burn
-      let runwayMonths = null;
-      const usableCash = Math.max(cashBalance - SAFE_MINIMUM, 0);
-      if (avgBurn > 0) runwayMonths = usableCash / avgBurn;
-
-      // Render cash
+      // ===== Existing cash card =====
       document.getElementById("cashBalanceValue").textContent = formatInt(cashBalance);
       document.getElementById("obl30dLabel").textContent = "Obligations 30D: " + formatSar(obl30d);
       document.getElementById("pendingLabel").textContent = "Pending: " + formatSar(pending);
@@ -1106,68 +1093,133 @@
       else if (ratio >= 1) { cashStatusChip.textContent = "Tight"; cashStatusChip.classList.add("chip-amber"); }
       else { cashStatusChip.textContent = "Critical"; cashStatusChip.classList.add("chip-red"); }
 
-      // Render budget
+      // ===== Budget card numbers =====
       document.getElementById("budgetApproved").textContent  = formatInt(approvedBudget);
-      document.getElementById("budgetActual").textContent    = formatInt(actualYtd);
+      document.getElementById("budgetActual").textContent    = formatInt(ytdActualExpense);
       document.getElementById("budgetRemaining").textContent = formatInt(budgetRemaining);
 
-      // KPI pills
-      const elRev = document.getElementById("kpiRevenue");
-      const elSpend = document.getElementById("kpiSpending");
-      const elNet = document.getElementById("kpiNet");
-      const elRunRate = document.getElementById("kpiRunRate");
-      const elRunway = document.getElementById("kpiRunway");
+      // ===== AGREED KPI SET =====
+      // Revenue = actual income vs plan (as % of plan)
+      const revenuePctOfPlan = (mIncomePlan > 0) ? (mIncomeActual / mIncomePlan) * 100 : NaN;
+      // Spending = actual expense vs plan (as % over/under plan)
+      const spendingPctOverPlan = (mExpensePlan > 0) ? ((mExpenseActual - mExpensePlan) / mExpensePlan) * 100 : NaN;
+      // Net = (income-expense) vs plan net
+      const netActual = mIncomeActual - mExpenseActual;
+      const netPlan   = mIncomePlan - mExpensePlan;
+      const netPctVsPlan = (Math.abs(netPlan) > 0) ? ((netActual - netPlan) / Math.abs(netPlan)) * 100 : NaN;
 
-      // Revenue: show as "x% of plan" (always compare to plan)
+      // YTD variance = YTD actual expense vs YTD plan expense (over/under)
+      const ytdVarPct = (ytdPlanExpense > 0) ? ((ytdActualExpense - ytdPlanExpense) / ytdPlanExpense) * 100 : NaN;
+
+      // Run-rate = avg actual expense vs avg plan expense (risk %)
+      const monthsCount = Math.max(ytdRows.length, 1);
+      const avgActualExpense = ytdActualExpense / monthsCount;
+      const avgPlanExpense   = ytdPlanExpense / monthsCount;
+      const runRateRiskPct   = (avgPlanExpense > 0) ? ((avgActualExpense - avgPlanExpense) / avgPlanExpense) * 100 : NaN;
+
+      // Runway = months above SAFE_MINIMUM based on avg NET burn (expense - income) (non-negative)
+      const ytdActualIncome = ytdRows.reduce((sum, r) => sum + num(getVal(r, ["Income_Month", "Income_month"])), 0);
+      const avgActualIncome = ytdActualIncome / monthsCount;
+      const avgNetBurn = Math.max(avgActualExpense - avgActualIncome, 0);
+      const runwayMonths = (avgNetBurn > 0) ? Math.max((cashBalance - SAFE_MINIMUM) / avgNetBurn, 0) : NaN;
+
+      // Revenue pill (good when close to 100%+)
       {
-        const pct = revenuePct - 100; // for arrow direction vs plan baseline (100%)
-        // but display as "x% of plan"
-        const arrow = revenuePct >= 100 ? "▲" : "▼";
-        elRev.innerHTML = `<span class="arrow">${arrow}</span> ${revenuePct.toFixed(1)}% of plan`;
-      }
-
-      // Spending: show "over plan" if positive, else "under plan"
-      {
-        const arrow = spendingPct >= 0 ? "▲" : "▼";
-        const mode = spendingPct >= 0 ? "over plan" : "under plan";
-        elSpend.innerHTML = `<span class="arrow">${arrow}</span> ${Math.abs(spendingPct).toFixed(1)}% ${mode}`;
-      }
-
-      // Net: vs plan (positive better than plan)
-      {
-        const arrow = netPct >= 0 ? "▲" : "▼";
-        elNet.innerHTML = `<span class="arrow">${arrow}</span> ${Math.abs(netPct).toFixed(1)}% vs plan`;
-      }
-
-      // YTD variance pill (existing id)
-      const variancePill = document.getElementById("budgetVariance");
-      variancePill.innerHTML = `<span class="arrow">${varianceYtd >= 0 ? "▲" : "▼"}</span> ${vAbsYtd.toFixed(1)}% ${varianceYtd >= 0 ? "over plan" : "under plan"}`;
-
-      // Run-rate
-      {
-        const arrow = runRateRiskPct >= 0 ? "▲" : "▼";
-        elRunRate.innerHTML = `<span class="arrow">${arrow}</span> ${Math.abs(runRateRiskPct).toFixed(1)}% risk`;
-      }
-
-      // Runway
-      {
-        if (runwayMonths === null || !isFinite(runwayMonths)) {
-          elRunway.innerHTML = `<span class="arrow">▲</span> — months`;
+        const el = document.getElementById("kpiRevenue");
+        if (isFinite(revenuePctOfPlan)) {
+          const txt = `${revenuePctOfPlan.toFixed(1)}% of plan`;
+          const arrow = revenuePctOfPlan >= 100 ? "▲" : "▼";
+          const mode = revenuePctOfPlan >= 95 ? "good" : (revenuePctOfPlan >= 80 ? "warn" : "bad");
+          setPill(el, mode, txt, arrow);
         } else {
-          const arrow = runwayMonths >= 6 ? "▲" : "▼";
-          elRunway.innerHTML = `<span class="arrow">${arrow}</span> ${runwayMonths.toFixed(1)} months`;
+          setPill(el, "bad", "—", "");
         }
       }
 
-      // Budget chip based on YTD variance (keeps your previous logic)
+      // Spending pill (good when <= 0% over plan)
+      {
+        const el = document.getElementById("kpiSpending");
+        if (isFinite(spendingPctOverPlan)) {
+          const over = spendingPctOverPlan;
+          const txt = `${(over >= 0 ? "+" : "−")}${pctText(over).replace("-", "")} over plan`;
+          const arrow = over > 0 ? "▲" : "▼";
+          const mode = over <= 5 ? "good" : (over <= 15 ? "warn" : "bad");
+          setPill(el, mode, txt, arrow);
+        } else {
+          setPill(el, "bad", "—", "");
+        }
+      }
+
+      // Net pill (good when net >= plan net)
+      {
+        const el = document.getElementById("kpiNet");
+        if (isFinite(netPctVsPlan)) {
+          const diff = netPctVsPlan;
+          const txt = `${(diff >= 0 ? "+" : "−")}${pctText(diff).replace("-", "")} vs plan`;
+          const arrow = diff >= 0 ? "▲" : "▼";
+          const mode = diff >= -5 ? "good" : (diff >= -15 ? "warn" : "bad");
+          setPill(el, mode, txt, arrow);
+        } else {
+          setPill(el, "bad", "—", "");
+        }
+      }
+
+      // YTD variance pill (over plan is bad)
+      {
+        const el = document.getElementById("budgetVariance");
+        if (isFinite(ytdVarPct)) {
+          const over = ytdVarPct;
+          const txt = `${(over >= 0 ? "+" : "−")}${pctText(over).replace("-", "")} over plan`;
+          const arrow = over >= 0 ? "▲" : "▼";
+          const mode = Math.abs(over) <= 5 ? "good" : (Math.abs(over) <= 15 ? "warn" : "bad");
+          // If it's over plan positive -> penalize more (still colored by abs, but arrow shows direction)
+          setPill(el, mode, txt, arrow);
+        } else {
+          setPill(el, "bad", "—", "");
+        }
+      }
+
+      // Run-rate pill (risk = avg spend above plan)
+      {
+        const el = document.getElementById("kpiRunRate");
+        if (isFinite(runRateRiskPct)) {
+          const r = runRateRiskPct;
+          const txt = `${(r >= 0 ? "+" : "−")}${pctText(r).replace("-", "")} risk`;
+          const arrow = r >= 0 ? "▲" : "▼";
+          const mode = r <= 5 ? "good" : (r <= 15 ? "warn" : "bad");
+          setPill(el, mode, txt, arrow);
+        } else {
+          setPill(el, "bad", "—", "");
+        }
+      }
+
+      // Runway pill (good when >= 6 months)
+      {
+        const el = document.getElementById("kpiRunway");
+        if (isFinite(runwayMonths)) {
+          const txt = `${runwayMonths.toFixed(1)} months`;
+          const arrow = runwayMonths >= 6 ? "▲" : "▼";
+          const mode = runwayMonths >= 6 ? "good" : (runwayMonths >= 4 ? "warn" : "bad");
+          setPill(el, mode, txt, arrow);
+        } else {
+          // if no burn, runway not meaningful; show dash
+          setPill(el, "good", "— months", "");
+        }
+      }
+
+      // ===== Budget chip (driven by YTD variance abs) =====
       const budgetChip = document.getElementById("budgetChip");
       budgetChip.classList.remove("chip-green", "chip-amber", "chip-red");
-      if (vAbsYtd <= 5) { budgetChip.textContent = "On track"; budgetChip.classList.add("chip-green"); }
-      else if (vAbsYtd <= 15) { budgetChip.textContent = "Monitoring"; budgetChip.classList.add("chip-amber"); }
+      const vAbs = isFinite(ytdVarPct) ? Math.abs(ytdVarPct) : 0;
+      if (vAbs <= 5) { budgetChip.textContent = "On track"; budgetChip.classList.add("chip-green"); }
+      else if (vAbs <= 15) { budgetChip.textContent = "Monitoring"; budgetChip.classList.add("chip-amber"); }
       else { budgetChip.textContent = "Attention"; budgetChip.classList.add("chip-red"); }
 
-      // Monthly cap (unchanged)
-      const remainingMonths = (totalMonthsInYear - monthsWithActual) || totalMonthsInYear;
+      // ===== Monthly spending cap (UNCHANGED logic) =====
+      const totalMonths = Math.max(sorted.length, 1);
+      const monthsWithActual = Math.max(ytdRows.length, 1);
+      const remainingMonths = (totalMonths - monthsWithActual) || totalMonths;
+
       let suggestedCap = remainingMonths > 0 ? (budgetRemaining / remainingMonths) * 0.25 : budgetRemaining * 0.25;
       if (!isFinite(suggestedCap) || suggestedCap <= 0) suggestedCap = 200000;
       const hardCap = 200000;
@@ -1181,12 +1233,12 @@
       document.getElementById("capRuleText").textContent =
         "Rule: 25% of remaining budget / remaining months (max " + formatSar(hardCap) + ")";
 
-      // Control status (keep original structure)
+      // ===== Control status (same structure; now uses YTD variance abs) =====
       const controlChip = document.getElementById("controlChip");
       const controlText = document.getElementById("controlText");
       const controlDetails = document.getElementById("controlDetails");
 
-      if (ratio >= 2 && vAbsYtd <= 5) {
+      if (ratio >= 2 && vAbs <= 5) {
         controlChip.textContent = "Healthy";
         controlChip.className = "kpi-chip chip-green";
         controlText.textContent = "Under control";
@@ -1194,7 +1246,7 @@
           "• السيولة تغطي التزامات 30 يوم بهامش مريح<br/>" +
           "• الانحراف عن الميزانية ضمن النطاق المتفق عليه<br/>" +
           "• لا توجد تنبيهات حمراء في الأشهر الستة القادمة";
-      } else if (ratio >= 1 && vAbsYtd <= 15) {
+      } else if (ratio >= 1 && vAbs <= 15) {
         controlChip.textContent = "Watch";
         controlChip.className = "kpi-chip chip-amber";
         controlText.textContent = "Close monitoring";
@@ -1226,6 +1278,7 @@
       const liveRow = getLatestOperationalRow(data1Rows) || data1Rows[0];
       const liveKey = rowMonthKey(liveRow);
 
+      // window starts at live month (or closest)
       let startIndex = 0;
       if (liveKey !== null) {
         const idx = sorted.findIndex(x => x.key === liveKey);
@@ -1235,95 +1288,81 @@
       const windowRows = sorted.slice(startIndex, startIndex + 6).map(x => x.r);
       const rows = windowRows.length ? windowRows : sorted.slice(0, 6).map(x => x.r);
 
-      const startCash = num(getVal(liveRow, ["Cash_Balance"]));
-
-      // Planned net per month (strict column names)
-      const netForecast = rows.map(r =>
-        num(getVal(r, ["Income_Forecast"])) - num(getVal(r, ["Expense_Forecast"]))
-      );
-
-      // Forecast balance = starting cash + cumulative planned net
-      const forecastBalance = [];
-      let acc = 0;
-      for (let i = 0; i < netForecast.length; i++) {
-        acc += netForecast[i];
-        forecastBalance.push(startCash + acc);
-      }
-
-      // Actual balance points (only where Cash_Balance exists in that month row)
-      const actualBalance = rows.map(r => {
-        const v = getVal(r, ["Cash_Balance"], "");
-        return String(v).trim() === "" ? null : num(v);
-      });
-
       const labels = rows.map(r => getVal(r, ["Month"], ""));
 
+      // Actual balances (from sheet if present)
+      const actualBalances = rows.map(r => {
+        const v = getVal(r, ["Cash_Balance"], "");
+        return String(v).trim() !== "" ? num(v) : null;
+      });
+
+      // Forecast balances (cumulative ending balances from current cash)
+      const startCash = num(getVal(liveRow, ["Cash_Balance"]));
+      let running = startCash;
+      const forecastBalances = rows.map((r, i) => {
+        const incF = num(getVal(r, ["Income_Forecast"]));
+        const expF = num(getVal(r, ["Expense_Forecast"]));
+        const netF = incF - expF;
+        running = running + netF;
+        return running;
+      });
+
+      // Safe minimum line constant
+      const safeMin = SAFE_MINIMUM;
+
+      // SVG render
       const svg = document.getElementById("cashChart");
       svg.innerHTML = "";
 
       const width = 420, height = 210;
       const leftPad = 28, rightPad = 20, topPad = 20, bottomPad = 35;
 
-      const allVals = [];
-      forecastBalance.forEach(v => allVals.push(v));
-      actualBalance.forEach(v => { if (v !== null) allVals.push(v); });
-      allVals.push(SAFE_MINIMUM);
-
-      let maxVal = Math.max(...allVals);
-      let minVal = Math.min(...allVals);
-      if (!isFinite(maxVal) || !isFinite(minVal) || maxVal === minVal) {
-        maxVal = startCash + 1;
-        minVal = startCash - 1;
-      }
+      const allVals = [
+        ...forecastBalances.filter(v => isFinite(v)),
+        ...actualBalances.filter(v => v !== null && isFinite(v)),
+        safeMin
+      ];
+      const maxVal = Math.max(...allVals, 1);
+      const minVal = Math.min(...allVals, 0);
       const span = (maxVal - minVal) || 1;
 
-      const xs = [], yF = [], yA = [];
-      const n = Math.max(labels.length, 1);
+      const xs = [];
+      const yForecast = [];
+      const yActual = [];
 
-      for (let i = 0; i < n; i++) {
-        const x = leftPad + (i / Math.max(n - 1, 1)) * (width - leftPad - rightPad);
+      rows.forEach((r, i) => {
+        const x = leftPad + (i / Math.max(rows.length - 1, 1)) * (width - leftPad - rightPad);
         xs.push(x);
 
-        const normF = (forecastBalance[i] - minVal) / span;
-        yF.push(topPad + (1 - normF) * (height - topPad - bottomPad));
+        const vf = forecastBalances[i];
+        const nf = (vf - minVal) / span;
+        yForecast.push(topPad + (1 - nf) * (height - topPad - bottomPad));
 
-        if (actualBalance[i] === null) yA.push(null);
+        const va = actualBalances[i];
+        if (va === null) yActual.push(null);
         else {
-          const normA = (actualBalance[i] - minVal) / span;
-          yA.push(topPad + (1 - normA) * (height - topPad - bottomPad));
+          const na = (va - minVal) / span;
+          yActual.push(topPad + (1 - na) * (height - topPad - bottomPad));
         }
-      }
+      });
 
-      // defs: gradient for forecast line (existing style)
       const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
 
       const gradF = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
-      gradF.setAttribute("id", "cfLineF");
+      gradF.setAttribute("id", "cfForecast");
       gradF.setAttribute("x1", "0"); gradF.setAttribute("x2", "1");
       gradF.setAttribute("y1", "0"); gradF.setAttribute("y2", "0");
-      const stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-      stop1.setAttribute("offset", "0%"); stop1.setAttribute("stop-color", "#54d3d4");
-      const stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-      stop2.setAttribute("offset", "100%"); stop2.setAttribute("stop-color", "#11c5c6");
-      gradF.appendChild(stop1); gradF.appendChild(stop2);
+      const f1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+      f1.setAttribute("offset", "0%"); f1.setAttribute("stop-color", "#54d3d4");
+      const f2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+      f2.setAttribute("offset", "100%"); f2.setAttribute("stop-color", "#11c5c6");
+      gradF.appendChild(f1); gradF.appendChild(f2);
+
       defs.appendChild(gradF);
-
-      // actual line stroke
-      const gradA = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
-      gradA.setAttribute("id", "cfLineA");
-      gradA.setAttribute("x1", "0"); gradA.setAttribute("x2", "1");
-      gradA.setAttribute("y1", "0"); gradA.setAttribute("y2", "0");
-      const a1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-      a1.setAttribute("offset", "0%"); a1.setAttribute("stop-color", "#11c5c6");
-      const a2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-      a2.setAttribute("offset", "100%"); a2.setAttribute("stop-color", "#11c5c6");
-      gradA.appendChild(a1); gradA.appendChild(a2);
-      defs.appendChild(gradA);
-
       svg.appendChild(defs);
 
-      // Safe minimum (gold dashed)
-      const safeY = topPad + (1 - ((SAFE_MINIMUM - minVal) / span)) * (height - topPad - bottomPad);
+      // Safe minimum line
+      const safeY = topPad + (1 - ((safeMin - minVal) / span)) * (height - topPad - bottomPad);
       const safeLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
       safeLine.setAttribute("x1", leftPad); safeLine.setAttribute("y1", safeY);
       safeLine.setAttribute("x2", width - rightPad); safeLine.setAttribute("y2", safeY);
@@ -1332,41 +1371,38 @@
       safeLine.setAttribute("stroke-dasharray", "4 5");
       svg.appendChild(safeLine);
 
-      // Forecast line
+      // Forecast path
       const pathF = document.createElementNS("http://www.w3.org/2000/svg", "path");
       let dF = "";
-      xs.forEach((x, i) => { dF += (i === 0 ? "M" : "L") + x + " " + yF[i] + " "; });
+      xs.forEach((x, i) => { dF += (i === 0 ? "M" : "L") + x + " " + yForecast[i] + " "; });
       pathF.setAttribute("d", dF);
       pathF.setAttribute("fill", "none");
-      pathF.setAttribute("stroke", "url(#cfLineF)");
+      pathF.setAttribute("stroke", "url(#cfForecast)");
       pathF.setAttribute("stroke-width", "3");
       pathF.setAttribute("stroke-linecap", "round");
       pathF.setAttribute("stroke-linejoin", "round");
       svg.appendChild(pathF);
 
-      // Actual line (only if we have >=2 points, otherwise only draw the point)
-      const actualIdx = yA.map((v, i) => (v === null ? null : i)).filter(v => v !== null);
-      if (actualIdx.length >= 2) {
-        const pathA = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        let dA = "";
-        let started = false;
-        for (let i = 0; i < yA.length; i++) {
-          if (yA[i] === null) { started = false; continue; }
-          dA += (started ? "L" : "M") + xs[i] + " " + yA[i] + " ";
-          started = true;
-        }
-        pathA.setAttribute("d", dA);
-        pathA.setAttribute("fill", "none");
-        pathA.setAttribute("stroke", "url(#cfLineA)");
-        pathA.setAttribute("stroke-width", "2.4");
-        pathA.setAttribute("stroke-linecap", "round");
-        pathA.setAttribute("stroke-linejoin", "round");
-        svg.appendChild(pathA);
+      // Actual path (only connect available points)
+      const pathA = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      let dA = "";
+      let started = false;
+      for (let i = 0; i < xs.length; i++) {
+        if (yActual[i] === null) continue;
+        dA += (started ? "L" : "M") + xs[i] + " " + yActual[i] + " ";
+        started = true;
       }
+      pathA.setAttribute("d", dA || "");
+      pathA.setAttribute("fill", "none");
+      pathA.setAttribute("stroke", "#11c5c6");
+      pathA.setAttribute("stroke-width", "2.6");
+      pathA.setAttribute("stroke-linecap", "round");
+      pathA.setAttribute("stroke-linejoin", "round");
+      svg.appendChild(pathA);
 
-      // Points + labels (forecast)
-      for (let i = 0; i < forecastBalance.length; i++) {
-        const cx = xs[i], cy = yF[i];
+      // Forecast points + labels
+      forecastBalances.forEach((v, i) => {
+        const cx = xs[i], cy = yForecast[i];
 
         const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circle.setAttribute("cx", cx); circle.setAttribute("cy", cy);
@@ -1382,32 +1418,32 @@
         txt.setAttribute("text-anchor", "middle");
         txt.setAttribute("fill", "#e7fcff");
         txt.setAttribute("font-size", "9");
-        txt.textContent = formatInt(forecastBalance[i]);
+        txt.textContent = formatInt(v);
         svg.appendChild(txt);
-      }
+      });
 
-      // Actual points (if exist) + label
-      for (let i = 0; i < actualBalance.length; i++) {
-        if (actualBalance[i] === null) continue;
-        const cx = xs[i], cy = yA[i];
+      // Actual points + labels (only where exists)
+      actualBalances.forEach((v, i) => {
+        if (v === null) return;
+        const cx = xs[i], cy = yActual[i];
 
-        const circleA = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circleA.setAttribute("cx", cx); circleA.setAttribute("cy", cy);
-        circleA.setAttribute("r", "4.8");
-        circleA.setAttribute("fill", "#11c5c6");
-        circleA.setAttribute("stroke", "#011015");
-        circleA.setAttribute("stroke-width", "1.4");
-        svg.appendChild(circleA);
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", cx); circle.setAttribute("cy", cy);
+        circle.setAttribute("r", "4.1");
+        circle.setAttribute("fill", "#11c5c6");
+        circle.setAttribute("stroke", "#011015");
+        circle.setAttribute("stroke-width", "1.4");
+        svg.appendChild(circle);
 
-        const txtA = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtA.setAttribute("x", cx);
-        txtA.setAttribute("y", cy + 16);
-        txtA.setAttribute("text-anchor", "middle");
-        txtA.setAttribute("fill", "#9ff6f6");
-        txtA.setAttribute("font-size", "9");
-        txtA.textContent = formatInt(actualBalance[i]);
-        svg.appendChild(txtA);
-      }
+        const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txt.setAttribute("x", cx);
+        txt.setAttribute("y", cy + 14);
+        txt.setAttribute("text-anchor", "middle");
+        txt.setAttribute("fill", "#9ff7f7");
+        txt.setAttribute("font-size", "9");
+        txt.textContent = formatInt(v);
+        svg.appendChild(txt);
+      });
 
       // X labels
       labels.forEach((label, i) => {
@@ -1421,21 +1457,19 @@
         svg.appendChild(text);
       });
 
-      // Insight text (includes this month plan + actual, as you required)
-      const minForecast = Math.min(...forecastBalance);
-      const endForecast = forecastBalance[forecastBalance.length - 1];
+      // Insight text (include this month plan vs actual)
+      const minForecast = Math.min(...forecastBalances);
+      const endForecast = forecastBalances[forecastBalances.length - 1];
 
-      const planIncome = num(getVal(liveRow, ["Income_Forecast"]));
-      const planExpense = num(getVal(liveRow, ["Expense_Forecast"]));
-      const actIncome = num(getVal(liveRow, ["Income_Month"]));
-      const actExpense = num(getVal(liveRow, ["Actual_Expense"]));
+      const liveRow = getLatestOperationalRow(data1Rows) || data1Rows[0];
+      const thisPlanIncome = num(getVal(liveRow, ["Income_Forecast"]));
+      const thisPlanExpense = num(getVal(liveRow, ["Expense_Forecast"]));
+      const thisActIncome = num(getVal(liveRow, ["Income_Month", "Income_month"]));
+      const thisActExpense = num(getVal(liveRow, ["Actual_Expense"]));
 
       document.getElementById("chartComment").innerHTML =
-        "<strong>Insight:</strong> Min forecast balance " + formatInt(minForecast) + " SAR • " +
-        "End balance " + formatInt(endForecast) + " SAR • " +
-        "Safe minimum " + formatInt(SAFE_MINIMUM) + " SAR<br/>" +
-        "This month plan: Income " + formatInt(planIncome) + " SAR • Expense " + formatInt(planExpense) + " SAR • " +
-        "Actual: Income " + formatInt(actIncome) + " SAR • Expense " + formatInt(actExpense) + " SAR";
+        `<strong>Insight:</strong> Min forecast balance ${formatInt(minForecast)} SAR • End balance ${formatInt(endForecast)} SAR • Safe minimum ${formatInt(SAFE_MINIMUM)} SAR<br/>` +
+        `This month plan: Income ${formatInt(thisPlanIncome)} SAR • Expense ${formatInt(thisPlanExpense)} SAR • Actual: Income ${formatInt(thisActIncome)} SAR • Expense ${formatInt(thisActExpense)} SAR`;
     }
 
     function pick(obj, keys, fallback = "") {
@@ -1523,10 +1557,6 @@
         </div>
       `;
     }
-
-    let data1Rows = [];
-    let projects = [];
-    let selectedProjectIndex = 0;
 
     function renderProjects() {
       if (!projects.length) return;
@@ -1827,3 +1857,4 @@
   </script>
 </body>
 </html>
+
