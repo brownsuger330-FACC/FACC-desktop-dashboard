@@ -1,628 +1,137 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <title>FACC — First Avenue Command Center</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
-    :root {
-      --bg-dark: #02282f;
-      --card-dark: #063540;
-      --card-darker: #032027;
-      --turquoise: #11c5c6;
-      --turquoise-soft: #54d3d4;
-      --accent-gold: #c5a56c;
-      --accent-red: #ff5560;
-      --accent-yellow: #f4c95d;
-      --accent-green: #2ecc71;
-      --text-main: #ffffff;
-      --text-muted: #9fb4c0;
-      --border-subtle: rgba(255,255,255,0.04);
-      --shadow-soft: 0 14px 45px rgba(0,0,0,0.55);
-      --radius-lg: 22px;
-      --radius-md: 18px;
-      --radius-sm: 14px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left,#09414c 0%,#01161c 52%,#000b0f 100%);
-      color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 26px 32px 40px;
-      gap: 22px;
-    }
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand-block {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      min-width: 0;
-    }
-
-    .logo-seal {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.18);
-      box-shadow: 0 0 0 1px rgba(5, 201, 201, 0.4);
-      background: radial-gradient(circle at 30% 30%, #ffffff 0, #f5f7f8 35%, #dde3e8 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      flex: 0 0 auto;
-    }
-
-    .logo-seal img {
-      width: 135%;
-      height: auto;
-      object-fit: cover;
-      filter: drop-shadow(0 0 6px rgba(0,0,0,0.5));
-      transform: translateY(1px);
-    }
-
-    .title-block { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-    .title-main {
-      font-size: 22px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #f5f8f9;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .title-sub {
-      font-size: 15px;
-      color: var(--turquoise-soft);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .title-ar { font-size: 13px; color: var(--text-muted); }
-
-    .header-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: linear-gradient(120deg, #08414b, #022026);
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 10px 35px rgba(0,0,0,0.6);
-      flex: 0 0 auto;
-      max-width: 520px;
-    }
-
-    .header-badge-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 8px rgba(46, 204, 113,0.9);
-      flex: 0 0 auto;
-    }
-
-    .header-badge-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      color: var(--text-muted);
-    }
-    .header-badge-value { font-size: 12px; color: #f3fafc; }
-
-    .grid-main {
-      display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      align-items: flex-start;
-      gap: 20px;
-      flex: 1;
-      min-height: 0;
-    }
-
-    .col { display: flex; flex-direction: column; gap: 18px; }
-
-    .card {
-      background: radial-gradient(circle at top left, #094652 0%, #041c22 65%, #021115 100%);
-      border-radius: var(--radius-lg);
-      padding: 18px 20px 18px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-      transition: transform 160ms ease-out, box-shadow 160ms ease-out, border-color 160ms ease-out, background 200ms ease-out;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.06), transparent 55%),
-        radial-gradient(circle at bottom right, rgba(17,197,198,0.12), transparent 60%);
-      opacity: 0;
-      transition: opacity 220ms ease-out;
-      pointer-events: none;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.85);
-      border-color: rgba(17,197,198,0.4);
-      background: radial-gradient(circle at top left, #0b5663 0%, #031a20 65%, #010b0f 100%);
-    }
-    .card:hover::before { opacity: 1; }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .card-title {
-      font-size: 13px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .kpi-chip {
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.28);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      white-space: nowrap;
-    }
-
-    .chip-green { color: var(--accent-green); border-color: rgba(46, 204, 113, 0.6); box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.2); }
-    .chip-amber { color: var(--accent-yellow); border-color: rgba(244, 201, 93, 0.6); box-shadow: 0 0 0 1px rgba(244, 201, 93, 0.2); }
-    .chip-red   { color: var(--accent-red); border-color: rgba(255, 85, 96, 0.7); box-shadow: 0 0 0 1px rgba(255, 85, 96, 0.25); }
-
-    .kpi-main { display: flex; align-items: baseline; gap: 6px; margin: 4px 0 4px; }
-    .kpi-value { font-size: 26px; font-weight: 600; letter-spacing: 0.03em; }
-    .kpi-unit { font-size: 12px; color: var(--text-muted); }
-    .kpi-sub  { font-size: 12px; color: var(--text-muted); }
-
-    .kpi-footer {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text-muted);
-      flex-wrap: wrap;
-    }
-
-    .pill-small {
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 11px;
-    }
-
-    .mini-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 8px; font-size: 12px; color: var(--text-muted); }
-    .mini-row strong { color: #f6fafc; }
-
-    .bar-shell { flex: 1; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.05); overflow: hidden; position: relative; }
-    .bar-fill  { height: 100%; width: 62%; border-radius: inherit; background: linear-gradient(90deg, var(--turquoise), var(--turquoise-soft)); box-shadow: 0 0 12px rgba(17,197,198,0.8); }
-    .bar-tick  { position: absolute; top: -2px; width: 2px; height: 10px; border-radius: 999px; background: var(--accent-gold); left: 72%; box-shadow: 0 0 8px rgba(197,165,108,0.9); }
-
-    .variance-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(255,85,96,0.12);
-      color: var(--accent-red);
-      border: 1px solid rgba(255,85,96,0.45);
-      white-space: nowrap;
-    }
-    .variance-pill span.arrow { font-size: 11px; }
-
-    .pill-good {
-      background: rgba(46,204,113,0.12) !important;
-      color: var(--accent-green) !important;
-      border: 1px solid rgba(46,204,113,0.45) !important;
-    }
-    .pill-warn {
-      background: rgba(244,201,93,0.14) !important;
-      color: var(--accent-yellow) !important;
-      border: 1px solid rgba(244,201,93,0.50) !important;
-    }
-    .pill-bad {
-      background: rgba(255,85,96,0.12) !important;
-      color: var(--accent-red) !important;
-      border: 1px solid rgba(255,85,96,0.45) !important;
-    }
-
-    .chart-card { padding: 18px 20px 18px; }
-    .chart-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
-    .chart-title  { font-size: 14px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); }
-
-    .chart-legend { display: flex; align-items: center; gap: 12px; font-size: 11px; flex-wrap: wrap; }
-    .legend-item  { display: inline-flex; align-items: center; gap: 5px; }
-    .legend-dot   { width: 10px; height: 10px; border-radius: 50%; }
-    .legend-dot.blue { background: var(--turquoise-soft); box-shadow: 0 0 10px rgba(84,211,212,0.9); }
-    .legend-dot.teal { background: var(--turquoise); box-shadow: 0 0 10px rgba(17,197,198,0.9); }
-    .legend-dot.gold { background: var(--accent-gold); }
-
-    .chart-body {
-      background: radial-gradient(circle at top, #0a3d45 0%, #021117 65%, #00080b 100%);
-      border-radius: 18px;
-      padding: 18px 18px 16px;
-      border: 1px solid rgba(255,255,255,0.04);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .chart-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(to top, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 52px 26px;
-      opacity: 0.7;
-      pointer-events: none;
-    }
-
-    .chart-svg { width: 100%; max-height: 210px; display: block; position: relative; z-index: 1; }
-    .chart-footer { margin-top: 10px; font-size: 11px; color: var(--text-muted); }
-    .chart-footer strong { color: #f5fafc; }
-
-    .projects-card { padding: 16px 18px 16px; }
-    .projects-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-    .projects-title  { font-size: 13px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-muted); }
-
-    .projects-filter { display: flex; align-items: center; gap: 8px; font-size: 12px; flex-wrap: wrap; }
-    .panel-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); }
-
-    .select {
-      background: rgba(0,0,0,0.45);
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 5px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: default;
-      white-space: nowrap;
-    }
-    .select span { font-size: 12px; color: #f3fafc; }
-    .select small { font-size: 11px; color: var(--text-muted); }
-
-    .project-row {
-      padding: 10px 11px 10px;
-      border-radius: 14px;
-      background: linear-gradient(120deg, rgba(0,0,0,0.24), rgba(0,0,0,0.5));
-      border: 1px solid rgba(255,255,255,0.04);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 6px;
-    }
-    .project-row + .project-row { margin-top: 8px; }
-
-    .project-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .project-name { font-size: 13px; font-weight: 500; }
-
-    .project-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 10px; flex-wrap: wrap; }
-    .project-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-
-    .badge-stage {
-      padding: 3px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 11px;
-      color: var(--turquoise-soft);
-      background: rgba(0,0,0,0.35);
-      white-space: nowrap;
-    }
-
-    .progress-shell { margin-top: 4px; display: flex; align-items: center; gap: 10px; }
-    .progress-labels { font-size: 11px; color: var(--text-muted); min-width: 78px; }
-    .progress-bar { flex: 1; height: 7px; border-radius: 999px; background: rgba(255,255,255,0.06); position: relative; overflow: hidden; }
-    .progress-fill { height: 100%; width: 60%; background: linear-gradient(90deg, var(--turquoise), var(--turquoise-soft)); border-radius: inherit; box-shadow: 0 0 12px rgba(17,197,198,0.9); }
-    .progress-tick { position: absolute; top: -2px; left: 72%; width: 2px; height: 11px; border-radius: 999px; background: var(--accent-gold); box-shadow: 0 0 8px rgba(197,165,108,0.9); }
-    .progress-percent { font-size: 11px; min-width: 62px; text-align: right; color: #f6fafc; white-space: nowrap; }
-
-    .risk-chips { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 6px; font-size: 11px; }
-    .risk-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.38);
-      color: var(--text-muted);
-      max-width: 100%;
-    }
-
-    .risk-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .risk-dot.red    { background: var(--accent-red); box-shadow: 0 0 8px rgba(255,85,96,0.9); }
-    .risk-dot.yellow { background: var(--accent-yellow); box-shadow: 0 0 8px rgba(244,201,93,0.9); }
-    .risk-dot.green  { background: var(--accent-green); box-shadow: 0 0 8px rgba(46,204,113,0.9); }
-
-    .admin-card { padding: 14px 16px 14px; }
-
-    .admin-form {
-      margin-top: 6px;
-      font-size: 11px;
-      color: var(--text-muted);
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px 10px;
-    }
-
-    .admin-field { display: flex; flex-direction: column; gap: 3px; }
-    .admin-field label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; }
-
-    .admin-field input,
-    .admin-field select,
-    .admin-field textarea {
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.38);
-      color: #f5fafc;
-      padding: 6px 8px;
-      font-size: 12px;
-      font-family: inherit;
-      resize: vertical;
-      min-height: 34px;
-      outline: none;
-    }
-    .admin-field textarea { min-height: 52px; }
-    .admin-row-wide { grid-column: 1 / -1; }
-
-    .admin-actions {
-      margin-top: 10px;
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      font-size: 11px;
-      flex-wrap: wrap;
-    }
-
-    .btn-apply, .btn-save {
-      padding: 10px 14px;
-      border-radius: 999px;
-      cursor: pointer;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      user-select: none;
-    }
-
-    .btn-apply {
-      border: 1px solid rgba(17,197,198,0.7);
-      background: rgba(17,197,198,0.16);
-      color: #e8feff;
-    }
-    .btn-apply:hover { background: rgba(17,197,198,0.28); }
-
-    .btn-save {
-      border: 1px solid rgba(197,165,108,0.75);
-      background: rgba(197,165,108,0.14);
-      color: #fff3dd;
-    }
-    .btn-save:hover { background: rgba(197,165,108,0.22); }
-
-    .btn-disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .admin-footer {
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--text-muted);
-      flex-wrap: wrap;
-    }
-
-    .btn-ghost {
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.4);
-      color: #f5fafc;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: default;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-    }
-
-    .btn-ghost span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent-gold);
-      box-shadow: 0 0 8px rgba(197,165,108,0.85);
-    }
-
-    .admin-note { margin-top: 4px; font-size: 10px; color: var(--text-muted); }
-
-    .mobile-actions { display: none; }
-
-    .admin-collapsible {
-      margin-top: 10px;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(0,0,0,0.20);
-      overflow: hidden;
-    }
-    .admin-toggle {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: #f5fafc;
-      padding: 12px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      cursor: pointer;
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-    .admin-toggle small {
-      color: var(--text-muted);
-      font-size: 11px;
-      letter-spacing: 0;
-      text-transform: none;
-    }
-    .admin-toggle .chev {
-      width: 26px; height: 26px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.10);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.25);
-    }
-
-    .admin-collapsible-body {
-      padding: 0 12px 12px;
-      display: none;
-    }
-    .admin-collapsible.open .admin-collapsible-body { display: block; }
-
-    @media (max-width: 1200px) {
-      .page { padding: 18px 20px 26px; }
-    }
-
-    @media (max-width: 1024px) {
-      .grid-main { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 820px) {
-      .header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-      }
-      .header-badge { max-width: 100%; }
-      .title-main { letter-spacing: 0.10em; }
-      .title-sub  { letter-spacing: 0.12em; }
-    }
-
-    @media (max-width: 768px) {
-      .page { padding: 14px 14px 96px; gap: 14px; }
-
-      .grid-main { gap: 14px; }
-      .col { gap: 14px; }
-
-      .card { padding: 14px 14px; border-radius: 18px; }
-      .chart-card { padding: 14px 14px; }
-      .projects-card { padding: 14px 14px; }
-      .admin-card { padding: 14px 14px; }
-
-      .kpi-value { font-size: 24px; }
-      .kpi-unit { font-size: 11px; }
-
-      .mobile-stack-2,
-      .mobile-stack-2b { display: grid; grid-template-columns: 1fr; gap: 12px; }
-      .mobile-stack-2b { grid-template-columns: 1fr; }
-
-      .chart-body { padding: 14px 12px 12px; }
-      .chart-svg { max-height: 190px; }
-      .chart-grid { background-size: 46px 22px; }
-
-      .project-top { align-items: flex-start; }
-      .project-badges { justify-content: flex-start; }
-      .progress-shell { gap: 8px; }
-      .progress-labels { display: none; }
-      .progress-percent { min-width: 0; }
-
-      .admin-form { grid-template-columns: 1fr; }
-      .admin-actions { display: none; }
-      .admin-footer { gap: 8px; }
-      .btn-ghost { width: 100%; justify-content: center; }
-
-      .mobile-actions {
-        display: flex;
-        position: fixed;
-        left: 0; right: 0; bottom: 0;
-        padding: 10px 12px 12px;
-        gap: 10px;
-        background: rgba(0,0,0,0.55);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255,255,255,0.08);
-        z-index: 9999;
-      }
-      .mobile-actions .btn-apply,
-      .mobile-actions .btn-save {
-        flex: 1;
-        padding: 12px 14px;
-        font-size: 11px;
-      }
-
-      .title-ar,
-      #cashSubText,
-      #controlDetails,
-      .chart-header div:last-child,
-      .chart-footer,
-      .admin-note {
-        direction: rtl;
-        text-align: right;
-      }
-    }
+    :root{--bg-dark:#02282f;--card-dark:#063540;--card-darker:#032027;--turquoise:#11c5c6;--turquoise-soft:#54d3d4;--accent-gold:#c5a56c;--accent-red:#ff5560;--accent-yellow:#f4c95d;--accent-green:#2ecc71;--text-main:#fff;--text-muted:#9fb4c0;--border-subtle:rgba(255,255,255,.04);--shadow-soft:0 14px 45px rgba(0,0,0,.55);--radius-lg:22px;--radius-md:18px;--radius-sm:14px}
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;background:radial-gradient(circle at top left,#09414c 0%,#01161c 52%,#000b0f 100%);color:var(--text-main);-webkit-font-smoothing:antialiased}
+    .page{min-height:100vh;display:flex;flex-direction:column;padding:26px 32px 40px;gap:22px}
+    .header{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand-block{display:flex;align-items:center;gap:18px;min-width:0}
+    .logo-seal{width:54px;height:54px;border-radius:50%;border:1px solid rgba(255,255,255,.18);box-shadow:0 0 0 1px rgba(5,201,201,.4);background:radial-gradient(circle at 30% 30%,#fff 0,#f5f7f8 35%,#dde3e8 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex:0 0 auto}
+    .logo-seal img{width:135%;height:auto;object-fit:cover;filter:drop-shadow(0 0 6px rgba(0,0,0,.5));transform:translateY(1px)}
+    .title-block{display:flex;flex-direction:column;gap:4px;min-width:0}
+    .title-main{font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:#f5f8f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .title-sub{font-size:15px;color:var(--turquoise-soft);letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .title-ar{font-size:13px;color:var(--text-muted)}
+    .header-badge{display:flex;align-items:center;gap:10px;background:linear-gradient(120deg,#08414b,#022026);padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.06);box-shadow:0 10px 35px rgba(0,0,0,.6);flex:0 0 auto;max-width:520px}
+    .header-badge-dot{width:9px;height:9px;border-radius:50%;background:var(--accent-green);box-shadow:0 0 8px rgba(46,204,113,.9);flex:0 0 auto}
+    .header-badge-label{font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:var(--text-muted)}
+    .header-badge-value{font-size:12px;color:#f3fafc}
+    .grid-main{display:grid;grid-template-columns:1.3fr 1fr;align-items:flex-start;gap:20px;flex:1;min-height:0}
+    .col{display:flex;flex-direction:column;gap:18px}
+    .card{background:radial-gradient(circle at top left,#094652 0%,#041c22 65%,#021115 100%);border-radius:var(--radius-lg);padding:18px 20px;border:1px solid var(--border-subtle);box-shadow:var(--shadow-soft);position:relative;overflow:hidden;transition:transform 160ms ease-out,box-shadow 160ms ease-out,border-color 160ms ease-out,background 200ms ease-out}
+    .card::before{content:"";position:absolute;inset:-40%;background:radial-gradient(circle at top left,rgba(255,255,255,.06),transparent 55%),radial-gradient(circle at bottom right,rgba(17,197,198,.12),transparent 60%);opacity:0;transition:opacity 220ms ease-out;pointer-events:none}
+    .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(0,0,0,.85);border-color:rgba(17,197,198,.4);background:radial-gradient(circle at top left,#0b5663 0%,#031a20 65%,#010b0f 100%)}
+    .card:hover::before{opacity:1}
+    .card-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .card-title{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted)}
+    .kpi-chip{font-size:11px;padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.28);text-transform:uppercase;letter-spacing:.16em;white-space:nowrap}
+    .chip-green{color:var(--accent-green);border-color:rgba(46,204,113,.6);box-shadow:0 0 0 1px rgba(46,204,113,.2)}
+    .chip-amber{color:var(--accent-yellow);border-color:rgba(244,201,93,.6);box-shadow:0 0 0 1px rgba(244,201,93,.2)}
+    .chip-red{color:var(--accent-red);border-color:rgba(255,85,96,.7);box-shadow:0 0 0 1px rgba(255,85,96,.25)}
+    .kpi-main{display:flex;align-items:baseline;gap:6px;margin:4px 0}
+    .kpi-value{font-size:26px;font-weight:600;letter-spacing:.03em}
+    .kpi-unit{font-size:12px;color:var(--text-muted)}
+    .kpi-sub{font-size:12px;color:var(--text-muted)}
+    .kpi-footer{margin-top:10px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-muted);flex-wrap:wrap}
+    .pill-small{padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.08);font-size:11px}
+    .mini-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:8px;font-size:12px;color:var(--text-muted)}
+    .mini-row strong{color:#f6fafc}
+    .bar-shell{flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden;position:relative}
+    .bar-fill{height:100%;width:62%;border-radius:inherit;background:linear-gradient(90deg,var(--turquoise),var(--turquoise-soft));box-shadow:0 0 12px rgba(17,197,198,.8)}
+    .bar-tick{position:absolute;top:-2px;width:2px;height:10px;border-radius:999px;background:var(--accent-gold);left:72%;box-shadow:0 0 8px rgba(197,165,108,.9)}
+    .variance-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:3px 9px;border-radius:999px;background:rgba(255,85,96,.12);color:var(--accent-red);border:1px solid rgba(255,85,96,.45);white-space:nowrap}
+    .variance-pill span.arrow{font-size:11px}
+    .pill-good{background:rgba(46,204,113,.12)!important;color:var(--accent-green)!important;border:1px solid rgba(46,204,113,.50)!important}
+    .pill-warn{background:rgba(244,201,93,.14)!important;color:var(--accent-yellow)!important;border:1px solid rgba(244,201,93,.50)!important}
+    .pill-bad{background:rgba(255,85,96,.12)!important;color:var(--accent-red)!important;border:1px solid rgba(255,85,96,.45)!important}
+    .chart-card{padding:18px 20px}
+    .chart-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:10px}
+    .chart-title{font-size:14px;text-transform:uppercase;letter-spacing:.14em;color:var(--text-muted)}
+    .chart-legend{display:flex;align-items:center;gap:12px;font-size:11px;flex-wrap:wrap}
+    .legend-item{display:inline-flex;align-items:center;gap:5px}
+    .legend-dot{width:10px;height:10px;border-radius:50%}
+    .legend-dot.blue{background:var(--turquoise-soft);box-shadow:0 0 10px rgba(84,211,212,.9)}
+    .legend-dot.teal{background:var(--turquoise);box-shadow:0 0 10px rgba(17,197,198,.9)}
+    .legend-dot.gold{background:var(--accent-gold)}
+    .chart-body{background:radial-gradient(circle at top,#0a3d45 0%,#021117 65%,#00080b 100%);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.04);position:relative;overflow:hidden}
+    .chart-grid{position:absolute;inset:0;background-image:linear-gradient(to right,rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(to top,rgba(255,255,255,.03) 1px,transparent 1px);background-size:52px 26px;opacity:.7;pointer-events:none}
+    .chart-svg{width:100%;max-height:210px;display:block;position:relative;z-index:1}
+    .chart-footer{margin-top:10px;font-size:11px;color:var(--text-muted)}
+    .chart-footer strong{color:#f5fafc}
+    .projects-card{padding:16px 18px}
+    .projects-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .projects-title{font-size:13px;text-transform:uppercase;letter-spacing:.16em;color:var(--text-muted)}
+    .projects-filter{display:flex;align-items:center;gap:8px;font-size:12px;flex-wrap:wrap}
+    .panel-label{font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:var(--text-muted)}
+    .select{background:rgba(0,0,0,.45);border-radius:999px;border:1px solid rgba(255,255,255,.08);padding:5px 10px;display:inline-flex;align-items:center;gap:6px;cursor:default;white-space:nowrap}
+    .select span{font-size:12px;color:#f3fafc}
+    .select small{font-size:11px;color:var(--text-muted)}
+    .project-row{padding:10px 11px;border-radius:14px;background:linear-gradient(120deg,rgba(0,0,0,.24),rgba(0,0,0,.5));border:1px solid rgba(255,255,255,.04);display:flex;flex-direction:column;gap:6px;margin-top:6px}
+    .project-row+.project-row{margin-top:8px}
+    .project-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .project-name{font-size:13px;font-weight:500}
+    .project-meta{font-size:11px;color:var(--text-muted);display:flex;gap:10px;flex-wrap:wrap}
+    .project-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .badge-stage{padding:3px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);font-size:11px;color:var(--turquoise-soft);background:rgba(0,0,0,.35);white-space:nowrap}
+    .progress-shell{margin-top:4px;display:flex;align-items:center;gap:10px}
+    .progress-labels{font-size:11px;color:var(--text-muted);min-width:78px}
+    .progress-bar{flex:1;height:7px;border-radius:999px;background:rgba(255,255,255,.06);position:relative;overflow:hidden}
+    .progress-fill{height:100%;width:60%;background:linear-gradient(90deg,var(--turquoise),var(--turquoise-soft));border-radius:inherit;box-shadow:0 0 12px rgba(17,197,198,.9)}
+    .progress-tick{position:absolute;top:-2px;left:72%;width:2px;height:11px;border-radius:999px;background:var(--accent-gold);box-shadow:0 0 8px rgba(197,165,108,.9)}
+    .progress-percent{font-size:11px;min-width:62px;text-align:right;color:#f6fafc;white-space:nowrap}
+    .risk-chips{margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;font-size:11px}
+    .risk-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.38);color:var(--text-muted);max-width:100%}
+    .risk-dot{width:8px;height:8px;border-radius:50%}
+    .risk-dot.red{background:var(--accent-red);box-shadow:0 0 8px rgba(255,85,96,.9)}
+    .risk-dot.yellow{background:var(--accent-yellow);box-shadow:0 0 8px rgba(244,201,93,.9)}
+    .risk-dot.green{background:var(--accent-green);box-shadow:0 0 8px rgba(46,204,113,.9)}
+    .admin-card{padding:14px 16px}
+    .admin-form{margin-top:6px;font-size:11px;color:var(--text-muted);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px}
+    .admin-field{display:flex;flex-direction:column;gap:3px}
+    .admin-field label{font-size:10px;text-transform:uppercase;letter-spacing:.12em}
+    .admin-field input,.admin-field select,.admin-field textarea{border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.38);color:#f5fafc;padding:6px 8px;font-size:12px;font-family:inherit;resize:vertical;min-height:34px;outline:none}
+    .admin-field textarea{min-height:52px}
+    .admin-row-wide{grid-column:1/-1}
+    .admin-actions{margin-top:10px;display:flex;justify-content:flex-end;gap:8px;font-size:11px;flex-wrap:wrap}
+    .btn-apply,.btn-save{padding:10px 14px;border-radius:999px;cursor:pointer;letter-spacing:.12em;text-transform:uppercase;font-size:11px;display:inline-flex;align-items:center;justify-content:center;gap:8px;user-select:none}
+    .btn-apply{border:1px solid rgba(17,197,198,.7);background:rgba(17,197,198,.16);color:#e8feff}
+    .btn-apply:hover{background:rgba(17,197,198,.28)}
+    .btn-save{border:1px solid rgba(197,165,108,.75);background:rgba(197,165,108,.14);color:#fff3dd}
+    .btn-save:hover{background:rgba(197,165,108,.22)}
+    .btn-disabled{opacity:.6;cursor:not-allowed}
+    .admin-footer{margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;color:var(--text-muted);flex-wrap:wrap}
+    .btn-ghost{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.4);color:#f5fafc;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:default;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+    .btn-ghost span.dot{width:7px;height:7px;border-radius:50%;background:var(--accent-gold);box-shadow:0 0 8px rgba(197,165,108,.85)}
+    .admin-note{margin-top:4px;font-size:10px;color:var(--text-muted)}
+    .mobile-actions{display:none}
+    .admin-collapsible{margin-top:10px;border-radius:var(--radius-md);border:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.20);overflow:hidden}
+    .admin-toggle{width:100%;background:transparent;border:none;color:#f5fafc;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+    .admin-toggle small{color:var(--text-muted);font-size:11px;letter-spacing:0;text-transform:none}
+    .admin-toggle .chev{width:26px;height:26px;border-radius:999px;border:1px solid rgba(255,255,255,.10);display:inline-flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25)}
+    .admin-collapsible-body{padding:0 12px 12px;display:none}
+    .admin-collapsible.open .admin-collapsible-body{display:block}
+    @media(max-width:1200px){.page{padding:18px 20px 26px}}
+    @media(max-width:1024px){.grid-main{grid-template-columns:1fr}}
+    @media(max-width:820px){.header{flex-direction:column;align-items:stretch;gap:12px}.header-badge{max-width:100%}.title-main{letter-spacing:.10em}.title-sub{letter-spacing:.12em}}
+    @media(max-width:768px){.mobile-stack-2{grid-template-columns:1fr!important}.mobile-stack-2b{grid-template-columns:1fr!important}.mobile-actions{display:flex;gap:10px;padding:12px 16px;position:sticky;bottom:0;z-index:100;background:linear-gradient(180deg,transparent,#010c0f 30%,#010c0f 100%);justify-content:center}.admin-form{grid-template-columns:1fr 1fr!important}}
   </style>
 </head>
-
 <body>
   <div class="page">
     <header class="header">
       <div class="brand-block">
-        <div class="logo-seal">
-          <img src="seal.png" alt="FACC Seal" />
-        </div>
+        <div class="logo-seal"><img src="seal.png" alt="FACC Seal"/></div>
         <div class="title-block">
           <div class="title-sub">First Avenue for Investment</div>
           <div class="title-main">FACC — Command Center</div>
           <div class="title-ar">لوحة قيادة تنفيذية للسيولة والمشاريع والمخاطر</div>
         </div>
       </div>
-
       <div class="header-badge">
         <div class="header-badge-dot"></div>
         <div>
@@ -631,99 +140,46 @@
         </div>
       </div>
     </header>
-
     <main class="grid-main">
       <section class="col">
         <div class="mobile-stack-2" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
           <article class="card">
-            <div class="card-header">
-              <div><div class="card-title">Cash balance</div></div>
-              <div class="kpi-chip chip-green" id="cashStatusChip">Comfortable</div>
-            </div>
-            <div class="kpi-main">
-              <div class="kpi-value" id="cashBalanceValue">—</div>
-              <div class="kpi-unit">SAR</div>
-            </div>
+            <div class="card-header"><div><div class="card-title">Cash balance</div></div><div class="kpi-chip chip-green" id="cashStatusChip">Comfortable</div></div>
+            <div class="kpi-main"><div class="kpi-value" id="cashBalanceValue">—</div><div class="kpi-unit">SAR</div></div>
             <div class="kpi-sub" id="cashSubText">الرصيد بعد آخر مدفوعات – أعلى من التزامات 30 يوم القادمة.</div>
-            <div class="kpi-footer">
-              <span class="pill-small" id="obl30dLabel">Obligations 30D: — SAR</span>
-              <span class="pill-small" id="pendingLabel">Pending: — SAR</span>
-            </div>
+            <div class="kpi-footer"><span class="pill-small" id="obl30dLabel">Obligations 30D: — SAR</span><span class="pill-small" id="pendingLabel">Pending: — SAR</span></div>
           </article>
-
           <article class="card">
-            <div class="card-header">
-              <div><div class="card-title">Budget control 2026</div></div>
-              <div class="kpi-chip chip-amber" id="budgetChip">Monitoring</div>
-            </div>
-            <div class="kpi-main">
-              <div class="kpi-value" id="budgetApproved">—</div>
-              <div class="kpi-unit">SAR • Approved budget</div>
-            </div>
-
+            <div class="card-header"><div><div class="card-title">Budget control 2026</div></div><div class="kpi-chip chip-amber" id="budgetChip">Monitoring</div></div>
+            <div class="kpi-main"><div class="kpi-value" id="budgetApproved">—</div><div class="kpi-unit">SAR • Approved budget</div></div>
             <div class="mini-row"><span>Actual YTD</span><span><strong id="budgetActual">—</strong> SAR</span></div>
             <div class="mini-row"><span>Budget remaining</span><span><strong id="budgetRemaining">—</strong> SAR</span></div>
-
             <div class="mini-row"><span>Revenue</span><span class="variance-pill" id="kpiRevenue"><span class="arrow">▼</span> —</span></div>
             <div class="mini-row"><span>Spending</span><span class="variance-pill" id="kpiSpending"><span class="arrow">▲</span> —</span></div>
             <div class="mini-row"><span>Net</span><span class="variance-pill" id="kpiNet"><span class="arrow">▼</span> —</span></div>
-
-            <div class="mini-row">
-              <span>YTD variance</span>
-              <span class="variance-pill" id="budgetVariance"><span class="arrow">▲</span> —</span>
-            </div>
-
+            <div class="mini-row"><span>YTD variance</span><span class="variance-pill" id="budgetVariance"><span class="arrow">▲</span> —</span></div>
             <div class="mini-row"><span>Run-rate</span><span class="variance-pill" id="kpiRunRate"><span class="arrow">▲</span> —</span></div>
             <div class="mini-row"><span>Runway</span><span class="variance-pill" id="kpiRunway"><span class="arrow">▼</span> —</span></div>
           </article>
         </div>
-
         <div class="mobile-stack-2b" style="display:grid;grid-template-columns:1.15fr .85fr;gap:16px;">
           <article class="card">
-            <div class="card-header">
-              <div class="card-title">Monthly spending cap</div>
-              <div class="kpi-chip chip-green">Auto rule</div>
-            </div>
-            <div class="kpi-main">
-              <div class="kpi-value" id="capValue">—</div>
-              <div class="kpi-unit">SAR • max monthly</div>
-            </div>
-            <div class="mini-row">
-              <span>Safe envelope</span>
-              <div class="bar-shell">
-                <div class="bar-fill" id="capBarFill"></div>
-                <div class="bar-tick" id="capBarTick"></div>
-              </div>
-              <span style="font-size:11px;color:var(--text-muted);">Planned pace</span>
-            </div>
-            <div class="kpi-footer">
-              <span class="pill-small" id="capRuleText">Rule: 25% of remaining budget / remaining months (max 200k)</span>
-            </div>
+            <div class="card-header"><div class="card-title">Monthly spending cap</div><div class="kpi-chip chip-green">Auto rule</div></div>
+            <div class="kpi-main"><div class="kpi-value" id="capValue">—</div><div class="kpi-unit">SAR • max monthly</div></div>
+            <div class="mini-row"><span>Safe envelope</span><div class="bar-shell"><div class="bar-fill" id="capBarFill"></div><div class="bar-tick" id="capBarTick"></div></div><span style="font-size:11px;color:var(--text-muted);">Planned pace</span></div>
+            <div class="kpi-footer"><span class="pill-small" id="capRuleText">Rule: 25% of remaining budget / remaining months (max 200k)</span></div>
           </article>
-
           <article class="card">
-            <div class="card-header">
-              <div class="card-title">Control status</div>
-              <div class="kpi-chip chip-green" id="controlChip">Healthy</div>
-            </div>
-            <div class="kpi-main">
-              <div class="kpi-value" style="font-size:22px;" id="controlText">Under control</div>
-            </div>
-            <div class="kpi-sub" id="controlDetails">
-              • السيولة تغطي التزامات 30 يوم<br />
-              • الانحراف عن الميزانية ضمن النطاق المتفق عليه<br />
-              • لا توجد تنبيهات حمراء في الأشهر الستة القادمة
-            </div>
+            <div class="card-header"><div class="card-title">Control status</div><div class="kpi-chip chip-green" id="controlChip">Healthy</div></div>
+            <div class="kpi-main"><div class="kpi-value" style="font-size:22px;" id="controlText">Under control</div></div>
+            <div class="kpi-sub" id="controlDetails">• السيولة تغطي التزامات 30 يوم<br/>• الانحراف عن الميزانية ضمن النطاق المتفق عليه<br/>• لا توجد تنبيهات حمراء في الأشهر الستة القادمة</div>
           </article>
         </div>
-
         <article class="card chart-card">
           <div class="chart-header">
             <div>
               <div class="chart-title">Cash balance projection — 6 months</div>
-              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
-                Forecast uses Income_Forecast &amp; Expense_Forecast • Actual uses Cash_Balance from Data1
-              </div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Forecast uses Income_Forcast &amp; Expense_Forcast • Actual uses Cash_Balance from Data1</div>
             </div>
             <div class="chart-legend">
               <span class="legend-item"><span class="legend-dot blue"></span>Forecast balance</span>
@@ -731,1114 +187,872 @@
               <span class="legend-item"><span class="legend-dot gold"></span>Safe minimum</span>
             </div>
           </div>
-          <div class="chart-body">
-            <div class="chart-grid"></div>
-            <svg class="chart-svg" id="cashChart" viewBox="0 0 420 210" aria-hidden="true"></svg>
-          </div>
+          <div class="chart-body"><div class="chart-grid"></div><svg class="chart-svg" id="cashChart" viewBox="0 0 420 210" aria-hidden="true"></svg></div>
           <div class="chart-footer" id="chartComment"><strong>Insight:</strong> —</div>
         </article>
       </section>
-
       <section class="col">
         <article class="card projects-card">
           <div class="projects-header">
-            <div>
-              <div class="projects-title">Projects snapshot</div>
-              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">يعرض مشروعين في آن واحد – يتم تغذيتها من تبويب <strong>Projects</strong>.</div>
-            </div>
-            <div class="projects-filter">
-              <span class="panel-label">Smart filter</span>
-              <div class="select">
-                <span id="projectFilterName">—</span>
-                <small id="projectFilterMeta">Primary project</small>
-              </div>
-            </div>
+            <div><div class="projects-title">Projects snapshot</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px;">يعرض مشروعين في آن واحد – يتم تغذيتها من تبويب <strong>Projects</strong>.</div></div>
+            <div class="projects-filter"><span class="panel-label">Smart filter</span><div class="select"><span id="projectFilterName">—</span><small id="projectFilterMeta">Primary project</small></div></div>
           </div>
           <div id="projectsContainer"></div>
         </article>
-
         <article class="card admin-card">
-          <div class="card-header" style="margin-bottom:6px;">
-            <div class="card-title">CEO controls (Admin)</div>
-            <div class="kpi-chip" id="saveChip">Local</div>
-          </div>
-
-          <div style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:6px;">
-            تحكم كامل في بيانات المشروع من الداشبورد + حفظ مباشر إلى Google Sheets عبر WebApp.
-          </div>
-
+          <div class="card-header" style="margin-bottom:6px;"><div class="card-title">CEO controls (Admin)</div><div class="kpi-chip" id="saveChip">Local</div></div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:6px;">تحكم كامل في بيانات المشروع من الداشبورد + حفظ مباشر إلى Google Sheets عبر WebApp.</div>
           <div class="admin-collapsible" id="adminCollapsible">
-            <button class="admin-toggle" id="adminToggle" type="button">
-              <div style="display:flex;flex-direction:column;gap:2px;align-items:flex-start;">
-                <div>Admin Editor</div>
-                <small>Open / close edit panel</small>
-              </div>
-              <span class="chev" id="adminChev">⌄</span>
-            </button>
+            <button class="admin-toggle" id="adminToggle" type="button"><div style="display:flex;flex-direction:column;gap:2px;align-items:flex-start;"><div>Admin Editor</div><small>Open / close edit panel</small></div><span class="chev" id="adminChev">⌄</span></button>
             <div class="admin-collapsible-body">
               <div class="admin-form" id="adminForm">
-                <div class="admin-field admin-row-wide">
-                  <label for="adminProjectSelect">Project selector (يرتبط أيضاً بالفلتر أعلاه)</label>
-                  <select id="adminProjectSelect"></select>
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminName">Project name</label>
-                  <input id="adminName" type="text" />
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminStage">Stage text</label>
-                  <input id="adminStage" type="text" />
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminStart">Start date</label>
-                  <input id="adminStart" type="text" placeholder="25-Sep-2025" />
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminDuration">Duration (days)</label>
-                  <input id="adminDuration" type="number" />
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminActual">Actual %</label>
-                  <input id="adminActual" type="number" min="0" max="100" />
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminPlanned">Planned %</label>
-                  <input id="adminPlanned" type="number" min="0" max="100" />
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminRisk1Level">Risk 1 level</label>
-                  <select id="adminRisk1Level">
-                    <option value="">(none)</option>
-                    <option>High</option>
-                    <option>Medium</option>
-                    <option>Low</option>
-                  </select>
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminRisk1Note">Risk 1 note</label>
-                  <input id="adminRisk1Note" type="text" />
-                </div>
-
-                <div class="admin-field">
-                  <label for="adminRisk2Level">Risk 2 level</label>
-                  <select id="adminRisk2Level">
-                    <option value="">(none)</option>
-                    <option>High</option>
-                    <option>Medium</option>
-                    <option>Low</option>
-                  </select>
-                </div>
-
-                <div class="admin-field admin-row-wide">
-                  <label for="adminRisk2Note">Risk 2 note</label>
-                  <textarea id="adminRisk2Note"></textarea>
-                </div>
+                <div class="admin-field admin-row-wide"><label for="adminProjectSelect">Project selector</label><select id="adminProjectSelect"></select></div>
+                <div class="admin-field"><label for="adminName">Project name</label><input id="adminName" type="text"/></div>
+                <div class="admin-field"><label for="adminStage">Stage text</label><input id="adminStage" type="text"/></div>
+                <div class="admin-field"><label for="adminStart">Start date</label><input id="adminStart" type="text" placeholder="25-Sep-2025"/></div>
+                <div class="admin-field"><label for="adminDuration">Duration (days)</label><input id="adminDuration" type="number"/></div>
+                <div class="admin-field"><label for="adminActual">Actual %</label><input id="adminActual" type="number" min="0" max="100"/></div>
+                <div class="admin-field"><label for="adminPlanned">Planned %</label><input id="adminPlanned" type="number" min="0" max="100"/></div>
+                <div class="admin-field"><label for="adminRisk1Level">Risk 1 level</label><select id="adminRisk1Level"><option value="">(none)</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+                <div class="admin-field"><label for="adminRisk1Note">Risk 1 note</label><input id="adminRisk1Note" type="text"/></div>
+                <div class="admin-field"><label for="adminRisk2Level">Risk 2 level</label><select id="adminRisk2Level"><option value="">(none)</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+                <div class="admin-field admin-row-wide"><label for="adminRisk2Note">Risk 2 note</label><textarea id="adminRisk2Note"></textarea></div>
               </div>
-
-              <div class="admin-actions">
-                <button class="btn-apply" id="btnApplyChanges">Apply locally</button>
-                <button class="btn-save" id="btnSaveToSheets">Save to Sheets</button>
-              </div>
-
-              <div class="admin-footer">
-                <div class="btn-ghost"><span class="dot"></span>DESKTOP ONLY • READ FROM SHEETS • WRITE VIA WEBAPP</div>
-                <span class="admin-note" id="saveNote">جاهز للحفظ — اختر مشروع ثم عدّل ثم اضغط Save to Sheets.</span>
-              </div>
+              <div class="admin-actions"><button class="btn-apply" id="btnApplyChanges">Apply locally</button><button class="btn-save" id="btnSaveToSheets">Save to Sheets</button></div>
+              <div class="admin-footer"><div class="btn-ghost"><span class="dot"></span>DESKTOP ONLY • READ FROM SHEETS • WRITE VIA WEBAPP</div><span class="admin-note" id="saveNote">جاهز للحفظ — اختر مشروع ثم عدّل ثم اضغط Save to Sheets.</span></div>
             </div>
           </div>
         </article>
       </section>
     </main>
   </div>
-
   <div class="mobile-actions" id="mobileActions">
     <button class="btn-apply" id="btnApplyChangesMobile" type="button">Apply locally</button>
     <button class="btn-save" id="btnSaveToSheetsMobile" type="button">Save to Sheets</button>
   </div>
 
-  <script>
-    const DATA1_CSV =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=0&single=true&output=csv";
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+var DATA1_CSV    = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=0&single=true&output=csv";
+var PROJECTS_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=146585938&single=true&output=csv";
+var WEBAPP_URL   = "https://script.google.com/macros/s/AKfycbz8YYJI37jZ6QeIuKW3W_XMMOWWrZ0fPBJg8dsbkhO7UsbUHDc2lQ_QriEhSgB-lI8h5A/exec";
+var WEBAPP_SECRET= "b35bb77e-ad8f-4bd5-8642-94fd06c8ae8b-f431d4ea-6189-44f6-a29d-3820dbc7c4e9";
+var SAFE_MINIMUM = 609000;
+var FISCAL_YEAR_MONTHS = 12; // JAN-26 to DEC-26
 
-    const PROJECTS_CSV =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTXcA-PcMC_OCz4AuJcCRGTYbR1oEWeVljlgLzDDgiEtA853rNvveBFRtdGq5IbHatREp8TE6ptmX/pub?gid=146585938&single=true&output=csv";
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+function num(v){if(v===undefined||v===null||v==="")return 0;var s=String(v).trim();if(!s)return 0;var n=parseFloat(s.replace(/,/g,""));return isFinite(n)?n:0}
+function formatInt(n){return Math.round(n).toLocaleString("en-US")}
+function formatSar(n){return formatInt(n)+" SAR"}
 
-    const WEBAPP_URL =
-      "https://script.google.com/macros/s/AKfycbz8YYJI37jZ6QeIuKW3W_XMMOWWrZ0fPBJg8dsbkhO7UsbUHDc2lQ_QriEhSgB-lI8h5A/exec";
-
-    const WEBAPP_SECRET =
-      "b35bb77e-ad8f-4bd5-8642-94fd06c8ae8b-f431d4ea-6189-44f6-a29d-3820dbc7c4e9";
-
-    const SAFE_MINIMUM = 609000; // agreed safe minimum (6 months coverage)
-
-    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
-
-    function num(v) {
-      if (v === undefined || v === null || v === "") return 0;
-      const s = String(v).trim();
-      if (!s) return 0;
-      const cleaned = s.replace(/,/g, "");
-      const n = parseFloat(cleaned);
-      return isFinite(n) ? n : 0;
+/* getVal: find a value from a row by trying multiple candidate column names */
+function getVal(row, candidates, fallback){
+  if(fallback === undefined) fallback = "";
+  if(!row) return fallback;
+  var keys = Object.keys(row);
+  // exact match first
+  for(var i = 0; i < candidates.length; i++){
+    if(row.hasOwnProperty(candidates[i])){
+      var v = row[candidates[i]];
+      if(String(v).trim() !== "") return v;
     }
-
-    function formatInt(n) { return Math.round(n).toLocaleString("en-US"); }
-    function formatSar(n) { return formatInt(n) + " SAR"; }
-
-    function normalizeKey(k) {
-      return String(k || "")
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "_")
-        .replace(/-+/g, "_");
-    }
-
-    function getVal(row, candidates, fallback = "") {
-      if (!row) return fallback;
-      const keys = Object.keys(row);
-      const normIndex = new Map();
-      for (const k of keys) normIndex.set(normalizeKey(k), k);
-
-      for (const c of candidates) {
-        const found = normIndex.get(normalizeKey(c));
-        if (found !== undefined) {
-          const v = row[found];
-          if (String(v).trim() !== "") return v;
-        }
-      }
-      return fallback;
-    }
-
-    function parseCSV(text) {
-      const rows = [];
-      const lines = text.replace(/\r/g, "").split("\n").filter(Boolean);
-      if (!lines.length) return rows;
-
-      const parseLine = (line) => {
-        const out = [];
-        let cur = "";
-        let inQuotes = false;
-        for (let i = 0; i < line.length; i++) {
-          const ch = line[i];
-          if (ch === '"') {
-            if (inQuotes && line[i+1] === '"') { cur += '"'; i++; }
-            else { inQuotes = !inQuotes; }
-          } else if (ch === "," && !inQuotes) {
-            out.push(cur);
-            cur = "";
-          } else {
-            cur += ch;
-          }
-        }
-        out.push(cur);
-        return out.map(s => String(s).trim());
-      };
-
-      const headers = parseLine(lines[0]).map(h => h.trim());
-      for (let i = 1; i < lines.length; i++) {
-        const cols = parseLine(lines[i]);
-        const obj = {};
-        headers.forEach((h, idx) => { obj[h] = (cols[idx] ?? "").trim(); });
-        rows.push(obj);
-      }
-      return rows;
-    }
-
-    function parseMonthLabel(label) {
-      const s = String(label || "").trim().toUpperCase();
-      if (!s) return null;
-
-      const months = { JAN:1,FEB:2,MAR:3,APR:4,MAY:5,JUN:6,JUL:7,AUG:8,SEP:9,OCT:10,NOV:11,DEC:12 };
-      const m1 = s.match(/^([A-Z]{3})[-\/ ](\d{2}|\d{4})$/);
-      if (m1) {
-        const mon = months[m1[1]] || null;
-        if (!mon) return null;
-        let y = parseInt(m1[2], 10);
-        if (m1[2].length === 2) y = 2000 + y;
-        return { y, m: mon, key: y*100 + mon };
-      }
-      return null;
-    }
-
-    function rowMonthKey(row) {
-      const m = getVal(row, ["Month"], "");
-      const parsed = parseMonthLabel(m);
-      return parsed ? parsed.key : null;
-    }
-
-    function getSortedRowsByMonth(rows) {
-      return rows
-        .map((r) => ({ r, key: rowMonthKey(r) }))
-        .filter(x => x.key !== null)
-        .sort((a, b) => a.key - b.key);
-    }
-
-    // =========================
-    // FIX #1: Live row selection
-    // pick last month that has REAL (non-zero) activity
-    // =========================
-    function getLatestOperationalRow(rows) {
-      if (!rows || !rows.length) return null;
-
-      const candidates = rows
-        .map(r => ({ r, key: rowMonthKey(r) }))
-        .filter(x => x.key !== null)
-        .filter(x => {
-          const inc = num(getVal(x.r, ["Income_Month"]));
-          const exp = num(getVal(x.r, ["Actual_Expense"]));
-          const obl = num(getVal(x.r, ["Obligation_30D"]));
-          const cash = num(getVal(x.r, ["Cash_Balance"]));
-          return (inc > 0 || exp > 0 || obl > 0 || cash > 0);
-        });
-
-      if (!candidates.length) return rows[0];
-
-      candidates.sort((a, b) => a.key - b.key);
-      return candidates[candidates.length - 1].r;
-    }
-
-    function getBudgetRow(rows) {
-      if (!rows || !rows.length) return null;
-
-      const candidates = rows
-        .map((r) => ({ r, key: rowMonthKey(r) }))
-        .filter(x => x.key !== null)
-        .filter(x => String(getVal(x.r, ["Budget_Total"], "")).trim() !== "");
-
-      if (!candidates.length) return null;
-
-      candidates.sort((a, b) => a.key - b.key);
-      return candidates[candidates.length - 1].r;
-    }
-
-    function setPill(el, mode, text, arrow) {
-      if (!el) return;
-      el.classList.remove("pill-good", "pill-warn", "pill-bad");
-      if (mode === "good") el.classList.add("pill-good");
-      else if (mode === "warn") el.classList.add("pill-warn");
-      else el.classList.add("pill-bad");
-
-      el.innerHTML = `<span class="arrow">${arrow || ""}</span> ${text}`;
-    }
-
-    function pctText(p) {
-      if (!isFinite(p)) return "—";
-      return Math.abs(p).toFixed(1) + "%";
-    }
-
-    let data1Rows = [];
-    let projects = [];
-    let selectedProjectIndex = 0;
-
-    function renderCashAndBudget() {
-      if (!data1Rows.length) return;
-
-      const liveRow = getLatestOperationalRow(data1Rows) || data1Rows[0];
-      const budgetRow = getBudgetRow(data1Rows) || liveRow;
-
-      const cashBalance = num(getVal(liveRow, ["Cash_Balance"]));
-      const pending     = num(getVal(liveRow, ["Pending_Payments"]));
-      // =========================
-      // FIX #2: Correct column name
-      // Obligation_30D (NOT Obligations_30D)
-      // =========================
-      const obl30d      = num(getVal(liveRow, ["Obligation_30D"]));
-
-      const approvedBudget = num(getVal(budgetRow, ["Budget_Total"]));
-
-      // KPI inputs (MONTH)
-      const mIncomeActual  = num(getVal(liveRow, ["Income_Month"]));
-      const mIncomePlan    = num(getVal(liveRow, ["Income_Forecast"]));
-      const mExpenseActual = num(getVal(liveRow, ["Actual_Expense"]));
-      const mExpensePlan   = num(getVal(liveRow, ["Expense_Forecast"]));
-
-      // YTD window (up to live month)
-      const sorted = getSortedRowsByMonth(data1Rows);
-      const liveKey = rowMonthKey(liveRow);
-      const ytdRows = sorted
-        .filter(x => liveKey !== null ? x.key <= liveKey : true)
-        .map(x => x.r);
-
-      const ytdActualExpense = ytdRows.reduce((sum, r) => sum + num(getVal(r, ["Actual_Expense"])), 0);
-      const ytdPlanExpense   = ytdRows.reduce((sum, r) => sum + num(getVal(r, ["Expense_Forecast"])), 0);
-
-      const budgetRemaining = Math.max(approvedBudget - ytdActualExpense, 0);
-
-      // Cash card
-      document.getElementById("cashBalanceValue").textContent = formatInt(cashBalance);
-      document.getElementById("obl30dLabel").textContent = "Obligations 30D: " + formatSar(obl30d);
-      document.getElementById("pendingLabel").textContent = "Pending: " + formatSar(pending);
-
-      const cashStatusChip = document.getElementById("cashStatusChip");
-      cashStatusChip.classList.remove("chip-green", "chip-amber", "chip-red");
-      const ratio = obl30d > 0 ? cashBalance / obl30d : 999;
-      if (ratio >= 2) { cashStatusChip.textContent = "Comfortable"; cashStatusChip.classList.add("chip-green"); }
-      else if (ratio >= 1) { cashStatusChip.textContent = "Tight"; cashStatusChip.classList.add("chip-amber"); }
-      else { cashStatusChip.textContent = "Critical"; cashStatusChip.classList.add("chip-red"); }
-
-      // Budget card numbers
-      document.getElementById("budgetApproved").textContent  = formatInt(approvedBudget);
-      document.getElementById("budgetActual").textContent    = formatInt(ytdActualExpense);
-      document.getElementById("budgetRemaining").textContent = formatInt(budgetRemaining);
-
-      // AGREED KPI SET
-      const revenuePctOfPlan = (mIncomePlan > 0) ? (mIncomeActual / mIncomePlan) * 100 : NaN;
-      const spendingPctOverPlan = (mExpensePlan > 0) ? ((mExpenseActual - mExpensePlan) / mExpensePlan) * 100 : NaN;
-
-      const netActual = mIncomeActual - mExpenseActual;
-      const netPlan   = mIncomePlan - mExpensePlan;
-      const netPctVsPlan = (Math.abs(netPlan) > 0) ? ((netActual - netPlan) / Math.abs(netPlan)) * 100 : NaN;
-
-      const ytdVarPct = (ytdPlanExpense > 0) ? ((ytdActualExpense - ytdPlanExpense) / ytdPlanExpense) * 100 : NaN;
-
-      const monthsCount = Math.max(ytdRows.length, 1);
-      const avgActualExpense = ytdActualExpense / monthsCount;
-      const avgPlanExpense   = ytdPlanExpense / monthsCount;
-      const runRateRiskPct   = (avgPlanExpense > 0) ? ((avgActualExpense - avgPlanExpense) / avgPlanExpense) * 100 : NaN;
-
-      const ytdActualIncome = ytdRows.reduce((sum, r) => sum + num(getVal(r, ["Income_Month"])), 0);
-      const avgActualIncome = ytdActualIncome / monthsCount;
-      const avgNetBurn = Math.max(avgActualExpense - avgActualIncome, 0);
-      const runwayMonths = (avgNetBurn > 0) ? Math.max((cashBalance - SAFE_MINIMUM) / avgNetBurn, 0) : NaN;
-
-      // Revenue pill
-      {
-        const el = document.getElementById("kpiRevenue");
-        if (isFinite(revenuePctOfPlan)) {
-          const txt = `${revenuePctOfPlan.toFixed(1)}% of plan`;
-          const arrow = revenuePctOfPlan >= 100 ? "▲" : "▼";
-          const mode = revenuePctOfPlan >= 95 ? "good" : (revenuePctOfPlan >= 80 ? "warn" : "bad");
-          setPill(el, mode, txt, arrow);
-        } else {
-          setPill(el, "bad", "—", "");
-        }
-      }
-
-      // Spending pill
-      {
-        const el = document.getElementById("kpiSpending");
-        if (isFinite(spendingPctOverPlan)) {
-          const over = spendingPctOverPlan;
-          const txt = `${(over >= 0 ? "+" : "−")}${pctText(over).replace("-", "")} over plan`;
-          const arrow = over > 0 ? "▲" : "▼";
-          const mode = over <= 5 ? "good" : (over <= 15 ? "warn" : "bad");
-          setPill(el, mode, txt, arrow);
-        } else {
-          setPill(el, "bad", "—", "");
-        }
-      }
-
-      // Net pill
-      {
-        const el = document.getElementById("kpiNet");
-        if (isFinite(netPctVsPlan)) {
-          const diff = netPctVsPlan;
-          const txt = `${(diff >= 0 ? "+" : "−")}${pctText(diff).replace("-", "")} vs plan`;
-          const arrow = diff >= 0 ? "▲" : "▼";
-          const mode = diff >= -5 ? "good" : (diff >= -15 ? "warn" : "bad");
-          setPill(el, mode, txt, arrow);
-        } else {
-          setPill(el, "bad", "—", "");
-        }
-      }
-
-      // YTD variance pill
-      {
-        const el = document.getElementById("budgetVariance");
-        if (isFinite(ytdVarPct)) {
-          const over = ytdVarPct;
-          const txt = `${(over >= 0 ? "+" : "−")}${pctText(over).replace("-", "")} over plan`;
-          const arrow = over >= 0 ? "▲" : "▼";
-          const mode = Math.abs(over) <= 5 ? "good" : (Math.abs(over) <= 15 ? "warn" : "bad");
-          setPill(el, mode, txt, arrow);
-        } else {
-          setPill(el, "bad", "—", "");
-        }
-      }
-
-      // Run-rate pill
-      {
-        const el = document.getElementById("kpiRunRate");
-        if (isFinite(runRateRiskPct)) {
-          const r = runRateRiskPct;
-          const txt = `${(r >= 0 ? "+" : "−")}${pctText(r).replace("-", "")} risk`;
-          const arrow = r >= 0 ? "▲" : "▼";
-          const mode = r <= 5 ? "good" : (r <= 15 ? "warn" : "bad");
-          setPill(el, mode, txt, arrow);
-        } else {
-          setPill(el, "bad", "—", "");
-        }
-      }
-
-      // Runway pill
-      {
-        const el = document.getElementById("kpiRunway");
-        if (isFinite(runwayMonths)) {
-          const txt = `${runwayMonths.toFixed(1)} months`;
-          const arrow = runwayMonths >= 6 ? "▲" : "▼";
-          const mode = runwayMonths >= 6 ? "good" : (runwayMonths >= 4 ? "warn" : "bad");
-          setPill(el, mode, txt, arrow);
-        } else {
-          setPill(el, "good", "— months", "");
-        }
-      }
-
-      // Budget chip
-      const budgetChip = document.getElementById("budgetChip");
-      budgetChip.classList.remove("chip-green", "chip-amber", "chip-red");
-      const vAbs = isFinite(ytdVarPct) ? Math.abs(ytdVarPct) : 0;
-      if (vAbs <= 5) { budgetChip.textContent = "On track"; budgetChip.classList.add("chip-green"); }
-      else if (vAbs <= 15) { budgetChip.textContent = "Monitoring"; budgetChip.classList.add("chip-amber"); }
-      else { budgetChip.textContent = "Attention"; budgetChip.classList.add("chip-red"); }
-
-      // Monthly spending cap
-      const totalMonths = Math.max(sorted.length, 1);
-      const monthsWithActual = Math.max(ytdRows.length, 1);
-      const remainingMonths = (totalMonths - monthsWithActual) || totalMonths;
-
-      let suggestedCap = remainingMonths > 0 ? (budgetRemaining / remainingMonths) * 0.25 : budgetRemaining * 0.25;
-      if (!isFinite(suggestedCap) || suggestedCap <= 0) suggestedCap = 200000;
-      const hardCap = 200000;
-      const cap = Math.min(hardCap, suggestedCap);
-
-      document.getElementById("capValue").textContent = formatInt(cap);
-      const pct = clamp((cap / hardCap) * 100, 0, 100);
-      document.getElementById("capBarFill").style.width = pct + "%";
-      document.getElementById("capBarTick").style.left = Math.min(pct + 5, 95) + "%";
-
-      document.getElementById("capRuleText").textContent =
-        "Rule: 25% of remaining budget / remaining months (max " + formatSar(hardCap) + ")";
-
-      // Control status
-      const controlChip = document.getElementById("controlChip");
-      const controlText = document.getElementById("controlText");
-      const controlDetails = document.getElementById("controlDetails");
-
-      if (ratio >= 2 && vAbs <= 5) {
-        controlChip.textContent = "Healthy";
-        controlChip.className = "kpi-chip chip-green";
-        controlText.textContent = "Under control";
-        controlDetails.innerHTML =
-          "• السيولة تغطي التزامات 30 يوم بهامش مريح<br/>" +
-          "• الانحراف عن الميزانية ضمن النطاق المتفق عليه<br/>" +
-          "• لا توجد تنبيهات حمراء في الأشهر الستة القادمة";
-      } else if (ratio >= 1 && vAbs <= 15) {
-        controlChip.textContent = "Watch";
-        controlChip.className = "kpi-chip chip-amber";
-        controlText.textContent = "Close monitoring";
-        controlDetails.innerHTML =
-          "• السيولة تغطي التزامات 30 يوم لكن بهامش محدود<br/>" +
-          "• يوصى بمراجعة خطط الصرف للأشهر القادمة<br/>" +
-          "• مخاطر متوسطة تحتاج متابعة أسبوعية";
-      } else {
-        controlChip.textContent = "Alert";
-        controlChip.className = "kpi-chip chip-red";
-        controlText.textContent = "Action required";
-        controlDetails.innerHTML =
-          "• السيولة أقل من الالتزامات قصيرة الأجل أو الانحراف كبير عن الخطة<br/>" +
-          "• يجب مراجعة الالتزامات وخطة الصرف فوراً<br/>" +
-          "• يوصى برفع تقرير تفصيلي للمالك";
-      }
-
-      const liveMonth = getVal(liveRow, ["Month"], "—");
-      document.getElementById("lastUpdateLabel").textContent =
-        "Live snapshot • Data1 ( " + (liveMonth || "—") + " )";
-    }
-
-    function renderChart() {
-      if (!data1Rows.length) return;
-
-      const sorted = getSortedRowsByMonth(data1Rows);
-      if (!sorted.length) return;
-
-      const liveRow = getLatestOperationalRow(data1Rows) || data1Rows[0];
-      const liveKey = rowMonthKey(liveRow);
-
-      // window starts at live month (or closest)
-      let startIndex = 0;
-      if (liveKey !== null) {
-        const idx = sorted.findIndex(x => x.key === liveKey);
-        if (idx >= 0) startIndex = idx;
-      }
-
-      const windowRows = sorted.slice(startIndex, startIndex + 6).map(x => x.r);
-      const rows = windowRows.length ? windowRows : sorted.slice(0, 6).map(x => x.r);
-
-      const labels = rows.map(r => getVal(r, ["Month"], ""));
-
-      // Actual balances
-      const actualBalances = rows.map(r => {
-        const v = getVal(r, ["Cash_Balance"], "");
-        return String(v).trim() !== "" ? num(v) : null;
-      });
-
-      // Forecast balances (cumulative ending balances from current cash)
-      const startCash = num(getVal(liveRow, ["Cash_Balance"]));
-      let running = startCash;
-      const forecastBalances = rows.map((r) => {
-        const incF = num(getVal(r, ["Income_Forecast"]));
-        const expF = num(getVal(r, ["Expense_Forecast"]));
-        const netF = incF - expF;
-        running = running + netF;
-        return running;
-      });
-
-      const safeMin = SAFE_MINIMUM;
-
-      // SVG render
-      const svg = document.getElementById("cashChart");
-      svg.innerHTML = "";
-
-      const width = 420, height = 210;
-      const leftPad = 28, rightPad = 20, topPad = 20, bottomPad = 35;
-
-      const allVals = [
-        ...forecastBalances.filter(v => isFinite(v)),
-        ...actualBalances.filter(v => v !== null && isFinite(v)),
-        safeMin
-      ];
-      const maxVal = Math.max(...allVals, 1);
-      const minVal = Math.min(...allVals, 0);
-      const span = (maxVal - minVal) || 1;
-
-      const xs = [];
-      const yForecast = [];
-      const yActual = [];
-
-      rows.forEach((r, i) => {
-        const x = leftPad + (i / Math.max(rows.length - 1, 1)) * (width - leftPad - rightPad);
-        xs.push(x);
-
-        const vf = forecastBalances[i];
-        const nf = (vf - minVal) / span;
-        yForecast.push(topPad + (1 - nf) * (height - topPad - bottomPad));
-
-        const va = actualBalances[i];
-        if (va === null) yActual.push(null);
-        else {
-          const na = (va - minVal) / span;
-          yActual.push(topPad + (1 - na) * (height - topPad - bottomPad));
-        }
-      });
-
-      const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-
-      const gradF = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
-      gradF.setAttribute("id", "cfForecast");
-      gradF.setAttribute("x1", "0"); gradF.setAttribute("x2", "1");
-      gradF.setAttribute("y1", "0"); gradF.setAttribute("y2", "0");
-      const f1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-      f1.setAttribute("offset", "0%"); f1.setAttribute("stop-color", "#54d3d4");
-      const f2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-      f2.setAttribute("offset", "100%"); f2.setAttribute("stop-color", "#11c5c6");
-      gradF.appendChild(f1); gradF.appendChild(f2);
-
-      defs.appendChild(gradF);
-      svg.appendChild(defs);
-
-      // Safe minimum line
-      const safeY = topPad + (1 - ((safeMin - minVal) / span)) * (height - topPad - bottomPad);
-      const safeLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      safeLine.setAttribute("x1", leftPad); safeLine.setAttribute("y1", safeY);
-      safeLine.setAttribute("x2", width - rightPad); safeLine.setAttribute("y2", safeY);
-      safeLine.setAttribute("stroke", "#c5a56c");
-      safeLine.setAttribute("stroke-width", "1.4");
-      safeLine.setAttribute("stroke-dasharray", "4 5");
-      svg.appendChild(safeLine);
-
-      // Forecast path
-      const pathF = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      let dF = "";
-      xs.forEach((x, i) => { dF += (i === 0 ? "M" : "L") + x + " " + yForecast[i] + " "; });
-      pathF.setAttribute("d", dF);
-      pathF.setAttribute("fill", "none");
-      pathF.setAttribute("stroke", "url(#cfForecast)");
-      pathF.setAttribute("stroke-width", "3");
-      pathF.setAttribute("stroke-linecap", "round");
-      pathF.setAttribute("stroke-linejoin", "round");
-      svg.appendChild(pathF);
-
-      // Actual path
-      const pathA = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      let dA = "";
-      let started = false;
-      for (let i = 0; i < xs.length; i++) {
-        if (yActual[i] === null) continue;
-        dA += (started ? "L" : "M") + xs[i] + " " + yActual[i] + " ";
-        started = true;
-      }
-      pathA.setAttribute("d", dA || "");
-      pathA.setAttribute("fill", "none");
-      pathA.setAttribute("stroke", "#11c5c6");
-      pathA.setAttribute("stroke-width", "2.6");
-      pathA.setAttribute("stroke-linecap", "round");
-      pathA.setAttribute("stroke-linejoin", "round");
-      svg.appendChild(pathA);
-
-      // Forecast points + labels
-      forecastBalances.forEach((v, i) => {
-        const cx = xs[i], cy = yForecast[i];
-
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute("cx", cx); circle.setAttribute("cy", cy);
-        circle.setAttribute("r", "4.3");
-        circle.setAttribute("fill", "#54d3d4");
-        circle.setAttribute("stroke", "#011015");
-        circle.setAttribute("stroke-width", "1.4");
-        svg.appendChild(circle);
-
-        const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txt.setAttribute("x", cx);
-        txt.setAttribute("y", cy - 8);
-        txt.setAttribute("text-anchor", "middle");
-        txt.setAttribute("fill", "#e7fcff");
-        txt.setAttribute("font-size", "9");
-        txt.textContent = formatInt(v);
-        svg.appendChild(txt);
-      });
-
-      // Actual points + labels
-      actualBalances.forEach((v, i) => {
-        if (v === null) return;
-        const cx = xs[i], cy = yActual[i];
-
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute("cx", cx); circle.setAttribute("cy", cy);
-        circle.setAttribute("r", "4.1");
-        circle.setAttribute("fill", "#11c5c6");
-        circle.setAttribute("stroke", "#011015");
-        circle.setAttribute("stroke-width", "1.4");
-        svg.appendChild(circle);
-
-        const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txt.setAttribute("x", cx);
-        txt.setAttribute("y", cy + 14);
-        txt.setAttribute("text-anchor", "middle");
-        txt.setAttribute("fill", "#9ff7f7");
-        txt.setAttribute("font-size", "9");
-        txt.textContent = formatInt(v);
-        svg.appendChild(txt);
-      });
-
-      // X labels
-      labels.forEach((label, i) => {
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", xs[i]);
-        text.setAttribute("y", height - 12);
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("fill", "#9fb4c0");
-        text.setAttribute("font-size", "10");
-        text.textContent = label || "";
-        svg.appendChild(text);
-      });
-
-      // =========================
-      // FIX #3: Removed duplicate const liveRow (was breaking the whole dashboard)
-      // Use the existing liveRow variable here
-      // =========================
-      const minForecast = Math.min(...forecastBalances);
-      const endForecast = forecastBalances[forecastBalances.length - 1];
-
-      const thisPlanIncome = num(getVal(liveRow, ["Income_Forecast"]));
-      const thisPlanExpense = num(getVal(liveRow, ["Expense_Forecast"]));
-      const thisActIncome = num(getVal(liveRow, ["Income_Month"]));
-      const thisActExpense = num(getVal(liveRow, ["Actual_Expense"]));
-
-      document.getElementById("chartComment").innerHTML =
-        `<strong>Insight:</strong> Min forecast balance ${formatInt(minForecast)} SAR • End balance ${formatInt(endForecast)} SAR • Safe minimum ${formatInt(SAFE_MINIMUM)} SAR<br/>` +
-        `This month plan: Income ${formatInt(thisPlanIncome)} SAR • Expense ${formatInt(thisPlanExpense)} SAR • Actual: Income ${formatInt(thisActIncome)} SAR • Expense ${formatInt(thisActExpense)} SAR`;
-    }
-
-    function pick(obj, keys, fallback = "") {
-      for (const k of keys) {
-        const v = getVal(obj, [k], "");
-        if (String(v).trim() !== "") return v;
-      }
-      return fallback;
-    }
-
-    function mapRiskLevelToColor(level) {
-      const lv = (level || "").toLowerCase();
-      if (lv === "high") return "red";
-      if (lv === "medium") return "yellow";
-      if (lv === "low") return "green";
-      return null;
-    }
-
-    function buildProjectRow(project) {
-      const actual  = num(pick(project, ["Actual_Progress", "Actual%","Actual"]));
-      const planned = num(pick(project, ["Planned_Progress", "Planned%","Planned"]));
-
-      const primaryRiskLevel = pick(project, ["Risk1_level", "Risk1_Level", "Risk1"]);
-      const primaryRiskNote  = pick(project, ["Risk1_Note", "Risk1_note", "Risk1Note"]);
-      const secondaryRiskLevel = pick(project, ["Risk2_level", "Risk2_Level", "Risk2"]);
-      const secondaryRiskNote  = pick(project, ["Risk2_Note", "Risk2_note", "Risk2Note"]);
-
-      const primaryColor = mapRiskLevelToColor(primaryRiskLevel) || "red";
-      const secondaryColor = mapRiskLevelToColor(secondaryRiskLevel) || "yellow";
-
-      const barWidth = clamp(actual, 0, 100);
-      const tickPos  = clamp(planned, 0, 100);
-
-      const riskChips = [];
-      if (primaryRiskLevel || primaryRiskNote) {
-        riskChips.push(`
-          <div class="risk-chip">
-            <span class="risk-dot ${primaryColor}"></span>
-            ${primaryRiskLevel ? primaryRiskLevel + " — " : ""}${primaryRiskNote || ""}
-          </div>
-        `);
-      }
-      if (secondaryRiskLevel || secondaryRiskNote) {
-        riskChips.push(`
-          <div class="risk-chip">
-            <span class="risk-dot ${secondaryColor}"></span>
-            ${secondaryRiskLevel ? secondaryRiskLevel + " — " : ""}${secondaryRiskNote || ""}
-          </div>
-        `);
-      }
-
-      const pName = pick(project, ["Project_Name", "Name"], "");
-      const stage = pick(project, ["Stage_text", "Stage"], "");
-      const start = pick(project, ["Start_Date", "Start"], "");
-      const duration = pick(project, ["Planned_Duration", "Duration"], "");
-      const pid = pick(project, ["Project_ID", "ID"], "");
-
-      return `
-        <div class="project-row">
-          <div class="project-top">
-            <div>
-              <div class="project-name">${pName}</div>
-              <div class="project-meta">
-                <span>${stage}</span>
-                <span>Start: ${start}</span>
-                <span>Duration: ${duration} days</span>
-              </div>
-            </div>
-            <div class="project-badges">
-              <span class="badge-stage">${actual >= planned ? "On plan" : "Behind plan"}</span>
-              <span class="badge-stage">Project ID: ${pid}</span>
-            </div>
-          </div>
-
-          <div class="progress-shell">
-            <div class="progress-labels">Progress</div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width:${barWidth}%;"></div>
-              <div class="progress-tick" style="left:${tickPos}%;"></div>
-            </div>
-            <div class="progress-percent">${actual.toFixed(0)}% / ${planned.toFixed(0)}%</div>
-          </div>
-
-          <div class="risk-chips">${riskChips.join("")}</div>
-        </div>
-      `;
-    }
-
-    function renderProjects() {
-      if (!projects.length) return;
-
-      const mainIndex = selectedProjectIndex % projects.length;
-      const secondIndex = (mainIndex + 1) % projects.length;
-
-      const mainProject = projects[mainIndex];
-      const secondProject = projects.length > 1 ? projects[secondIndex] : null;
-
-      const container = document.getElementById("projectsContainer");
-      container.innerHTML = buildProjectRow(mainProject) + (secondProject ? buildProjectRow(secondProject) : "");
-
-      document.getElementById("projectFilterName").textContent = pick(mainProject, ["Project_Name", "Name"], "—");
-      document.getElementById("projectFilterMeta").textContent = "Project ID: " + pick(mainProject, ["Project_ID","ID"], "—");
-
-      const select = document.getElementById("adminProjectSelect");
-      select.innerHTML = projects.map((p, idx) => {
-        const pid = pick(p, ["Project_ID","ID"], "");
-        const pnm = pick(p, ["Project_Name","Name"], "");
-        return `<option value="${idx}" ${idx === mainIndex ? "selected" : ""}>${pid} — ${pnm}</option>`;
-      }).join("");
-
-      fillAdminForm(mainProject);
-    }
-
-    function fillAdminForm(project) {
-      if (!project) return;
-      document.getElementById("adminName").value = pick(project, ["Project_Name","Name"], "");
-      document.getElementById("adminStage").value = pick(project, ["Stage_text","Stage"], "");
-      document.getElementById("adminStart").value = pick(project, ["Start_Date","Start"], "");
-      document.getElementById("adminDuration").value = pick(project, ["Planned_Duration","Duration"], "");
-      document.getElementById("adminActual").value = pick(project, ["Actual_Progress","Actual"], "");
-      document.getElementById("adminPlanned").value = pick(project, ["Planned_Progress","Planned"], "");
-      document.getElementById("adminRisk1Level").value = pick(project, ["Risk1_level","Risk1_Level"], "");
-      document.getElementById("adminRisk1Note").value = pick(project, ["Risk1_Note","Risk1_note"], "");
-      document.getElementById("adminRisk2Level").value = pick(project, ["Risk2_level","Risk2_Level"], "");
-      document.getElementById("adminRisk2Note").value = pick(project, ["Risk2_Note","Risk2_note"], "");
-    }
-
-    function applyAdminChanges() {
-      if (!projects.length) return;
-      const idx = selectedProjectIndex;
-      const p = projects[idx];
-
-      p.Project_Name = document.getElementById("adminName").value;
-      p.Stage_text = document.getElementById("adminStage").value;
-      p.Start_Date = document.getElementById("adminStart").value;
-      p.Planned_Duration = document.getElementById("adminDuration").value;
-
-      p.Actual_Progress = document.getElementById("adminActual").value;
-      p.Planned_Progress = document.getElementById("adminPlanned").value;
-
-      p.Risk1_level = document.getElementById("adminRisk1Level").value;
-      p.Risk1_Note = document.getElementById("adminRisk1Note").value;
-      p.Risk2_level = document.getElementById("adminRisk2Level").value;
-      p.Risk2_Note = document.getElementById("adminRisk2Note").value;
-
-      setSaveUI("Local", "chip-amber", "تم تطبيق التعديل محلياً. اضغط Save to Sheets للحفظ.");
-      renderProjects();
-    }
-
-    function setSaveUI(label, chipClass, note) {
-      const chip = document.getElementById("saveChip");
-      chip.className = "kpi-chip " + (chipClass || "");
-      chip.textContent = label;
-
-      const noteEl = document.getElementById("saveNote");
-      if (noteEl) noteEl.textContent = note || "";
-    }
-
-    async function postToWebApp(payload, tryNoCorsFallback = true) {
-      const body = JSON.stringify(payload);
-
-      try {
-        const res = await fetch(WEBAPP_URL, {
-          method: "POST",
-          mode: "cors",
-          redirect: "follow",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body
-        });
-
-        const text = await res.text();
-        let json = null;
-        try { json = JSON.parse(text); } catch(_) {}
-
-        if (!res.ok) {
-          const msg = (json && (json.error || json.message)) ? (json.error || json.message) : ("HTTP " + res.status);
-          throw new Error(msg);
-        }
-        return json || { ok: true, raw: text };
-      } catch (err) {
-        if (!tryNoCorsFallback) throw err;
-
-        await fetch(WEBAPP_URL, {
-          method: "POST",
-          mode: "no-cors",
-          redirect: "follow",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body
-        });
-
-        return { ok: true, note: "sent (no-cors fallback)" };
+  }
+  // case-insensitive fallback
+  for(var i2 = 0; i2 < candidates.length; i2++){
+    var cl = candidates[i2].toLowerCase();
+    for(var k = 0; k < keys.length; k++){
+      if(keys[k].toLowerCase() === cl){
+        var v2 = row[keys[k]];
+        if(String(v2).trim() !== "") return v2;
       }
     }
+  }
+  return fallback;
+}
 
-    function buildProjectPayload(project) {
-      return {
-        Project_ID: pick(project, ["Project_ID","ID"], ""),
-        Project_Name: pick(project, ["Project_Name","Name"], ""),
-        Stage_text: pick(project, ["Stage_text","Stage"], ""),
-        Start_Date: pick(project, ["Start_Date","Start"], ""),
-        Planned_Duration: pick(project, ["Planned_Duration","Duration"], ""),
-        Actual_Progress: String(num(pick(project, ["Actual_Progress","Actual"], 0))),
-        Planned_Progress: String(num(pick(project, ["Planned_Progress","Planned"], 0))),
-        Risk1_level: pick(project, ["Risk1_level","Risk1_Level"], ""),
-        Risk1_Note: pick(project, ["Risk1_Note","Risk1_note"], ""),
-        Risk2_level: pick(project, ["Risk2_level","Risk2_Level"], ""),
-        Risk2_Note: pick(project, ["Risk2_Note","Risk2_note"], "")
-      };
+/* ============================================================
+   CSV PARSER
+   ============================================================ */
+function parseCSV(text){
+  var rows = [];
+  var lines = text.replace(/\r/g, "").split("\n").filter(Boolean);
+  if(!lines.length) return rows;
+  function parseLine(line){
+    var out = [], cur = "", inQ = false;
+    for(var i = 0; i < line.length; i++){
+      var ch = line[i];
+      if(ch === '"'){ if(inQ && line[i+1] === '"'){ cur += '"'; i++ } else { inQ = !inQ } }
+      else if(ch === ',' && !inQ){ out.push(cur); cur = "" }
+      else { cur += ch }
     }
+    out.push(cur);
+    return out.map(function(s){ return s.trim() });
+  }
+  var headers = parseLine(lines[0]);
+  for(var i = 1; i < lines.length; i++){
+    var cols = parseLine(lines[i]);
+    var obj = {};
+    headers.forEach(function(h, idx){ obj[h] = (cols[idx] || "").trim() });
+    rows.push(obj);
+  }
+  return rows;
+}
 
-    async function saveSelectedProjectToSheets() {
-      if (!projects.length) return;
+/* ============================================================
+   MONTH PARSING
+   ============================================================ */
+var MONTHS_MAP = {JAN:1,FEB:2,MAR:3,APR:4,MAY:5,JUN:6,JUL:7,AUG:8,SEP:9,OCT:10,NOV:11,DEC:12};
 
-      applyAdminChanges();
+function parseMonthLabel(label){
+  var s = String(label || "").trim().toUpperCase();
+  if(!s) return null;
+  var m = s.match(/^([A-Z]{3})[-\/\s]?(\d{2,4})$/);
+  if(m){
+    var mon = MONTHS_MAP[m[1]];
+    if(!mon) return null;
+    var y = parseInt(m[2], 10);
+    if(m[2].length <= 2) y = 2000 + y;
+    return {y:y, m:mon, key: y * 100 + mon};
+  }
+  return null;
+}
 
-      const idx = selectedProjectIndex % projects.length;
-      const row = buildProjectPayload(projects[idx]);
+function rowMonthKey(row){
+  var label = getVal(row, ["Month"], "");
+  var p = parseMonthLabel(label);
+  return p ? p.key : null;
+}
 
-      if (!row.Project_ID) {
-        alert("Project_ID فارغ — لا يمكن الحفظ بدون ID.");
-        return;
-      }
+/* ============================================================
+   ROW SELECTION HELPERS
+   ============================================================ */
 
-      setSaveUI("SAVING…", "chip-amber", "جاري الحفظ إلى Google Sheets عبر WebApp…");
-      const btn = document.getElementById("btnSaveToSheets");
-      if (btn) { btn.classList.add("btn-disabled"); btn.disabled = true; }
+/*
+ * isOperationalRow: returns true if the row has actual financial data
+ * (Actual_Expense or Income_Month). DEC-25 only has Cash_Balance
+ * and Budget_Total, so it is NOT operational.
+ */
+function isOperationalRow(row){
+  var hasExp = String(getVal(row, ["Actual_Expense"], "")).trim() !== "";
+  var hasInc = String(getVal(row, ["Income_Month"], "")).trim() !== "";
+  return hasExp || hasInc;
+}
 
-      const btnM = document.getElementById("btnSaveToSheetsMobile");
-      if (btnM) { btnM.classList.add("btn-disabled"); btnM.disabled = true; }
-
-      try {
-        const payload = {
-          secret: WEBAPP_SECRET,
-          action: "upsert",
-          service: "FACC Projects write-back WebApp",
-          sheet: "Projects",
-          idColumn: "Project_ID",
-          row,
-          project: row
-        };
-
-        await postToWebApp(payload, true);
-
-        setSaveUI("Saved", "chip-green", "تم الحفظ بنجاح. سيتم تحديث البيانات من الشيت الآن…");
-        await refreshProjectsFromSheets(true);
-      } catch (err) {
-        setSaveUI("Failed", "chip-red", "فشل الحفظ. غالباً إعدادات WebApp/الصحة أو CORS.");
-        alert("Save to Sheets failed:\n" + (err?.message || String(err)));
-      } finally {
-        if (btn) { btn.classList.remove("btn-disabled"); btn.disabled = false; }
-        if (btnM) { btnM.classList.remove("btn-disabled"); btnM.disabled = false; }
-      }
+/*
+ * getLatestOperationalRow: finds the most recent month that has
+ * actual data (Actual_Expense or Income_Month).
+ * This is the "live" month - currently JAN-26.
+ */
+function getLatestOperationalRow(rows){
+  if(!rows || !rows.length) return null;
+  var candidates = [];
+  for(var i = 0; i < rows.length; i++){
+    var r = rows[i];
+    var key = rowMonthKey(r);
+    if(key === null) continue;
+    if(isOperationalRow(r)){
+      candidates.push({r:r, key:key});
     }
-
-    async function refreshProjectsFromSheets(keepIndex = true) {
-      const oldIndex = selectedProjectIndex;
-      const text = await fetch(PROJECTS_CSV).then(r => r.text());
-      let newProjects = parseCSV(text).filter(p => pick(p, ["Project_Name","Name","Project_ID","ID"], "") !== "");
-
-      newProjects = newProjects.map(p => ({
-        Project_ID: pick(p, ["Project_ID","ID"], ""),
-        Project_Name: pick(p, ["Project_Name","Name"], ""),
-        Stage_text: pick(p, ["Stage_text","Stage"], ""),
-        Start_Date: pick(p, ["Start_Date","Start"], ""),
-        Planned_Duration: pick(p, ["Planned_Duration","Duration"], ""),
-        Actual_Progress: pick(p, ["Actual_Progress","Actual"], ""),
-        Planned_Progress: pick(p, ["Planned_Progress","Planned"], ""),
-        Risk1_level: pick(p, ["Risk1_level","Risk1_Level"], ""),
-        Risk1_Note: pick(p, ["Risk1_Note","Risk1_note"], ""),
-        Risk2_level: pick(p, ["Risk2_level","Risk2_Level"], ""),
-        Risk2_Note: pick(p, ["Risk2_Note","Risk2_note"], "")
-      }));
-
-      projects = newProjects;
-      if (!projects.length) return;
-
-      if (keepIndex) selectedProjectIndex = clamp(oldIndex, 0, projects.length - 1);
-      else selectedProjectIndex = 0;
-
-      renderProjects();
-      setSaveUI("Live", "chip-green", "تم التحديث من Google Sheets.");
-    }
-
-    async function boot() {
-      try {
-        const [data1Text, projectsText] = await Promise.all([
-          fetch(DATA1_CSV).then(r => r.text()),
-          fetch(PROJECTS_CSV).then(r => r.text())
-        ]);
-
-        data1Rows = parseCSV(data1Text);
-
-        projects = parseCSV(projectsText).filter(p => pick(p, ["Project_Name","Name","Project_ID","ID"], "") !== "");
-        projects = projects.map(p => ({
-          Project_ID: pick(p, ["Project_ID","ID"], ""),
-          Project_Name: pick(p, ["Project_Name","Name"], ""),
-          Stage_text: pick(p, ["Stage_text","Stage"], ""),
-          Start_Date: pick(p, ["Start_Date","Start"], ""),
-          Planned_Duration: pick(p, ["Planned_Duration","Duration"], ""),
-          Actual_Progress: pick(p, ["Actual_Progress","Actual"], ""),
-          Planned_Progress: pick(p, ["Planned_Progress","Planned"], ""),
-          Risk1_level: pick(p, ["Risk1_level","Risk1_Level"], ""),
-          Risk1_Note: pick(p, ["Risk1_Note","Risk1_note"], ""),
-          Risk2_level: pick(p, ["Risk2_level","Risk2_Level"], ""),
-          Risk2_Note: pick(p, ["Risk2_Note","Risk2_note"], "")
-        }));
-
-        renderCashAndBudget();
-        renderChart();
-        renderProjects();
-        setSaveUI("Live", "chip-green", "جاهز للحفظ — عدّل ثم اضغط Save to Sheets.");
-      } catch (err) {
-        console.error("Boot error:", err);
-        setSaveUI("Offline", "chip-red", "تعذر تحميل البيانات من الشيت. تأكد من Publish CSV.");
+  }
+  if(!candidates.length){
+    // fallback: find row with Cash_Balance
+    for(var j = 0; j < rows.length; j++){
+      var r2 = rows[j];
+      var key2 = rowMonthKey(r2);
+      if(key2 === null) continue;
+      if(String(getVal(r2, ["Cash_Balance"], "")).trim() !== ""){
+        candidates.push({r:r2, key:key2});
       }
     }
+  }
+  if(!candidates.length) return rows[0];
+  candidates.sort(function(a,b){ return a.key - b.key });
+  return candidates[candidates.length - 1].r;
+}
 
-    function isMobile() {
-      return window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
+/*
+ * getLatestCashRow: finds the most recent row with Cash_Balance.
+ * The accountant updates Cash_Balance every Wednesday, so this
+ * may be a different row from the latest operational row.
+ */
+function getLatestCashRow(rows){
+  if(!rows || !rows.length) return null;
+  var candidates = [];
+  for(var i = 0; i < rows.length; i++){
+    var r = rows[i];
+    var key = rowMonthKey(r);
+    if(key === null) continue;
+    if(String(getVal(r, ["Cash_Balance"], "")).trim() !== ""){
+      candidates.push({r:r, key:key});
     }
+  }
+  if(!candidates.length) return null;
+  candidates.sort(function(a,b){ return a.key - b.key });
+  return candidates[candidates.length - 1].r;
+}
 
-    function setupAdminCollapsible() {
-      const wrap = document.getElementById("adminCollapsible");
-      const btn = document.getElementById("adminToggle");
-      const chev = document.getElementById("adminChev");
-      if (!wrap || !btn || !chev) return;
-
-      const applyDefault = () => {
-        if (isMobile()) wrap.classList.remove("open");
-        else wrap.classList.add("open");
-        chev.textContent = wrap.classList.contains("open") ? "⌃" : "⌄";
-      };
-
-      btn.addEventListener("click", () => {
-        wrap.classList.toggle("open");
-        chev.textContent = wrap.classList.contains("open") ? "⌃" : "⌄";
-      });
-
-      window.addEventListener("resize", applyDefault);
-      applyDefault();
+/*
+ * getBudgetRow: finds the row with Budget_Total (DEC-25).
+ */
+function getBudgetRow(rows){
+  if(!rows || !rows.length) return null;
+  for(var i = 0; i < rows.length; i++){
+    if(String(getVal(rows[i], ["Budget_Total"], "")).trim() !== ""){
+      return rows[i];
     }
+  }
+  return null;
+}
 
-    document.addEventListener("DOMContentLoaded", () => {
-      boot();
-      setupAdminCollapsible();
+/*
+ * getSortedRowsByMonth: returns all rows sorted by month key.
+ */
+function getSortedRowsByMonth(rows){
+  var result = [];
+  for(var i = 0; i < rows.length; i++){
+    var key = rowMonthKey(rows[i]);
+    if(key !== null) result.push({r:rows[i], key:key});
+  }
+  result.sort(function(a,b){ return a.key - b.key });
+  return result;
+}
 
-      document.getElementById("adminProjectSelect").addEventListener("change", (e) => {
-        selectedProjectIndex = parseInt(e.target.value, 10) || 0;
-        renderProjects();
-        setSaveUI("Live", "chip-green", "تم اختيار مشروع. عدّل ثم احفظ.");
-      });
+/*
+ * getOperationalRows: returns only rows that are operational months
+ * (have forecasts or actuals), excluding the reference row (DEC-25).
+ * These are JAN-26 through DEC-26.
+ */
+function getOperationalRows(rows){
+  var sorted = getSortedRowsByMonth(rows);
+  var result = [];
+  for(var i = 0; i < sorted.length; i++){
+    var r = sorted[i].r;
+    // A row is operational if it has Income_Forcast OR Expense_Forcast OR Actual_Expense OR Income_Month
+    var hasForecast = String(getVal(r, ["Income_Forcast","Income_Forecast"], "")).trim() !== "" ||
+                      String(getVal(r, ["Expense_Forcast","Expense_Forecast"], "")).trim() !== "";
+    var hasActual = String(getVal(r, ["Actual_Expense"], "")).trim() !== "" ||
+                    String(getVal(r, ["Income_Month"], "")).trim() !== "";
+    if(hasForecast || hasActual){
+      result.push(sorted[i]);
+    }
+  }
+  return result;
+}
 
-      const applyBtn = document.getElementById("btnApplyChanges");
-      if (applyBtn) {
-        applyBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          applyAdminChanges();
-        });
+/* ============================================================
+   UI HELPERS
+   ============================================================ */
+function setPill(el, mode, text, arrow){
+  if(!el) return;
+  el.classList.remove("pill-good","pill-warn","pill-bad");
+  if(mode === "good") el.classList.add("pill-good");
+  else if(mode === "warn") el.classList.add("pill-warn");
+  else el.classList.add("pill-bad");
+  el.innerHTML = '<span class="arrow">' + (arrow || "") + '</span> ' + text;
+}
+
+function pctText(p){ return Math.abs(p).toFixed(1) + "%" }
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var data1Rows = [];
+var projects = [];
+var selectedProjectIndex = 0;
+
+/* ============================================================
+   RENDER: CASH & BUDGET CARD
+   ============================================================ */
+function renderCashAndBudget(){
+  if(!data1Rows.length) return;
+
+  // cashRow = latest row with Cash_Balance (could be JAN-26 or later)
+  var cashRow = getLatestCashRow(data1Rows) || data1Rows[0];
+  // liveRow = latest row with actual financial data (Actual_Expense/Income_Month)
+  var liveRow = getLatestOperationalRow(data1Rows) || cashRow;
+  // budgetRow = row with Budget_Total (DEC-25)
+  var budgetRow = getBudgetRow(data1Rows) || liveRow;
+
+  // === Read values ===
+  var cashBalance = num(getVal(cashRow, ["Cash_Balance"]));
+  var pending = num(getVal(cashRow, ["Pending_Payments"]));
+  var obl30d = num(getVal(cashRow, ["Obligation_30D","Obligations_30D"]));
+  var approvedBudget = num(getVal(budgetRow, ["Budget_Total"]));
+
+  // KPI inputs for the LIVE month (current month with actual data)
+  var mIncomePlan = num(getVal(liveRow, ["Income_Forcast","Income_Forecast"]));
+  var mExpensePlan = num(getVal(liveRow, ["Expense_Forcast","Expense_Forecast"]));
+  var mIncomeActual = num(getVal(liveRow, ["Income_Month"]));
+  var mExpenseActual = num(getVal(liveRow, ["Actual_Expense"]));
+
+  // === YTD Window ===
+  // Only count OPERATIONAL months (rows with actual data: Actual_Expense or Income_Month)
+  // This excludes DEC-25 which is just a reference row
+  var operationalSorted = getOperationalRows(data1Rows);
+  var liveKey = rowMonthKey(liveRow);
+
+  var ytdRows = [];
+  for(var i = 0; i < operationalSorted.length; i++){
+    if(liveKey !== null && operationalSorted[i].key <= liveKey){
+      // Only include if the row has actual data (not just forecasts)
+      var r = operationalSorted[i].r;
+      if(isOperationalRow(r)){
+        ytdRows.push(r);
       }
+    }
+  }
+  if(!ytdRows.length) ytdRows = [liveRow];
 
-      const saveBtn = document.getElementById("btnSaveToSheets");
-      if (saveBtn) {
-        saveBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          await saveSelectedProjectToSheets();
-        });
-      }
+  // Sum YTD actuals
+  var ytdActualExpense = 0, ytdPlanExpense = 0, ytdActualIncome = 0, ytdPlanIncome = 0;
+  for(var j = 0; j < ytdRows.length; j++){
+    ytdActualExpense += num(getVal(ytdRows[j], ["Actual_Expense"]));
+    ytdPlanExpense += num(getVal(ytdRows[j], ["Expense_Forcast","Expense_Forecast"]));
+    ytdActualIncome += num(getVal(ytdRows[j], ["Income_Month"]));
+    ytdPlanIncome += num(getVal(ytdRows[j], ["Income_Forcast","Income_Forecast"]));
+  }
 
-      const applyM = document.getElementById("btnApplyChangesMobile");
-      const saveM = document.getElementById("btnSaveToSheetsMobile");
+  var budgetRemaining = Math.max(approvedBudget - ytdActualExpense, 0);
+  var monthsCount = ytdRows.length; // Only actual months, NOT including DEC-25
 
-      if (applyM) {
-        applyM.addEventListener("click", (e) => {
-          e.preventDefault();
-          applyAdminChanges();
-        });
-      }
-      if (saveM) {
-        saveM.addEventListener("click", async (e) => {
-          e.preventDefault();
-          await saveSelectedProjectToSheets();
-        });
-      }
-    });
-  </script>
+  // === Cash card ===
+  document.getElementById("cashBalanceValue").textContent = formatInt(cashBalance);
+  document.getElementById("obl30dLabel").textContent = "Obligations 30D: " + formatSar(obl30d);
+  document.getElementById("pendingLabel").textContent = "Pending: " + formatSar(pending);
+
+  var cashChip = document.getElementById("cashStatusChip");
+  cashChip.classList.remove("chip-green","chip-amber","chip-red");
+  var ratio = obl30d > 0 ? cashBalance / obl30d : 999;
+  if(ratio >= 2){ cashChip.textContent = "Comfortable"; cashChip.classList.add("chip-green") }
+  else if(ratio >= 1){ cashChip.textContent = "Tight"; cashChip.classList.add("chip-amber") }
+  else { cashChip.textContent = "Critical"; cashChip.classList.add("chip-red") }
+
+  // === Budget card numbers ===
+  document.getElementById("budgetApproved").textContent = formatInt(approvedBudget);
+  document.getElementById("budgetActual").textContent = formatInt(ytdActualExpense);
+  document.getElementById("budgetRemaining").textContent = formatInt(budgetRemaining);
+
+  // === KPIs ===
+  // Revenue: how much of planned income was actually received (YTD)
+  var revenuePct = (ytdPlanIncome > 0) ? (ytdActualIncome / ytdPlanIncome) * 100 : NaN;
+
+  // Spending: how much actual expense deviated from plan (YTD)
+  var spendingOver = (ytdPlanExpense > 0) ? ((ytdActualExpense - ytdPlanExpense) / ytdPlanExpense) * 100 : NaN;
+
+  // Net: actual net vs planned net
+  var netActual = ytdActualIncome - ytdActualExpense;
+  var netPlan = ytdPlanIncome - ytdPlanExpense;
+  var netPct = (Math.abs(netPlan) > 0) ? ((netActual - netPlan) / Math.abs(netPlan)) * 100 : NaN;
+
+  // YTD variance: expense deviation from budget plan
+  var ytdVarPct = spendingOver; // same as spending for now
+
+  // Run-rate: projected annual expense vs budget
+  var avgActExp = (monthsCount > 0) ? ytdActualExpense / monthsCount : 0;
+  var projectedAnnualExp = avgActExp * FISCAL_YEAR_MONTHS;
+  var runRateRisk = (approvedBudget > 0) ? ((projectedAnnualExp - approvedBudget) / approvedBudget) * 100 : NaN;
+
+  // Runway: how many months can the company survive with current burn rate
+  var avgActInc = (monthsCount > 0) ? ytdActualIncome / monthsCount : 0;
+  var avgNetBurn = Math.max(avgActExp - avgActInc, 0);
+  var runwayMonths = (avgNetBurn > 0) ? Math.max((cashBalance - SAFE_MINIMUM) / avgNetBurn, 0) : NaN;
+
+  // Revenue pill
+  (function(){
+    var el = document.getElementById("kpiRevenue");
+    if(isFinite(revenuePct)){
+      var txt = revenuePct.toFixed(1) + "% of plan";
+      setPill(el, revenuePct >= 95 ? "good" : (revenuePct >= 80 ? "warn" : "bad"), txt, revenuePct >= 100 ? "▲" : "▼");
+    } else { setPill(el, "bad", "—", "") }
+  })();
+
+  // Spending pill
+  (function(){
+    var el = document.getElementById("kpiSpending");
+    if(isFinite(spendingOver)){
+      var txt = (spendingOver >= 0 ? "+" : "−") + pctText(spendingOver) + " over plan";
+      setPill(el, spendingOver <= 5 ? "good" : (spendingOver <= 15 ? "warn" : "bad"), txt, spendingOver > 0 ? "▲" : "▼");
+    } else { setPill(el, "bad", "—", "") }
+  })();
+
+  // Net pill
+  (function(){
+    var el = document.getElementById("kpiNet");
+    if(isFinite(netPct)){
+      var txt = (netPct >= 0 ? "+" : "−") + pctText(netPct) + " vs plan";
+      setPill(el, netPct >= -5 ? "good" : (netPct >= -15 ? "warn" : "bad"), txt, netPct >= 0 ? "▲" : "▼");
+    } else { setPill(el, "bad", "—", "") }
+  })();
+
+  // YTD variance pill
+  (function(){
+    var el = document.getElementById("budgetVariance");
+    if(isFinite(ytdVarPct)){
+      var txt = (ytdVarPct >= 0 ? "+" : "−") + pctText(ytdVarPct) + " over plan";
+      setPill(el, Math.abs(ytdVarPct) <= 5 ? "good" : (Math.abs(ytdVarPct) <= 15 ? "warn" : "bad"), txt, ytdVarPct >= 0 ? "▲" : "▼");
+    } else { setPill(el, "bad", "—", "") }
+  })();
+
+  // Run-rate pill
+  (function(){
+    var el = document.getElementById("kpiRunRate");
+    if(isFinite(runRateRisk)){
+      var txt = (runRateRisk >= 0 ? "+" : "−") + pctText(runRateRisk) + " projected";
+      setPill(el, runRateRisk <= 5 ? "good" : (runRateRisk <= 15 ? "warn" : "bad"), txt, runRateRisk >= 0 ? "▲" : "▼");
+    } else { setPill(el, "bad", "—", "") }
+  })();
+
+  // Runway pill
+  (function(){
+    var el = document.getElementById("kpiRunway");
+    if(isFinite(runwayMonths)){
+      var txt = runwayMonths.toFixed(1) + " months";
+      setPill(el, runwayMonths >= 12 ? "good" : (runwayMonths >= 6 ? "warn" : "bad"), txt, runwayMonths >= 12 ? "▲" : "▼");
+    } else { setPill(el, "good", "∞ months", "▲") }
+  })();
+
+  // Budget chip
+  var budgetChip = document.getElementById("budgetChip");
+  budgetChip.classList.remove("chip-green","chip-amber","chip-red");
+  var vAbs = isFinite(ytdVarPct) ? Math.abs(ytdVarPct) : 0;
+  if(vAbs <= 5){ budgetChip.textContent = "On track"; budgetChip.classList.add("chip-green") }
+  else if(vAbs <= 15){ budgetChip.textContent = "Monitoring"; budgetChip.classList.add("chip-amber") }
+  else { budgetChip.textContent = "Attention"; budgetChip.classList.add("chip-red") }
+
+  // Monthly spending cap
+  // Remaining months in fiscal year = 12 - months with actual data
+  var remainingFiscalMonths = Math.max(FISCAL_YEAR_MONTHS - monthsCount, 1);
+  var suggestedCap = (budgetRemaining / remainingFiscalMonths) * 0.25;
+  if(!isFinite(suggestedCap) || suggestedCap <= 0) suggestedCap = 200000;
+  var hardCap = 200000;
+  var cap = Math.min(hardCap, suggestedCap);
+  document.getElementById("capValue").textContent = formatInt(cap);
+  var pct = clamp((cap / hardCap) * 100, 0, 100);
+  document.getElementById("capBarFill").style.width = pct + "%";
+  document.getElementById("capBarTick").style.left = Math.min(pct + 5, 95) + "%";
+  document.getElementById("capRuleText").textContent = "Rule: 25% of remaining budget / remaining months (max " + formatSar(hardCap) + ")";
+
+  // Control status - evaluate cash health AND budget health separately
+  var cashHealthy = ratio >= 2;
+  var cashTight = ratio >= 1;
+  var budgetHealthy = vAbs <= 10;
+  var budgetWatch = vAbs <= 25;
+
+  var controlChip = document.getElementById("controlChip");
+  var controlText = document.getElementById("controlText");
+  var controlDetails = document.getElementById("controlDetails");
+
+  if(cashHealthy && budgetHealthy){
+    controlChip.textContent = "Healthy"; controlChip.className = "kpi-chip chip-green";
+    controlText.textContent = "Under control";
+    controlDetails.innerHTML = "• السيولة تغطي التزامات 30 يوم بهامش مريح<br/>• الانحراف عن الميزانية ضمن النطاق المتفق عليه<br/>• لا توجد تنبيهات حمراء في الأشهر الستة القادمة";
+  } else if(cashTight && budgetWatch){
+    controlChip.textContent = "Watch"; controlChip.className = "kpi-chip chip-amber";
+    controlText.textContent = "Close monitoring";
+    controlDetails.innerHTML = "• " + (!cashHealthy ? "السيولة تغطي الالتزامات لكن بهامش محدود" : "السيولة مريحة") + "<br/>• " + (!budgetHealthy ? "انحراف المصروفات " + vAbs.toFixed(0) + "% عن الخطة — يحتاج متابعة" : "الميزانية ضمن النطاق") + "<br/>• يوصى بمراجعة خطط الصرف للأشهر القادمة";
+  } else {
+    controlChip.textContent = "Alert"; controlChip.className = "kpi-chip chip-red";
+    controlText.textContent = "Action required";
+    controlDetails.innerHTML = "• " + (!cashTight ? "السيولة أقل من الالتزامات قصيرة الأجل" : "السيولة تحتاج مراقبة") + "<br/>• " + (vAbs > 25 ? "انحراف كبير عن الميزانية (" + vAbs.toFixed(0) + "%)" : "الميزانية تحتاج مراجعة") + "<br/>• يوصى برفع تقرير تفصيلي للمالك";
+  }
+
+  document.getElementById("lastUpdateLabel").textContent = "Live snapshot • Data1 ( " + getVal(liveRow, ["Month"], "—") + " )";
+}
+
+/* ============================================================
+   RENDER: CASH BALANCE PROJECTION CHART
+   ============================================================ */
+function renderChart(){
+  if(!data1Rows.length) return;
+
+  // Get operational rows (JAN-26 to DEC-26, excluding DEC-25)
+  var opRows = getOperationalRows(data1Rows);
+  if(!opRows.length) return;
+
+  // Find the latest row with actual Cash_Balance
+  var cashRow = getLatestCashRow(data1Rows);
+  if(!cashRow) return;
+  var cashKey = rowMonthKey(cashRow);
+
+  // Find the start index in operational rows (the month with latest Cash_Balance)
+  var startIndex = 0;
+  for(var si = 0; si < opRows.length; si++){
+    if(opRows[si].key === cashKey){ startIndex = si; break }
+  }
+
+  // Get 6 months window starting from the cash row month
+  var windowRows = [];
+  for(var wi = startIndex; wi < Math.min(startIndex + 6, opRows.length); wi++){
+    windowRows.push(opRows[wi].r);
+  }
+  if(!windowRows.length) return;
+
+  var labels = windowRows.map(function(r){ return getVal(r, ["Month"], "") });
+
+  // Actual balances (only months that have Cash_Balance in the sheet)
+  var actualBalances = windowRows.map(function(r){
+    var v = getVal(r, ["Cash_Balance"], "");
+    return String(v).trim() !== "" ? num(v) : null;
+  });
+
+  // Forecast balances: cumulative from Cash_Balance
+  // Month 0 (live): use actual Cash_Balance as starting point
+  // Month 1+: previous_forecast + Income_Forcast[month] - Expense_Forcast[month]
+  var startCash = num(getVal(cashRow, ["Cash_Balance"]));
+  var running = startCash;
+  var forecastBalances = [];
+
+  for(var fi = 0; fi < windowRows.length; fi++){
+    if(fi === 0){
+      // First month: start with actual cash balance
+      forecastBalances.push(startCash);
+    } else {
+      // Future months: add forecast income, subtract forecast expense
+      var incF = num(getVal(windowRows[fi], ["Income_Forcast","Income_Forecast"]));
+      var expF = num(getVal(windowRows[fi], ["Expense_Forcast","Expense_Forecast"]));
+      running = running + incF - expF;
+      forecastBalances.push(running);
+    }
+  }
+
+  var safeMin = SAFE_MINIMUM;
+
+  // SVG render
+  var svg = document.getElementById("cashChart");
+  svg.innerHTML = "";
+  var W = 420, H = 210, LP = 28, RP = 20, TP = 20, BP = 35;
+
+  var allVals = [];
+  forecastBalances.forEach(function(v){ if(isFinite(v)) allVals.push(v) });
+  actualBalances.forEach(function(v){ if(v !== null && isFinite(v)) allVals.push(v) });
+  allVals.push(safeMin);
+
+  var maxVal = Math.max.apply(null, allVals.concat([1]));
+  var minVal = Math.min.apply(null, allVals.concat([0]));
+  var span = (maxVal - minVal) || 1;
+
+  var xs = [], yF = [], yA = [];
+  for(var ri = 0; ri < windowRows.length; ri++){
+    var x = LP + (ri / Math.max(windowRows.length - 1, 1)) * (W - LP - RP);
+    xs.push(x);
+    var nf = (forecastBalances[ri] - minVal) / span;
+    yF.push(TP + (1 - nf) * (H - TP - BP));
+    var va = actualBalances[ri];
+    if(va === null) yA.push(null);
+    else { var na = (va - minVal) / span; yA.push(TP + (1 - na) * (H - TP - BP)) }
+  }
+
+  // Defs
+  var ns = "http://www.w3.org/2000/svg";
+  var defs = document.createElementNS(ns, "defs");
+  var grad = document.createElementNS(ns, "linearGradient");
+  grad.setAttribute("id","cfForecast"); grad.setAttribute("x1","0"); grad.setAttribute("x2","1"); grad.setAttribute("y1","0"); grad.setAttribute("y2","0");
+  var s1 = document.createElementNS(ns, "stop"); s1.setAttribute("offset","0%"); s1.setAttribute("stop-color","#54d3d4");
+  var s2 = document.createElementNS(ns, "stop"); s2.setAttribute("offset","100%"); s2.setAttribute("stop-color","#11c5c6");
+  grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad); svg.appendChild(defs);
+
+  // Safe minimum line
+  var safeY = TP + (1 - ((safeMin - minVal) / span)) * (H - TP - BP);
+  var sLine = document.createElementNS(ns, "line");
+  sLine.setAttribute("x1", LP); sLine.setAttribute("y1", safeY); sLine.setAttribute("x2", W - RP); sLine.setAttribute("y2", safeY);
+  sLine.setAttribute("stroke","#c5a56c"); sLine.setAttribute("stroke-width","1.4"); sLine.setAttribute("stroke-dasharray","4 5");
+  svg.appendChild(sLine);
+
+  // Forecast path
+  var pF = document.createElementNS(ns, "path");
+  var dF = "";
+  for(var pi = 0; pi < xs.length; pi++){ dF += (pi === 0 ? "M" : "L") + xs[pi] + " " + yF[pi] + " " }
+  pF.setAttribute("d", dF); pF.setAttribute("fill","none"); pF.setAttribute("stroke","url(#cfForecast)"); pF.setAttribute("stroke-width","3"); pF.setAttribute("stroke-linecap","round"); pF.setAttribute("stroke-linejoin","round");
+  svg.appendChild(pF);
+
+  // Actual path
+  var pA = document.createElementNS(ns, "path");
+  var dA = "", started = false;
+  for(var ai = 0; ai < xs.length; ai++){
+    if(yA[ai] === null) continue;
+    dA += (started ? "L" : "M") + xs[ai] + " " + yA[ai] + " ";
+    started = true;
+  }
+  pA.setAttribute("d", dA || ""); pA.setAttribute("fill","none"); pA.setAttribute("stroke","#11c5c6"); pA.setAttribute("stroke-width","2.6"); pA.setAttribute("stroke-linecap","round"); pA.setAttribute("stroke-linejoin","round");
+  svg.appendChild(pA);
+
+  // Forecast dots + labels
+  for(var fpi = 0; fpi < forecastBalances.length; fpi++){
+    var cx = xs[fpi], cy = yF[fpi];
+    var c = document.createElementNS(ns, "circle");
+    c.setAttribute("cx", cx); c.setAttribute("cy", cy); c.setAttribute("r","4.3"); c.setAttribute("fill","#54d3d4"); c.setAttribute("stroke","#011015"); c.setAttribute("stroke-width","1.4");
+    svg.appendChild(c);
+    var t = document.createElementNS(ns, "text");
+    t.setAttribute("x", cx); t.setAttribute("y", cy - 8); t.setAttribute("text-anchor","middle"); t.setAttribute("fill","#e7fcff"); t.setAttribute("font-size","9");
+    t.textContent = formatInt(forecastBalances[fpi]);
+    svg.appendChild(t);
+  }
+
+  // Actual dots + labels
+  for(var api = 0; api < actualBalances.length; api++){
+    if(actualBalances[api] === null) continue;
+    var cx2 = xs[api], cy2 = yA[api];
+    var c2 = document.createElementNS(ns, "circle");
+    c2.setAttribute("cx", cx2); c2.setAttribute("cy", cy2); c2.setAttribute("r","4.1"); c2.setAttribute("fill","#11c5c6"); c2.setAttribute("stroke","#011015"); c2.setAttribute("stroke-width","1.4");
+    svg.appendChild(c2);
+    var t2 = document.createElementNS(ns, "text");
+    t2.setAttribute("x", cx2); t2.setAttribute("y", cy2 + 14); t2.setAttribute("text-anchor","middle"); t2.setAttribute("fill","#9ff7f7"); t2.setAttribute("font-size","9");
+    t2.textContent = formatInt(actualBalances[api]);
+    svg.appendChild(t2);
+  }
+
+  // X labels
+  for(var li = 0; li < labels.length; li++){
+    var lbl = document.createElementNS(ns, "text");
+    lbl.setAttribute("x", xs[li]); lbl.setAttribute("y", H - 12); lbl.setAttribute("text-anchor","middle"); lbl.setAttribute("fill","#9fb4c0"); lbl.setAttribute("font-size","10");
+    lbl.textContent = labels[li] || "";
+    svg.appendChild(lbl);
+  }
+
+  // Insight text
+  var liveRow = getLatestOperationalRow(data1Rows) || data1Rows[0];
+  var minForecast = Math.min.apply(null, forecastBalances);
+  var endForecast = forecastBalances[forecastBalances.length - 1];
+  var thisPlanInc = num(getVal(liveRow, ["Income_Forcast","Income_Forecast"]));
+  var thisPlanExp = num(getVal(liveRow, ["Expense_Forcast","Expense_Forecast"]));
+  var thisActInc = num(getVal(liveRow, ["Income_Month"]));
+  var thisActExp = num(getVal(liveRow, ["Actual_Expense"]));
+
+  document.getElementById("chartComment").innerHTML =
+    '<strong>Insight:</strong> Min forecast balance ' + formatInt(minForecast) + ' SAR • End balance ' + formatInt(endForecast) + ' SAR • Safe minimum ' + formatInt(SAFE_MINIMUM) + ' SAR<br/>' +
+    'This month plan: Income ' + formatInt(thisPlanInc) + ' SAR • Expense ' + formatInt(thisPlanExp) + ' SAR • Actual: Income ' + formatInt(thisActInc) + ' SAR • Expense ' + formatInt(thisActExp) + ' SAR';
+}
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+function pick(obj, keys, fallback){
+  if(fallback === undefined) fallback = "";
+  for(var i = 0; i < keys.length; i++){
+    var v = getVal(obj, [keys[i]], "");
+    if(String(v).trim() !== "") return v;
+  }
+  return fallback;
+}
+
+function mapRiskColor(level){
+  var lv = (level || "").toLowerCase();
+  if(lv === "high") return "red"; if(lv === "medium") return "yellow"; if(lv === "low") return "green"; return null;
+}
+
+function buildProjectRow(project){
+  var actual = num(pick(project, ["Actual_Progress","Actual%","Actual"]));
+  var planned = num(pick(project, ["Planned_Progress","Planned%","Planned"]));
+  var r1Lv = pick(project, ["Risk1_level","Risk1_Level","Risk1"]);
+  var r1Note = pick(project, ["Risk1_Note","Risk1_note","Risk1Note"]);
+  var r2Lv = pick(project, ["Risk2_level","Risk2_Level","Risk2"]);
+  var r2Note = pick(project, ["Risk2_Note","Risk2_note","Risk2Note"]);
+  var c1 = mapRiskColor(r1Lv) || "red", c2 = mapRiskColor(r2Lv) || "yellow";
+  var barW = clamp(actual, 0, 100), tickP = clamp(planned, 0, 100);
+  var chips = [];
+  if(r1Lv || r1Note) chips.push('<div class="risk-chip"><span class="risk-dot ' + c1 + '"></span>' + (r1Lv ? r1Lv + " — " : "") + (r1Note || "") + '</div>');
+  if(r2Lv || r2Note) chips.push('<div class="risk-chip"><span class="risk-dot ' + c2 + '"></span>' + (r2Lv ? r2Lv + " — " : "") + (r2Note || "") + '</div>');
+  var pName = pick(project, ["Project_Name","Name"], "");
+  var stage = pick(project, ["Stage_text","Stage"], "");
+  var start = pick(project, ["Start_Date","Start"], "");
+  var dur = pick(project, ["Planned_Duration","Duration"], "");
+  var pid = pick(project, ["Project_ID","ID"], "");
+  return '<div class="project-row"><div class="project-top"><div><div class="project-name">' + pName + '</div><div class="project-meta"><span>' + stage + '</span><span>Start: ' + start + '</span><span>Duration: ' + dur + ' days</span></div></div><div class="project-badges"><span class="badge-stage">' + (actual >= planned ? "On plan" : "Behind plan") + '</span><span class="badge-stage">Project ID: ' + pid + '</span></div></div><div class="progress-shell"><div class="progress-labels">Progress</div><div class="progress-bar"><div class="progress-fill" style="width:' + barW + '%;"></div><div class="progress-tick" style="left:' + tickP + '%;"></div></div><div class="progress-percent">' + actual.toFixed(0) + '% / ' + planned.toFixed(0) + '%</div></div><div class="risk-chips">' + chips.join("") + '</div></div>';
+}
+
+function renderProjects(){
+  if(!projects.length) return;
+  var mainIdx = selectedProjectIndex % projects.length;
+  var secIdx = (mainIdx + 1) % projects.length;
+  var main = projects[mainIdx];
+  var sec = projects.length > 1 ? projects[secIdx] : null;
+  document.getElementById("projectsContainer").innerHTML = buildProjectRow(main) + (sec ? buildProjectRow(sec) : "");
+  document.getElementById("projectFilterName").textContent = pick(main, ["Project_Name","Name"], "—");
+  document.getElementById("projectFilterMeta").textContent = "Project ID: " + pick(main, ["Project_ID","ID"], "—");
+  var sel = document.getElementById("adminProjectSelect");
+  sel.innerHTML = projects.map(function(p, idx){
+    var pid = pick(p, ["Project_ID","ID"], ""); var pnm = pick(p, ["Project_Name","Name"], "");
+    return '<option value="' + idx + '" ' + (idx === mainIdx ? "selected" : "") + '>' + pid + ' — ' + pnm + '</option>';
+  }).join("");
+  fillAdminForm(main);
+}
+
+function fillAdminForm(p){
+  if(!p) return;
+  document.getElementById("adminName").value = pick(p, ["Project_Name","Name"], "");
+  document.getElementById("adminStage").value = pick(p, ["Stage_text","Stage"], "");
+  document.getElementById("adminStart").value = pick(p, ["Start_Date","Start"], "");
+  document.getElementById("adminDuration").value = pick(p, ["Planned_Duration","Duration"], "");
+  document.getElementById("adminActual").value = pick(p, ["Actual_Progress","Actual"], "");
+  document.getElementById("adminPlanned").value = pick(p, ["Planned_Progress","Planned"], "");
+  document.getElementById("adminRisk1Level").value = pick(p, ["Risk1_level","Risk1_Level"], "");
+  document.getElementById("adminRisk1Note").value = pick(p, ["Risk1_Note","Risk1_note"], "");
+  document.getElementById("adminRisk2Level").value = pick(p, ["Risk2_level","Risk2_Level"], "");
+  document.getElementById("adminRisk2Note").value = pick(p, ["Risk2_Note","Risk2_note"], "");
+}
+
+function applyAdminChanges(){
+  if(!projects.length) return;
+  var p = projects[selectedProjectIndex];
+  p.Project_Name = document.getElementById("adminName").value;
+  p.Stage_text = document.getElementById("adminStage").value;
+  p.Start_Date = document.getElementById("adminStart").value;
+  p.Planned_Duration = document.getElementById("adminDuration").value;
+  p.Actual_Progress = document.getElementById("adminActual").value;
+  p.Planned_Progress = document.getElementById("adminPlanned").value;
+  p.Risk1_level = document.getElementById("adminRisk1Level").value;
+  p.Risk1_Note = document.getElementById("adminRisk1Note").value;
+  p.Risk2_level = document.getElementById("adminRisk2Level").value;
+  p.Risk2_Note = document.getElementById("adminRisk2Note").value;
+  setSaveUI("Local","chip-amber","تم تطبيق التعديل محلياً. اضغط Save to Sheets للحفظ.");
+  renderProjects();
+}
+
+function setSaveUI(label, cls, note){
+  var chip = document.getElementById("saveChip");
+  chip.className = "kpi-chip " + (cls || ""); chip.textContent = label;
+  var n = document.getElementById("saveNote"); if(n) n.textContent = note || "";
+}
+
+/* ============================================================
+   WEBAPP SAVE
+   ============================================================ */
+async function postToWebApp(payload, fallback){
+  if(fallback === undefined) fallback = true;
+  var body = JSON.stringify(payload);
+  try {
+    var res = await fetch(WEBAPP_URL, {method:"POST", mode:"cors", redirect:"follow", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:body});
+    var text = await res.text(); var json = null; try { json = JSON.parse(text) } catch(_){}
+    if(!res.ok){ var msg = (json && (json.error || json.message)) || ("HTTP " + res.status); throw new Error(msg) }
+    return json || {ok:true, raw:text};
+  } catch(err){
+    if(!fallback) throw err;
+    await fetch(WEBAPP_URL, {method:"POST", mode:"no-cors", redirect:"follow", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:body});
+    return {ok:true, note:"sent (no-cors fallback)"};
+  }
+}
+
+function buildProjectPayload(p){
+  return {
+    Project_ID:pick(p,["Project_ID","ID"],""), Project_Name:pick(p,["Project_Name","Name"],""),
+    Stage_text:pick(p,["Stage_text","Stage"],""), Start_Date:pick(p,["Start_Date","Start"],""),
+    Planned_Duration:pick(p,["Planned_Duration","Duration"],""),
+    Actual_Progress:String(num(pick(p,["Actual_Progress","Actual"],0))),
+    Planned_Progress:String(num(pick(p,["Planned_Progress","Planned"],0))),
+    Risk1_level:pick(p,["Risk1_level","Risk1_Level"],""), Risk1_Note:pick(p,["Risk1_Note","Risk1_note"],""),
+    Risk2_level:pick(p,["Risk2_level","Risk2_Level"],""), Risk2_Note:pick(p,["Risk2_Note","Risk2_note"],"")
+  };
+}
+
+async function saveSelectedProjectToSheets(){
+  if(!projects.length) return;
+  applyAdminChanges();
+  var idx = selectedProjectIndex % projects.length;
+  var row = buildProjectPayload(projects[idx]);
+  if(!row.Project_ID){ alert("Project_ID فارغ — لا يمكن الحفظ بدون ID."); return }
+  setSaveUI("SAVING…","chip-amber","جاري الحفظ إلى Google Sheets عبر WebApp…");
+  var btn = document.getElementById("btnSaveToSheets"); if(btn){ btn.classList.add("btn-disabled"); btn.disabled = true }
+  var btnM = document.getElementById("btnSaveToSheetsMobile"); if(btnM){ btnM.classList.add("btn-disabled"); btnM.disabled = true }
+  try {
+    await postToWebApp({secret:WEBAPP_SECRET, action:"upsert", service:"FACC Projects write-back WebApp", sheet:"Projects", idColumn:"Project_ID", row:row, project:row}, true);
+    setSaveUI("Saved","chip-green","تم الحفظ بنجاح. سيتم تحديث البيانات من الشيت الآن…");
+    await refreshProjectsFromSheets(true);
+  } catch(err){
+    setSaveUI("Failed","chip-red","فشل الحفظ. غالباً إعدادات WebApp/الصحة أو CORS.");
+    alert("Save to Sheets failed:\n" + (err && err.message ? err.message : String(err)));
+  } finally {
+    if(btn){ btn.classList.remove("btn-disabled"); btn.disabled = false }
+    if(btnM){ btnM.classList.remove("btn-disabled"); btnM.disabled = false }
+  }
+}
+
+async function refreshProjectsFromSheets(keepIdx){
+  if(keepIdx === undefined) keepIdx = true;
+  var old = selectedProjectIndex;
+  var text = await fetch(PROJECTS_CSV).then(function(r){ return r.text() });
+  var np = parseCSV(text).filter(function(p){ return pick(p, ["Project_Name","Name","Project_ID","ID"], "") !== "" });
+  np = np.map(function(p){ return {
+    Project_ID:pick(p,["Project_ID","ID"],""), Project_Name:pick(p,["Project_Name","Name"],""),
+    Stage_text:pick(p,["Stage_text","Stage"],""), Start_Date:pick(p,["Start_Date","Start"],""),
+    Planned_Duration:pick(p,["Planned_Duration","Duration"],""),
+    Actual_Progress:pick(p,["Actual_Progress","Actual"],""), Planned_Progress:pick(p,["Planned_Progress","Planned"],""),
+    Risk1_level:pick(p,["Risk1_level","Risk1_Level"],""), Risk1_Note:pick(p,["Risk1_Note","Risk1_note"],""),
+    Risk2_level:pick(p,["Risk2_level","Risk2_Level"],""), Risk2_Note:pick(p,["Risk2_Note","Risk2_note"],"")
+  }});
+  projects = np; if(!projects.length) return;
+  if(keepIdx) selectedProjectIndex = clamp(old, 0, projects.length - 1); else selectedProjectIndex = 0;
+  renderProjects(); setSaveUI("Live","chip-green","تم التحديث من Google Sheets.");
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+async function boot(){
+  try {
+    var responses = await Promise.all([
+      fetch(DATA1_CSV).then(function(r){ return r.text() }),
+      fetch(PROJECTS_CSV).then(function(r){ return r.text() })
+    ]);
+    data1Rows = parseCSV(responses[0]);
+    projects = parseCSV(responses[1]).filter(function(p){ return pick(p, ["Project_Name","Name","Project_ID","ID"], "") !== "" });
+    projects = projects.map(function(p){ return {
+      Project_ID:pick(p,["Project_ID","ID"],""), Project_Name:pick(p,["Project_Name","Name"],""),
+      Stage_text:pick(p,["Stage_text","Stage"],""), Start_Date:pick(p,["Start_Date","Start"],""),
+      Planned_Duration:pick(p,["Planned_Duration","Duration"],""),
+      Actual_Progress:pick(p,["Actual_Progress","Actual"],""), Planned_Progress:pick(p,["Planned_Progress","Planned"],""),
+      Risk1_level:pick(p,["Risk1_level","Risk1_Level"],""), Risk1_Note:pick(p,["Risk1_Note","Risk1_note"],""),
+      Risk2_level:pick(p,["Risk2_level","Risk2_Level"],""), Risk2_Note:pick(p,["Risk2_Note","Risk2_note"],"")
+    }});
+    renderCashAndBudget();
+    renderChart();
+    renderProjects();
+    setSaveUI("Live","chip-green","جاهز للحفظ — عدّل ثم اضغط Save to Sheets.");
+  } catch(err){
+    console.error("Boot error:", err);
+    setSaveUI("Offline","chip-red","تعذر تحميل البيانات من الشيت. تأكد من Publish CSV.");
+  }
+}
+
+/* ============================================================
+   ADMIN COLLAPSIBLE + INIT
+   ============================================================ */
+function isMobile(){ return window.matchMedia && window.matchMedia("(max-width:768px)").matches }
+
+function setupAdminCollapsible(){
+  var wrap = document.getElementById("adminCollapsible");
+  var btn = document.getElementById("adminToggle");
+  var chev = document.getElementById("adminChev");
+  if(!wrap || !btn || !chev) return;
+  var applyDefault = function(){
+    if(isMobile()) wrap.classList.remove("open"); else wrap.classList.add("open");
+    chev.textContent = wrap.classList.contains("open") ? "⌃" : "⌄";
+  };
+  btn.addEventListener("click", function(){ wrap.classList.toggle("open"); chev.textContent = wrap.classList.contains("open") ? "⌃" : "⌄" });
+  window.addEventListener("resize", applyDefault);
+  applyDefault();
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  boot();
+  setupAdminCollapsible();
+  document.getElementById("adminProjectSelect").addEventListener("change", function(e){
+    selectedProjectIndex = parseInt(e.target.value, 10) || 0; renderProjects(); setSaveUI("Live","chip-green","تم اختيار مشروع. عدّل ثم احفظ.");
+  });
+  var applyBtn = document.getElementById("btnApplyChanges");
+  if(applyBtn) applyBtn.addEventListener("click", function(e){ e.preventDefault(); applyAdminChanges() });
+  var saveBtn = document.getElementById("btnSaveToSheets");
+  if(saveBtn) saveBtn.addEventListener("click", async function(e){ e.preventDefault(); await saveSelectedProjectToSheets() });
+  var applyM = document.getElementById("btnApplyChangesMobile");
+  var saveM = document.getElementById("btnSaveToSheetsMobile");
+  if(applyM) applyM.addEventListener("click", function(e){ e.preventDefault(); applyAdminChanges() });
+  if(saveM) saveM.addEventListener("click", async function(e){ e.preventDefault(); await saveSelectedProjectToSheets() });
+});
+</script>
 </body>
 </html>
+
